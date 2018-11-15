@@ -85,15 +85,15 @@ t_list		*get_lst(t_list **lst, size_t fd)
 	while (iterator)
 	{
 		if (iterator->content_size == fd)
-		{
 			return (iterator);
-		}
 		iterator = iterator->next;
 	}
 	new = ft_lstnew(NULL, 0);
+	if (!new)
+		return (NULL);
 	new->content_size = fd;
 	ft_lstadd(lst, new);
-	return (*lst);
+	return (new);
 }
 
 int			get_next_line(const int fd, char **line)
@@ -109,16 +109,13 @@ int			get_next_line(const int fd, char **line)
 	current = get_lst(&list, (size_t)fd);
 	if (!current)
 		return (-1);
-	if ((char *)current->content)
+	if ((char *)current->content && (res = process((char **)&current->content)))
 	{
-		if ((res = process((char **)&current->content)))
-		{
-			*line = res;
-			return (1);
-		}
+		*line = res;
+		return (1);
 	}
-	if (!(char *)current->content)
-		if (!(char *)(current->content = ft_strdup("")))
-			return (-1);
+	if (!(char *)current->content &&
+	!(char *)(current->content = ft_strdup("")))
+		return (-1);
 	return (read_line(fd, (char **)&current->content, line, &res));
 }

@@ -20,6 +20,7 @@ int		main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 
+	line = NULL;
 	while (get_next_line(0, &line))
 	{
 		ft_putendl(line);
