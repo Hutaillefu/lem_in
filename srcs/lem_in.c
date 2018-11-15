@@ -116,7 +116,10 @@ int	process_room(const char *line, t_world *world)
 	if (!(room = parse_room(line)))
 		return (0);
 	if (!(add_room(world, room)))
+	{
+		free_room(&room);
 		return (0);
+	}
 	return (1);
 }
 
