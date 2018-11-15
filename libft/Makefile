@@ -66,7 +66,8 @@ PART2 = ft_memalloc.c   \
 		ft_itoa.c       \
 		ft_strsplit.c 	\
 		ft_strisdigit.c \
-		ft_nb_char_in_str.c
+		ft_nb_char_in_str.c \
+		ft_free_tab.c
 
 PART3 = ft_lstnew.c    \
 		ft_lstdelone.c \

@@ -17,34 +17,102 @@
   ** Read one line as int and set the number of ants
 */
 
-void	parse_num_ants(t_world *world)
+int	parse_num_ants(t_world *world)
 {
 	char	*line;
-	int		num;
+	int	num;
 
 	if (!world)
-		return ;
+		return (0);
 	line = NULL;
 	if (get_next_line(0, &line) == -1 || !line)
-		return ;
+		return (0);
 	num = ft_atoi(line);
 	world->nb_ants = num;
 	free(line);
 	line = NULL;
+	return (1);
 }
 
-int		parse_active_commentary(t_world *world)
+int		parse_active_commentary(t_world *world, const char *pre_line)
 {
-	char *line;
+	char	*line;
+	t_room	*room;
 
 	if (!world)
 		return (0);
 	if (get_next_line(0, &line) == -1 || !line)
 		return (0);
-	
+	if (ft_strcmp("start", &(pre_line[2])) == 0)
+	{
+		if (world->start_room || !(room = parse_room(line)))
+		{
+			free(line);
+			line = NULL;
+			return (0);
+		}
+		world->start_room = room;
+	}
+	else if (ft_strcmp("end", &(pre_line[2])) == 0)
+	{
+		if (world->end_room || !(room = parse_room(line)))
+		{
+			free(line);
+			line = NULL;
+			return (0);
+		}
+		world->end_room = room;
+	}
 	return (1);
 	free(line);
 	line = NULL;
+}
+
+int	ft_tablen(void **tab)
+{
+	int i;
+
+	if (!tab)
+		return (0);
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
+
+t_room	*parse_room(const char *line)
+{
+	char	**values;
+	t_room	*room;
+
+	if (!(values = ft_strsplit(line, ' ')))
+		return (NULL);       
+	if (ft_tablen((void **)values) != 3 || !ft_strisdigit(values[1]) || !ft_strisdigit(values[2]))
+	{
+		ft_free_tab((void **)values);
+		return (NULL);
+	}
+	if (!(room = create_room(values[0], ft_atoi(values[1]), ft_atoi(values[2]))))
+	{
+		ft_free_tab((void **)values);
+		return (NULL);
+	}
+	ft_free_tab((void **)values);
+	return (room);
+}
+
+int	process_room(const char *line, t_world *world)
+{
+	t_room	*room;
+	
+	if (!line || !world)
+		return (0);
+	if (!(room = parse_room(line)))
+		return (0);
+	if (!(add_room(world, room)))
+		return (0);
+	return (1);
 }
 
 void	parse_map(t_world *world)
@@ -57,11 +125,11 @@ void	parse_map(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		if (is_active_commentary(line))
-			parse_active_commentary(world);
+			parse_active_commentary(world, line);
 		//else if (is_commentary(line))
 			//parse_commentary(line);
-		// else if (is_room(line))
-		// 	parse_room(line, world);
+		 else if (is_room(line))
+		 	process_room(line, world);
 		// else if (is_link(line)
 		// 	parse_link(line, world);
 		free(line);
@@ -76,10 +144,21 @@ int		main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 
-	if (!(world = (t_world *)malloc(sizeof(t_world))))
+	if (!(world = create_world()))
 		return (0);
-
+	
+	//if (!parse_num_ants(world) || !parse_map(world))
+	//{
+		// free world
+	//	return (0);
+	//}
 	parse_num_ants(world);
+	ft_putstr("Nb ants : ");
+	ft_putnbr(world->nb_ants);
+	ft_putstr("\n");
+	
 	parse_map(world);
+	ft_putendl(world->start_room->name);
+	ft_putendl(world->end_room->name);
 	return (0);
 }

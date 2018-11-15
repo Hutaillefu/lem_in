@@ -73,7 +73,8 @@ void				ft_putnbr_fd(int n, int fd);
 void				ft_putnbr(int n);
 char				*ft_itoa(int n);
 char				**ft_strsplit(char const *s, char c);
-
+int				ft_strisdigit(const char *str);
+void				ft_free_tab(void **tab);
 typedef struct		s_list
 {
 	void			*content;

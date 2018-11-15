@@ -27,6 +27,8 @@ typedef struct	s_world
 {
 	int				nb_ants;
 	int				nb_rooms;
+	t_room			*start_room;
+	t_room			*end_room;
 	t_list			*rooms;
 	unsigned char	**links;
 }				t_world;
@@ -35,5 +37,12 @@ int		is_commentary(const char *line);
 int		is_active_commentary(const char *line);
 int		is_room(const char *line);
 int		is_link(const char *line);
+
+t_room		*create_room(const char *name, int x, int y);
+void		free_room(t_room **room);
+t_world		*create_world();
+int		add_room(t_world *world, t_room *room);
+
+t_room		*parse_room(const char *line);
 
 #endif
