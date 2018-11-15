@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   lem_in.h                                         .::    .:/ .      .::   */
+/*   ft_strisdigit.c                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: htaillef <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/10/18 19:19:01 by htaillef     #+#   ##    ##    #+#       */
-/*   Updated: 2018/10/18 19:19:18 by htaillef    ###    #+. /#+    ###.fr     */
+/*   Created: 2018/10/23 10:24:01 by htaillef     #+#   ##    ##    #+#       */
+/*   Updated: 2018/10/23 10:24:03 by htaillef    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef LEM_IN_H
-# define LEM_IN_H
+#include "libft.h"
 
-#include "../libft/libft.h"
-
-typedef struct	s_room{
-	const char	*name;
-	int			x;
-	int			y;
-	int			num_ant;
-}               t_room;
-
-typedef struct	s_world
+int		ft_strisdigit(const char *str)
 {
-	int				nb_ants;
-	int				nb_rooms;
-	t_list			*rooms;
-	unsigned char	**links;
-}				t_world;
+	int i;
 
-int		is_commentary(const char *line);
-int		is_active_commentary(const char *line);
-int		is_room(const char *line);
-int		is_link(const char *line);
-
-#endif
+	if (!str || !(*str))
+		return (0);
+	i = 0;
+	if (str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}

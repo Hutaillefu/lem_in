@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   lem_in.h                                         .::    .:/ .      .::   */
+/*   ft_nb_char_in_str.c                              .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: htaillef <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/10/18 19:19:01 by htaillef     #+#   ##    ##    #+#       */
-/*   Updated: 2018/10/18 19:19:18 by htaillef    ###    #+. /#+    ###.fr     */
+/*   Created: 2018/11/15 17:23:35 by htaillef     #+#   ##    ##    #+#       */
+/*   Updated: 2018/11/15 17:23:36 by htaillef    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef LEM_IN_H
-# define LEM_IN_H
+#include "libft.h"
 
-#include "../libft/libft.h"
+/*
+	** Return the number of char c in str.
+*/
 
-typedef struct	s_room{
-	const char	*name;
-	int			x;
-	int			y;
-	int			num_ant;
-}               t_room;
-
-typedef struct	s_world
+int		ft_nb_char_in_str(const char *str, unsigned char c)
 {
-	int				nb_ants;
-	int				nb_rooms;
-	t_list			*rooms;
-	unsigned char	**links;
-}				t_world;
+	int i;
+	int	len;
+	int res;
 
-int		is_commentary(const char *line);
-int		is_active_commentary(const char *line);
-int		is_room(const char *line);
-int		is_link(const char *line);
-
-#endif
+	if (!str)
+		return (0);
+	len = ft_strlen(str);
+	i = 0;
+	res = 0;
+	while (i < len)
+	{
+		if (str[i] == c)
+			res++;
+		i++;
+	}
+	return (res);
+}

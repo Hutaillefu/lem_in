@@ -64,7 +64,9 @@ PART2 = ft_memalloc.c   \
 		ft_putnbr_fd.c  \
 		ft_putnbr.c     \
 		ft_itoa.c       \
-		ft_strsplit.c
+		ft_strsplit.c 	\
+		ft_strisdigit.c \
+		ft_nb_char_in_str.c
 
 PART3 = ft_lstnew.c    \
 		ft_lstdelone.c \

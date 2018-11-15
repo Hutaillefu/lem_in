@@ -5,7 +5,7 @@ INCLUDES = ./includes
 
 FLAGS = -Wall -Werror -Wextra
 
-TOOLS_FILES =
+TOOLS_FILES = ./srcs/line_checker.c
 
 PROG_FILE = ./srcs/lem_in.c
 

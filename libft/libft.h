@@ -91,11 +91,12 @@ void				ft_lstpush(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 128
 
 int					get_next_line(const int fd, char **line);
 
 t_list				*ft_lstgetindex(t_list **lst, int index);
+int					ft_nb_char_in_str(const char *str, unsigned char c);
 
 int					ft_lstlen(t_list **lst);
 #endif
