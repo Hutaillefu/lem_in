@@ -74,7 +74,7 @@ void				ft_putnbr(int n);
 char				*ft_itoa(int n);
 char				**ft_strsplit(char const *s, char c);
 int				ft_strisdigit(const char *str);
-void				ft_free_tab(void **tab);
+void				ft_free_tab(char **tab);
 typedef struct		s_list
 {
 	void			*content;

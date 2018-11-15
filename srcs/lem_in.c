@@ -22,6 +22,7 @@ int	parse_num_ants(t_world *world)
 	char	*line;
 	int	num;
 
+	line = NULL;
 	if (!world)
 		return (0);
 	line = NULL;
@@ -39,6 +40,8 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 	char	*line;
 	t_room	*room;
 
+	line = NULL;
+	room = NULL;
 	if (!world)
 		return (0);
 	if (get_next_line(0, &line) == -1 || !line)
@@ -68,7 +71,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 	line = NULL;
 }
 
-int	ft_tablen(void **tab)
+int	ft_tablen(char **tab)
 {
 	int i;
 
@@ -86,19 +89,21 @@ t_room	*parse_room(const char *line)
 	char	**values;
 	t_room	*room;
 
+	values = NULL;
+	room = NULL;
 	if (!(values = ft_strsplit(line, ' ')))
 		return (NULL);       
-	if (ft_tablen((void **)values) != 3 || !ft_strisdigit(values[1]) || !ft_strisdigit(values[2]))
+	if (ft_tablen(values) != 3 || !ft_strisdigit(values[1]) || !ft_strisdigit(values[2]))
 	{
-		ft_free_tab((void **)values);
+		ft_free_tab(values);
 		return (NULL);
 	}
 	if (!(room = create_room(values[0], ft_atoi(values[1]), ft_atoi(values[2]))))
 	{
-		ft_free_tab((void **)values);
+		ft_free_tab(values);
 		return (NULL);
 	}
-	ft_free_tab((void **)values);
+	ft_free_tab(values);
 	return (room);
 }
 

@@ -1,6 +1,6 @@
 #include "libft.h"
 
-void	ft_free_tab(void **tab)
+void	ft_free_tab(char **tab)
 {
 	int i;
 
@@ -13,6 +13,6 @@ void	ft_free_tab(void **tab)
 		tab[i] = NULL;
 		i++;
 	}
-	free(*tab);
+	free(tab);
 	tab = NULL;
 }
