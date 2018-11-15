@@ -13,9 +13,22 @@
 
 #include "lem_in.h"
 
-int     main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
-    (void)argc;
-    (void)argv;
-    return (0);
+	char *line;
+	
+	(void)argc;
+	(void)argv;
+
+	while (get_next_line(0, &line))
+	{
+		ft_putendl(line);
+		free(line);
+		line = NULL;
+	}
+
+	free(line);
+	line = NULL;
+
+	return (0);
 }
