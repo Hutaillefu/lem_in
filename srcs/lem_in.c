@@ -13,6 +13,17 @@
 
 #include "lem_in.h"
 
+const char *room_name(t_list *maillon)
+{
+	t_room	*room;
+
+	if (!maillon || !(maillon->content))
+		return (NULL);
+	if (!(room = (t_room *)maillon->content))
+		return (NULL);
+	return room->name;	
+}
+
 /*
   ** Read one line as int and set the number of ants
 */
@@ -75,6 +86,47 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 	line = NULL;
 }
 
+int	get_room_index_in_list(t_list *rooms, const char *name)
+{
+	t_list *it;
+	int	i;
+
+	if (!rooms || !name)
+		return (-1);
+	it = rooms;
+	i = 0;
+	while (it)
+	{
+		if (room_name(it) && ft_strcmp(name, room_name(it)) == 0)
+			return (i);
+		it = it->next;
+		i++;
+	}
+	return (-1);
+}
+
+/*
+  ** Return 0 for start_room, 1 for end_room and index in world's list rooms for others.
+*/
+int	get_room_index(t_world *world, const char *name)
+{
+	if (!world || !name)
+		return (-1);
+	if (world->start_room && world->start_room->name && ft_strcmp(name, world->start_room->name) == 0)
+		return (0);
+	else if (world->end_room && world->end_room->name && ft_strcmp(name, world->end_room->name) == 0)
+		return (1);
+	return (get_room_index_in_list(world->rooms, name));
+}
+
+int	is_room_name_exist(t_world *world, const char *name)
+{
+	if (!world || !name)
+		return (0);
+	return (get_room_index(world, name) >= 0);
+	
+}
+
 int	ft_tablen(char **tab)
 {
 	int i;
@@ -135,6 +187,44 @@ int	process_room(const char *line, t_world *world)
 	return (1);
 }
 
+int	add_link(t_world *world, int start_index, int end_index)
+{
+	if (!world || !world->links || start_index < 0 || end_index < 0)
+		return (0);
+	world->links[start_index][end_index] = 1;
+	ft_putstr("Link added\n");
+	return (1);
+}
+
+int	parse_link(const char *line, t_world *world)
+{
+	char 	**values;
+	int	start_index;
+	int	end_index;
+
+	ft_putstr("Starting link parsing\n");
+	
+	if (!line || !world || world->rooms)
+		return (0);
+	if (world->links || !init_links(world))
+		return (0);
+	if (!(values = ft_strsplit(line, '-')))
+		return (0);
+	ft_putstr("Links values extracted\n");
+	if (ft_tablen(values) != 2 ||
+		(start_index = get_room_index(world, values[0])) < 0 ||
+		(end_index = get_room_index(world, values[1])) < 0 ||
+		!is_room_name_exist(world, values[0]) ||
+		!is_room_name_exist(world, values[1]) ||
+		!add_link(world, start_index, end_index))
+	{
+		ft_free_tab(values);
+	       	return (0);
+	}
+	ft_free_tab(values);
+	return (1);
+}
+
 /*
   ** Parse stdin input into world object.
 */
@@ -154,8 +244,8 @@ void	parse_map(t_world *world)
 			//parse_commentary(line);
 		 else if (is_room(line))
 		 	process_room(line, world);
-		// else if (is_link(line)
-		// 	parse_link(line, world);
+		 else if (is_link(line))
+		 	parse_link(line, world);
 		free(line);
 		line = NULL;
 	}

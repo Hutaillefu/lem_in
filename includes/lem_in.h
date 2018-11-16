@@ -42,6 +42,7 @@ t_room		*create_room(const char *name, int x, int y);
 void		free_room(t_room **room);
 t_world		*create_world();
 int		add_room(t_world *world, t_room *room);
+int		init_links(t_world *world);
 
 t_room		*parse_room(const char *line);
 

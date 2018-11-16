@@ -36,7 +36,7 @@ int	add_room(t_world *world, t_room *room)
 		return (0);
 	if (!(new_room = ft_lstnew(room, sizeof(room))))
 		return (0);
-	ft_lstadd(&(world->rooms), new_room);
+	ft_lstpush(&(world->rooms), new_room);
 	(world->nb_rooms)++;
 	return (1);
 }
@@ -51,7 +51,25 @@ void	free_room(t_room **room)
 	room = NULL;
 }
 
+int	init_links(t_world *world)
+{
+	int nb_rooms;
+	int i;
 
+	if (!world || world->links || !(world->rooms))
+		return (0);
+	nb_rooms = ft_lstlen(&(world->rooms)) + 2;
+	if (!(world->links = (unsigned char **)malloc(sizeof(unsigned char *) * nb_rooms)))
+		return (0);
+	i = 0;
+	while (i < nb_rooms)
+	{
+		if (!(world->links[i] = (unsigned char *)malloc(sizeof(unsigned char) * nb_rooms)))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 
 
