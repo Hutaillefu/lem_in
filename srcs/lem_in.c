@@ -12,6 +12,28 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#include <stdio.h>
+
+void display_transi(t_world *world)
+{
+	int i;
+	int y;
+
+	if (!world)
+		return ;
+	i = 0;
+	while (i < world->nb_rooms)
+	{
+		y = 0;
+		while (y < world->nb_rooms)
+		{
+			printf("%d ", world->links[y][i]);
+			y++;
+		}
+		printf("\n");
+		i++;
+	}
+}	
 
 const char *room_name(t_list *maillon)
 {
@@ -116,7 +138,7 @@ int	get_room_index(t_world *world, const char *name)
 		return (0);
 	else if (world->end_room && world->end_room->name && ft_strcmp(name, world->end_room->name) == 0)
 		return (1);
-	return (get_room_index_in_list(world->rooms, name));
+	return (get_room_index_in_list(world->rooms, name) + 2);
 }
 
 int	is_room_name_exist(t_world *world, const char *name)
@@ -192,7 +214,6 @@ int	add_link(t_world *world, int start_index, int end_index)
 	if (!world || !world->links || start_index < 0 || end_index < 0)
 		return (0);
 	world->links[start_index][end_index] = 1;
-	ft_putstr("Link added\n");
 	return (1);
 }
 
@@ -202,24 +223,27 @@ int	parse_link(const char *line, t_world *world)
 	int	start_index;
 	int	end_index;
 
-	ft_putstr("Starting link parsing\n");
-	
-	if (!line || !world || world->rooms)
+	if (!line || !world)
 		return (0);
-	if (world->links || !init_links(world))
+	if (!(world->links) && !init_links(world))
 		return (0);
 	if (!(values = ft_strsplit(line, '-')))
 		return (0);
-	ft_putstr("Links values extracted\n");
-	if (ft_tablen(values) != 2 ||
-		(start_index = get_room_index(world, values[0])) < 0 ||
-		(end_index = get_room_index(world, values[1])) < 0 ||
+	if (ft_tablen(values) != 2)
+	{
+		ft_free_tab(values);
+	       	return (0);
+	}
+	start_index = get_room_index(world, values[0]);
+	end_index = get_room_index(world, values[1]);
+	
+	if (start_index < 0 || end_index < 0 || 
 		!is_room_name_exist(world, values[0]) ||
 		!is_room_name_exist(world, values[1]) ||
 		!add_link(world, start_index, end_index))
 	{
 		ft_free_tab(values);
-	       	return (0);
+		return (0);
 	}
 	ft_free_tab(values);
 	return (1);
@@ -274,5 +298,6 @@ int		main(int argc, char **argv)
 	parse_map(world);
 	ft_putendl(world->start_room->name);
 	ft_putendl(world->end_room->name);
+	display_transi(world);
 	return (0);
 }
