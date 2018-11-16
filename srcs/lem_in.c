@@ -35,6 +35,10 @@ int	parse_num_ants(t_world *world)
 	return (1);
 }
 
+/*
+  ** Active commentary read the next line and process it.
+*/
+
 int		parse_active_commentary(t_world *world, const char *pre_line)
 {
 	char	*line;
@@ -83,6 +87,10 @@ int	ft_tablen(char **tab)
 	return (i);
 }
 
+/*
+  ** Parse the string data {name, x, y} into room object.
+  ** x & y must be int.
+*/
 
 t_room	*parse_room(const char *line)
 {
@@ -107,6 +115,10 @@ t_room	*parse_room(const char *line)
 	return (room);
 }
 
+/*
+  ** Parse a room from line and add it to the world's room list.
+*/
+
 int	process_room(const char *line, t_world *world)
 {
 	t_room	*room;
@@ -122,6 +134,10 @@ int	process_room(const char *line, t_world *world)
 	}
 	return (1);
 }
+
+/*
+  ** Parse stdin input into world object.
+*/
 
 void	parse_map(t_world *world)
 {
