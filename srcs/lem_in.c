@@ -111,20 +111,6 @@ int	is_room_name_exist(t_world *world, const char *name)
 	
 }
 
-int	ft_tablen(char **tab)
-{
-	int i;
-
-	if (!tab)
-		return (0);
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-
-
 /*
   ** Parse a room from line and add it to the world's room list.
 */
