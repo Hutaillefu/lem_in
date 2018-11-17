@@ -8,6 +8,7 @@ FLAGS = -Wall -Werror -Wextra
 TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/mem_tools.c \
 	      ./srcs/parser.c \
+	      ./srcs/pathfinding.c \
 	      ./srcs/display.c
 
 PROG_FILE = ./srcs/lem_in.c

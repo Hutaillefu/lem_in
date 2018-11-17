@@ -161,6 +161,7 @@ int		main(int argc, char **argv)
 
 	display_transi(world);
 
-	//display_world(world);
+	printf("best move from start : %d\n", best_move(world, world->start_room));
+
 	return (0);
 }

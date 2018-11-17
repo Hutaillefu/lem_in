@@ -33,16 +33,26 @@ typedef struct	s_world
 	unsigned char	**links;
 }				t_world;
 
+/*
+  ** Selector func
+*/
 int		is_commentary(const char *line);
 int		is_active_commentary(const char *line);
 int		is_room(const char *line);
 int		is_link(const char *line);
 
+/*
+  ** Memory func
+*/
 t_room		*create_room(const char *name, int x, int y);
 void		free_room(t_room **room);
 t_world		*create_world();
 int		add_room(t_world *world, t_room *room);
 int		init_links(t_world *world);
+
+/*
+  ** Parser func
+*/
 
 int		parse_num_ants(t_world *world);
 t_room		*parse_room(const char *line);
@@ -54,5 +64,18 @@ int		get_room_index(t_world *world, const char *name);
 t_room		*get_room_by_index(t_world *world, int index);
 
 void		display_world(t_world *world);
+
+int		add_link(t_world *world, int start_index, int end_index);
+
+int		is_room_name_exist(t_world *world, const char *name);
+const char	*room_name(t_list *maillon);
+
+int		process_room(const char *line, t_world *world);
+
+/*
+  ** Pathfinding func
+*/
+
+int	best_move(t_world *world, t_room *room);
 
 #endif
