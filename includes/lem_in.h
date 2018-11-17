@@ -46,4 +46,9 @@ int		init_links(t_world *world);
 
 t_room		*parse_room(const char *line);
 
+int		get_room_index(t_world *world, const char *name);
+t_room		*get_room_by_index(t_world *world, int index);
+
+void		display_world(t_world *world);
+
 #endif

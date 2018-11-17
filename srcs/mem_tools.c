@@ -53,19 +53,24 @@ void	free_room(t_room **room)
 
 int	init_links(t_world *world)
 {
-	int nb_rooms;
 	int i;
+	int y;
 
 	if (!world || world->links || !(world->rooms))
 		return (0);
-	nb_rooms = ft_lstlen(&(world->rooms)) + 2;
-	if (!(world->links = (unsigned char **)malloc(sizeof(unsigned char *) * nb_rooms)))
+	if (!(world->links = (unsigned char **)malloc(sizeof(unsigned char *) * world->nb_rooms)))
 		return (0);
 	i = 0;
-	while (i < nb_rooms)
+	while (i < world->nb_rooms)
 	{
-		if (!(world->links[i] = (unsigned char *)malloc(sizeof(unsigned char) * nb_rooms)))
+		if (!(world->links[i] = (unsigned char *)malloc(sizeof(unsigned char) * world->nb_rooms)))
 			return (0);
+		y = 0;
+		while (y < world->nb_rooms)
+		{
+			world->links[i][y] = 0;
+			y++;
+		}
 		i++;
 	}
 	return (1);

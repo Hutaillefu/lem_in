@@ -14,6 +14,7 @@
 #include "lem_in.h"
 #include <stdio.h>
 
+
 void display_transi(t_world *world)
 {
 	int i;
@@ -21,13 +22,23 @@ void display_transi(t_world *world)
 
 	if (!world)
 		return ;
+	printf("\t");
+	i = 0;
+	while (i < world->nb_rooms)
+	{
+		printf("%s\t", get_room_by_index(world, i)->name);
+		i++;
+	}
+	printf("\n");
+
 	i = 0;
 	while (i < world->nb_rooms)
 	{
 		y = 0;
+		printf("%s\t", get_room_by_index(world, i)->name);
 		while (y < world->nb_rooms)
 		{
-			printf("%d ", world->links[y][i]);
+			printf("%d\t", (int)world->links[y][i]);
 			y++;
 		}
 		printf("\n");
@@ -92,6 +103,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 			return (0);
 		}
 		world->start_room = room;
+		(world->nb_rooms)++;
 	}
 	else if (ft_strcmp("end", &(pre_line[2])) == 0)
 	{
@@ -102,10 +114,11 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 			return (0);
 		}
 		world->end_room = room;
+		(world->nb_rooms)++;
 	}
-	return (1);
 	free(line);
 	line = NULL;
+	return (1);
 }
 
 int	get_room_index_in_list(t_list *rooms, const char *name)
@@ -139,6 +152,19 @@ int	get_room_index(t_world *world, const char *name)
 	else if (world->end_room && world->end_room->name && ft_strcmp(name, world->end_room->name) == 0)
 		return (1);
 	return (get_room_index_in_list(world->rooms, name) + 2);
+}
+
+t_room	*get_room_by_index(t_world *world, int index)
+{
+	if (!world || !(world->rooms) || index < 0)
+		return (NULL);
+	if (index == 0)
+		return (world->start_room);
+	else if (index == 1)
+		return (world->end_room);
+	t_room *room = (t_room *)ft_lstgetindex(&(world->rooms), index - 2)->content;
+	return (room); 
+		
 }
 
 int	is_room_name_exist(t_world *world, const char *name)
@@ -291,13 +317,12 @@ int		main(int argc, char **argv)
 	//	return (0);
 	//}
 	parse_num_ants(world);
-	ft_putstr("Nb ants : ");
-	ft_putnbr(world->nb_ants);
-	ft_putstr("\n");
-	
+	printf("Nb ants : %d\n", world->nb_ants);
+
 	parse_map(world);
-	ft_putendl(world->start_room->name);
-	ft_putendl(world->end_room->name);
+
 	display_transi(world);
+
+	//display_world(world);
 	return (0);
 }
