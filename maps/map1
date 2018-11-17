@@ -7,6 +7,7 @@ m1 0 0
 m2 0 0
 m3 0 0
 m4 0 0
+m5 0 0
 start-m1
 start-m2
 start-m3
@@ -14,3 +15,4 @@ m1-end
 m2-m4
 m3-m4
 m4-end
+m4-m5

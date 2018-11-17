@@ -15,7 +15,52 @@ int	is_joinable(t_world *world, t_room *from, t_room *to)
 	if (from_index < 0 || to_index < 0)
 		return (0);
 	
+	printf("num ant : %d\n", to->num_ant);
+
 	return (world->links[from_index][to_index]);
+}
+
+void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost, int target_index)
+{
+	int	index;
+	t_room	*it;
+	t_move	*move;
+
+	index = 1;
+	while (index < world->nb_rooms)
+	{
+		it = get_room_by_index(world, index);
+		if (ft_strcmp(it->name, room->name) != 0 && is_joinable(world, room, it))
+		{
+			if (cost == 0)
+				target_index = index;
+			printf("%s -> %s\n", room->name, it->name);
+			if (index == 1) // end_room
+			{
+				move = (t_move *)malloc(sizeof(t_move));
+				move->cost = cost + 1;
+				move->target_index = target_index;
+				ft_lstadd(&all_moves, ft_lstnew(move, sizeof(move)));
+				printf("Path of cost %d added with target index %d\n", move->cost, move->target_index);
+			}
+			else 
+			{
+				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
+			}
+		}
+		index++;
+	}
+}
+
+t_list	*get_all_move(t_world *world, t_room *room)
+{
+	t_list	*moves;
+
+	if (!world || !(world->links) || !room)
+		return (NULL);
+	moves = NULL;
+
+	return (moves);
 }
 
 int	best_move(t_world *world, t_room *room)
@@ -46,11 +91,6 @@ int	best_move(t_world *world, t_room *room)
 			printf("%s -> %s\n", room->name, get_room_by_index(world, curr_index)->name);
 			tmp = 1 + best_move(world, get_room_by_index(world, curr_index));
 			printf("Best update from %d to %d\n", best, tmp);
-		//	if (curr_index == 1 && tmp < best)
-		//	{
-			//	best = tmp;
-				printf("new best : %d\n", tmp);
-		//	}
 		}
 		if ((best == 0 && tmp > 0) || (tmp < best && tmp > 0))
 		{

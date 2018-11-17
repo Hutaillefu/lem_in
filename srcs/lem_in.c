@@ -92,7 +92,7 @@ int	get_room_index(t_world *world, const char *name)
 
 t_room	*get_room_by_index(t_world *world, int index)
 {
-	if (!world || !(world->rooms) || index < 0)
+	if (!world || index < 0)
 		return (NULL);
 	if (index == 0)
 		return (world->start_room);
@@ -161,7 +161,10 @@ int		main(int argc, char **argv)
 
 	display_transi(world);
 
-	printf("best move from start : %d\n", best_move(world, world->start_room));
+	t_list *moves = NULL;
+	get_all_moves_rec(world, world->start_room, moves, 0, -1);
+	
+	//printf("best move from start : %d\n", best_move(world, world->start_room));
 
 	return (0);
 }

@@ -56,7 +56,7 @@ int	init_links(t_world *world)
 	int i;
 	int y;
 
-	if (!world || world->links || !(world->rooms))
+	if (!world || world->links)
 		return (0);
 	if (!(world->links = (unsigned char **)malloc(sizeof(unsigned char *) * world->nb_rooms)))
 		return (0);

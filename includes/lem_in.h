@@ -33,6 +33,12 @@ typedef struct	s_world
 	unsigned char	**links;
 }				t_world;
 
+typedef	struct	s_move
+{
+	int	target_index;
+	int	cost;
+}		t_move;
+
 /*
   ** Selector func
 */
@@ -75,7 +81,6 @@ int		process_room(const char *line, t_world *world);
 /*
   ** Pathfinding func
 */
-
-int	best_move(t_world *world, t_room *room);
+void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost, int target_index);
 
 #endif
