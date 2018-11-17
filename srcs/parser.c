@@ -135,3 +135,29 @@ int	parse_link(const char *line, t_world *world)
 	return (1);
 }
 
+
+/*
+  ** Parse stdin input into world object.
+*/
+
+void	parse_map(t_world *world)
+{
+	char	*line;
+
+	if (!world)
+		return ;
+	line = NULL;
+	while (get_next_line(0, &line))
+	{
+		if (is_active_commentary(line))
+			parse_active_commentary(world, line);
+		//else if (is_commentary(line))
+			//parse_commentary(line);
+		 else if (is_room(line))
+		 	process_room(line, world);
+		 else if (is_link(line))
+		 	parse_link(line, world);
+		free(line);
+		line = NULL;
+	}
+}
