@@ -44,7 +44,11 @@ t_world		*create_world();
 int		add_room(t_world *world, t_room *room);
 int		init_links(t_world *world);
 
+int		parse_num_ants(t_world *world);
 t_room		*parse_room(const char *line);
+int		parse_active_commentary(t_world *world, const char *pre_line);
+int		parse_link(const char *line, t_world *world);
+void		parse_map(t_world *world);
 
 int		get_room_index(t_world *world, const char *name);
 t_room		*get_room_by_index(t_world *world, int index);
