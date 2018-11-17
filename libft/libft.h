@@ -75,6 +75,7 @@ char				*ft_itoa(int n);
 char				**ft_strsplit(char const *s, char c);
 int				ft_strisdigit(const char *str);
 void				ft_free_tab(char **tab);
+int				ft_tablen(char **tab);
 typedef struct		s_list
 {
 	void			*content;
