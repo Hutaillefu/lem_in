@@ -153,33 +153,6 @@ int	add_link(t_world *world, int start_index, int end_index)
 	return (1);
 }
 
-
-/*
-  ** Parse stdin input into world object.
-*/
-
-void	parse_map(t_world *world)
-{
-	char	*line;
-
-	if (!world)
-		return ;
-	line = NULL;
-	while (get_next_line(0, &line))
-	{
-		if (is_active_commentary(line))
-			parse_active_commentary(world, line);
-		//else if (is_commentary(line))
-			//parse_commentary(line);
-		 else if (is_room(line))
-		 	process_room(line, world);
-		 else if (is_link(line))
-		 	parse_link(line, world);
-		free(line);
-		line = NULL;
-	}
-}
-
 int		main(int argc, char **argv)
 {
 	t_world	*world;
