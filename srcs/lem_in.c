@@ -161,9 +161,11 @@ int		main(int argc, char **argv)
 
 	display_transi(world);
 
+	pathfinding(world);
 
-	t_list *moves = NULL;
-	get_all_moves_rec(world, world->start_room, moves, 0, -1);
+
+//	t_list *moves = NULL;
+//	get_all_moves_rec(world, world->start_room, &moves, 0, -1);
 
 /*	unsigned char data = 255;
 	unsigned char is_exist = 1;

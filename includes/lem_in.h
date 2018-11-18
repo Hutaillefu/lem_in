@@ -81,7 +81,8 @@ int		process_room(const char *line, t_world *world);
 /*
   ** Pathfinding func
 */
-void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost, int target_index);
+void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index);
+void	pathfinding(t_world *world);
 
 void	display_room(t_room *room);
 
