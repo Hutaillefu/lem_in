@@ -38,7 +38,15 @@ void display_transi(t_world *world)
 		printf("%s\t", get_room_by_index(world, i)->name);
 		while (y < world->nb_rooms)
 		{
-			printf("%d\t", is_link_exist(world->links[y][i]));
+			if (is_link_exist(world->links[y][i]))
+			{
+				if (is_link_free(world->links[y][i]))
+					printf("1\t");
+				else
+					printf("2\t");
+			}
+			else
+				printf("0\t");
 			y++;
 		}
 		printf("\n");
@@ -160,13 +168,14 @@ int		main(int argc, char **argv)
 	parse_map(world);
 
 	display_transi(world);
+	init_ants(world);
 
 	pathfinding(world);
 
 
-//	t_list *moves = NULL;
-//	get_all_moves_rec(world, world->start_room, &moves, 0, -1);
-
+	/*t_list *moves = NULL;
+	get_all_moves_rec(world, world->start_room, &moves, 0, -1);
+*/
 /*	unsigned char data = 255;
 	unsigned char is_exist = 1;
 	unsigned char is_free = 0;

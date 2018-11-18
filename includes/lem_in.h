@@ -30,6 +30,7 @@ typedef struct	s_world
 	t_room			*start_room;
 	t_room			*end_room;
 	t_list			*rooms;
+	t_list			*ants;
 	unsigned char	**links;
 }				t_world;
 
@@ -38,6 +39,12 @@ typedef	struct	s_move
 	int	target_index;
 	int	cost;
 }		t_move;
+
+typedef struct	s_ant
+{
+	int	num;
+	int	is_reach;
+}		t_ant;
 
 /*
   ** Selector func
@@ -55,6 +62,7 @@ void		free_room(t_room **room);
 t_world		*create_world();
 int		add_room(t_world *world, t_room *room);
 int		init_links(t_world *world);
+int		init_ants(t_world *world);
 
 /*
   ** Parser func
@@ -85,6 +93,7 @@ void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 void	pathfinding(t_world *world);
 
 void	display_room(t_room *room);
+void	display_transi(t_world *world);
 
 /*
   ** Bit func

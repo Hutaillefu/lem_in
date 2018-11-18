@@ -25,6 +25,7 @@ t_world	*create_world()
 	world->start_room = NULL;
 	world->end_room = NULL;
 	world->rooms = NULL;
+	world->ants = NULL;
 	world->links = NULL;
 	return (world);
 }
@@ -53,6 +54,26 @@ void	free_room(t_room **room)
 		ft_strdel((char **)&((*room)->name));
 	free(*room);
 	room = NULL;
+}
+
+int	init_ants(t_world *world)
+{
+	int i;
+	t_ant	*ant;
+
+	if (!world)
+		return (0);
+	i = 0;
+	while (i < world->nb_ants)
+	{
+		if (!(ant = (t_ant *)malloc(sizeof(t_ant))))
+			return (0);
+		ant->num = i + 1;
+		ant->is_reach = 0;
+		ft_lstpush(&(world->ants), ft_lstnew(ant, sizeof(ant)));
+		i++;
+	}
+	return (1);
 }
 
 int	init_links(t_world *world)
