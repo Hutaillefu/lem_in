@@ -1,13 +1,12 @@
 3
 ##start
-start 1 0
+start 10 10
 ##end
-end 0 0
-m1 0 0
-m2 0 0
-m3 0 0
-m4 0 0
-m5 0 0
+end 20 20
+m1 1 1
+m2 2 2
+m3 3 3
+m4 4 4
 start-m1
 start-m2
 start-m3
@@ -15,4 +14,4 @@ m1-end
 m2-m4
 m3-m4
 m4-end
-m4-m5
+m2-end

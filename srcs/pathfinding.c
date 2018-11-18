@@ -1,6 +1,13 @@
 #include "lem_in.h"
 #include <stdio.h>
 
+void	display_room(t_room *room)
+{
+	if (!room)
+		return;
+	printf("room name:%s, x:%d, y:%d, num_ant:%d\n", room->name, room->x, room->y, room->num_ant);
+}
+
 int	is_joinable(t_world *world, t_room *from, t_room *to)
 {
 	int from_index;
@@ -15,9 +22,24 @@ int	is_joinable(t_world *world, t_room *from, t_room *to)
 	if (from_index < 0 || to_index < 0)
 		return (0);
 	
-	printf("num ant : %d\n", to->num_ant);
+	return (is_link_exist(world->links[from_index][to_index])); // check if link already used  // && to->num_ant == 0);
+}
 
-	return (world->links[from_index][to_index]);
+int	can_join(t_world *world, t_room *from, t_room *to)
+{
+	int from_index;
+	int to_index;
+
+	if (!world || !(world->links) || !from || !to)
+		return (0);
+	
+	from_index = get_room_index(world, from->name);
+	to_index = get_room_index(world, to->name);
+
+	if (from_index <0 || to_index < 0)
+		return (0);
+	
+	return (is_link_free(world->links[from_index][to_index]));
 }
 
 void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost, int target_index)
@@ -25,16 +47,16 @@ void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost
 	int	index;
 	t_room	*it;
 	t_move	*move;
-
+	
 	index = 1;
 	while (index < world->nb_rooms)
 	{
 		it = get_room_by_index(world, index);
-		if (ft_strcmp(it->name, room->name) != 0 && is_joinable(world, room, it))
+		if (ft_strcmp(it->name, room->name) != 0 && is_joinable(world, room, it) &&
+		    can_join(world, room, it))
 		{
 			if (cost == 0)
 				target_index = index;
-			printf("%s -> %s\n", room->name, it->name);
 			if (index == 1) // end_room
 			{
 				move = (t_move *)malloc(sizeof(t_move));
@@ -43,8 +65,10 @@ void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost
 				ft_lstadd(&all_moves, ft_lstnew(move, sizeof(move)));
 				printf("Path of cost %d added with target index %d\n", move->cost, move->target_index);
 			}
-			else 
+			else
 			{
+				if (it->num_ant > 0) // ant on target cell need up cost
+					cost++;
 				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
 			}
 		}

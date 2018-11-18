@@ -59,6 +59,7 @@ t_room	*parse_room(const char *line)
 		ft_free_tab(values);
 		return (NULL);
 	}
+
 	ft_free_tab(values);
 	return (room);
 }

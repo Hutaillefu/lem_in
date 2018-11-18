@@ -1,4 +1,5 @@
 #include "lem_in.h"
+#include <stdio.h>
 
 t_room	*create_room(const char *name, int x, int y)
 {
@@ -30,13 +31,16 @@ t_world	*create_world()
 
 int	add_room(t_world *world, t_room *room)
 {
-	t_list *new_room;
+	t_list *maillon;
 
 	if (!world || !room)
 		return (0);
-	if (!(new_room = ft_lstnew(room, sizeof(room))))
+
+	if (!(maillon = ft_lstnew(room, sizeof(room))))
 		return (0);
-	ft_lstpush(&(world->rooms), new_room);
+
+	ft_lstpush(&(world->rooms), maillon);
+	
 	(world->nb_rooms)++;
 	return (1);
 }

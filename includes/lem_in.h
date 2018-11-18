@@ -20,7 +20,7 @@ typedef struct	s_room{
 	const char	*name;
 	int			x;
 	int			y;
-	int			num_ant;
+	int			num_ant; // contains num_ant and link_free
 }               t_room;
 
 typedef struct	s_world
@@ -82,5 +82,16 @@ int		process_room(const char *line, t_world *world);
   ** Pathfinding func
 */
 void	get_all_moves_rec(t_world *world, t_room *room, t_list *all_moves, int cost, int target_index);
+
+void	display_room(t_room *room);
+
+/*
+  ** Bit func
+*/
+
+int	is_link_exist(unsigned char data);
+int	is_link_free(unsigned char data);
+void	set_link_exist(unsigned char *data, unsigned char is_exist);
+void	set_link_free(unsigned char *data, unsigned char is_free);
 
 #endif

@@ -38,7 +38,7 @@ void display_transi(t_world *world)
 		printf("%s\t", get_room_by_index(world, i)->name);
 		while (y < world->nb_rooms)
 		{
-			printf("%d\t", (int)world->links[y][i]);
+			printf("%d\t", is_link_exist(world->links[y][i]));
 			y++;
 		}
 		printf("\n");
@@ -98,9 +98,7 @@ t_room	*get_room_by_index(t_world *world, int index)
 		return (world->start_room);
 	else if (index == 1)
 		return (world->end_room);
-	t_room *room = (t_room *)ft_lstgetindex(&(world->rooms), index - 2)->content;
-	return (room); 
-		
+	return ((t_room *)(ft_lstgetindex(&(world->rooms), index - 2)->content));
 }
 
 int	is_room_name_exist(t_world *world, const char *name)
@@ -135,7 +133,8 @@ int	add_link(t_world *world, int start_index, int end_index)
 {
 	if (!world || !world->links || start_index < 0 || end_index < 0)
 		return (0);
-	world->links[start_index][end_index] = 1;
+	set_link_exist(&(world->links[start_index][end_index]), 1);
+	set_link_free(&(world->links[start_index][end_index]), 1);
 	return (1);
 }
 
@@ -154,6 +153,7 @@ int		main(int argc, char **argv)
 		// free world
 	//	return (0);
 	//}
+
 	parse_num_ants(world);
 	printf("Nb ants : %d\n", world->nb_ants);
 
@@ -161,10 +161,23 @@ int		main(int argc, char **argv)
 
 	display_transi(world);
 
+
 	t_list *moves = NULL;
 	get_all_moves_rec(world, world->start_room, moves, 0, -1);
-	
-	//printf("best move from start : %d\n", best_move(world, world->start_room));
+
+/*	unsigned char data = 255;
+	unsigned char is_exist = 1;
+	unsigned char is_free = 0;
+
+	printf("PRE PROCESS : is_exist : %d\n", is_link_exist(data));
+	printf("PRE PROCESS : is_free : %d\n", is_link_free(data));
+
+	set_link_exist(&data, is_exist);
+	set_link_free(&data, is_free);
+
+	printf("is_exist : %d\n", is_link_exist(data));
+	printf("is_free : %d\n", is_link_free(data));
+*/
 
 	return (0);
 }
