@@ -20,7 +20,7 @@
 int	parse_num_ants(t_world *world)
 {
 	char	*line;
-	int	num;
+	int		num;
 
 	line = NULL;
 	if (!world)
@@ -48,18 +48,19 @@ t_room	*parse_room(const char *line)
 	values = NULL;
 	room = NULL;
 	if (!(values = ft_strsplit(line, ' ')))
-		return (NULL);       
-	if (ft_tablen(values) != 3 || !ft_strisdigit(values[1]) || !ft_strisdigit(values[2]))
+		return (NULL);
+	if (ft_tablen(values) != 3 || !ft_strisdigit(values[1]) ||
+	!ft_strisdigit(values[2]))
 	{
 		ft_free_tab(values);
 		return (NULL);
 	}
-	if (!(room = create_room(values[0], ft_atoi(values[1]), ft_atoi(values[2]))))
+	if (!(room = create_room(values[0], ft_atoi(values[1]),
+	ft_atoi(values[2]))))
 	{
 		ft_free_tab(values);
 		return (NULL);
 	}
-
 	ft_free_tab(values);
 	return (room);
 }
@@ -106,11 +107,11 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 	return (1);
 }
 
-int	parse_link(const char *line, t_world *world)
+int		parse_link(const char *line, t_world *world)
 {
-	char 	**values;
-	int	start_index;
-	int	end_index;
+	char	**values;
+	int		start_index;
+	int		end_index;
 
 	if (!line || !world)
 		return (0);
@@ -121,12 +122,11 @@ int	parse_link(const char *line, t_world *world)
 	if (ft_tablen(values) != 2)
 	{
 		ft_free_tab(values);
-	       	return (0);
+		return (0);
 	}
 	start_index = get_room_index(world, values[0]);
 	end_index = get_room_index(world, values[1]);
-	
-	if (start_index < 0 || end_index < 0 || 
+	if (start_index < 0 || end_index < 0 ||
 		!is_room_name_exist(world, values[0]) ||
 		!is_room_name_exist(world, values[1]) ||
 		!add_link(world, start_index, end_index))
@@ -137,7 +137,6 @@ int	parse_link(const char *line, t_world *world)
 	ft_free_tab(values);
 	return (1);
 }
-
 
 /*
   ** Parse stdin input into world object.
@@ -156,10 +155,10 @@ void	parse_map(t_world *world)
 			parse_active_commentary(world, line);
 		//else if (is_commentary(line))
 			//parse_commentary(line);
-		 else if (is_room(line))
-		 	process_room(line, world);
-		 else if (is_link(line))
-		 	parse_link(line, world);
+		else if (is_room(line))
+			process_room(line, world);
+		else if (is_link(line))
+			parse_link(line, world);
 		free(line);
 		line = NULL;
 	}
