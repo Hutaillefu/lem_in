@@ -23,27 +23,30 @@ void	free_room(t_room **room)
 	room = NULL;
 }
 
-void	free_room_maillon(void	*content, int content_size)
+void	free_room_maillon(void *content, int content_size)
 {
-	(void)content_size;
-	t_room	**room = (t_room **)content;
+	t_room	**room;
 
+	(void)content_size;
+	room = (t_room **)content;
 	if (!room || !(*room))
 		return ;
 	free_room(room);
 }
 
-void    free_ant(void *content, int content_size)
+void	free_ant(void *content, int content_size)
 {
+	t_ant	**ant;
+
 	(void)content_size;
-	t_ant	**ant = ((t_ant **)content);
+	ant = ((t_ant **)content);
 	if (!ant || !(*ant))
 		return ;
 	free(*ant);
 	ant = NULL;
 }
 
-void    free_links(unsigned char **links, int len)
+void	free_links(unsigned char **links, int len)
 {
 	int i;
 
@@ -62,10 +65,10 @@ void    free_links(unsigned char **links, int len)
 
 void	free_list(t_list **lst, void (*del)(void *, int))
 {
-	t_list  *it;
-	t_list  *next;
+	t_list	*it;
+	t_list	*next;
 
-	if (!lst || !(*lst) || ! del)
+	if (!lst || !(*lst) || !del)
 		return ;
 	it = *lst;
 	while (it)
@@ -77,9 +80,9 @@ void	free_list(t_list **lst, void (*del)(void *, int))
 		it = next;
 	}
 	lst = NULL;
-}   
+}
 
-void    free_world(t_world **world)
+void	free_world(t_world **world)
 {
 	if (!world || !(*world))
 		return ;
