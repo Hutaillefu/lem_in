@@ -15,7 +15,7 @@
 
 int		is_room(const char *line)
 {
-	return (line && ft_nb_char_in_str(line, ' ') == 2);	
+	return (line && ft_nb_char_in_str(line, ' ') == 2);
 }
 
 int		is_link(const char *line)
@@ -30,5 +30,5 @@ int		is_commentary(const char *line)
 
 int		is_active_commentary(const char *line)
 {
-	return (is_commentary(line) && ft_strlen(line) >= 2  && line[1] == '#');
+	return (is_commentary(line) && ft_strlen(line) >= 2 && line[1] == '#');
 }
