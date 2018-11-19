@@ -12,6 +12,7 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#include <stdio.h>
 
 /*
   ** Read one line as int and set the number of ants
@@ -64,6 +65,19 @@ t_room	*parse_room(const char *line)
 	return (room);
 }
 
+int		setup_room(t_world *world, char *line, t_room **room)
+{
+	t_room	*new_room;
+
+	if (!world || !room || (*room))
+		return (0);
+	if (!(new_room = parse_room(line)))
+		return (0);
+		*room = new_room;
+		(world->nb_rooms)++;
+	return (1);
+}
+
 /*
   ** Active commentary read the next line and process it.
 */
@@ -75,32 +89,16 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 
 	line = NULL;
 	room = NULL;
-	if (!world)
-		return (0);
-	if (get_next_line(0, &line) == -1 || !line)
-		return (0);
+	if (!world )
+		return (-1);
+	if (ft_strcmp("start", &(pre_line[2])) != 0 && ft_strcmp("end", &(pre_line[2])) != 0)
+		return (1);
+	if (!get_next_line(0, &line))
+		return (-1);
 	if (ft_strcmp("start", &(pre_line[2])) == 0)
-	{
-		if (world->start_room || !(room = parse_room(line)))
-		{
-			free(line);
-			line = NULL;
-			return (0);
-		}
-		world->start_room = room;
-		(world->nb_rooms)++;
-	}
+		setup_room(world, line, &(world->start_room));
 	else if (ft_strcmp("end", &(pre_line[2])) == 0)
-	{
-		if (world->end_room || !(room = parse_room(line)))
-		{
-			free(line);
-			line = NULL;
-			return (0);
-		}
-		world->end_room = room;
-		(world->nb_rooms)++;
-	}
+		setup_room(world, line, &(world->end_room));
 	free(line);
 	line = NULL;
 	return (1);
@@ -152,16 +150,16 @@ void	parse_map(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		res = 0;
-		if (is_active_commentary(line) && !parse_active_commentary(world, line))
+		if (is_active_commentary(line) && parse_active_commentary(world, line) >= 0)
 			res = 1;
 		//else if (is_commentary(line) && !parse_commentary(line))
-		else if (is_room(line) && !process_room(line, world))
+		else if (is_room(line) && process_room(line, world))
 			res = 1;
-		else if (is_link(line) && !parse_link(line, world))
+		else if (is_link(line) && parse_link(line, world))
 			res = 1;
 		free(line);
 		line = NULL;
-		if (res)
+		if (!res)
 			return ;
 	}
 }

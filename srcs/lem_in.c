@@ -20,7 +20,7 @@ void display_transi(t_world *world)
 	int i;
 	int y;
 
-	if (!world)
+	if (!world || !(world->links))
 		return ;
 	printf("\t");
 	i = 0;
@@ -170,6 +170,7 @@ int		main(int argc, char **argv)
 	
 	if (!world || !(world->start_room) || !(world->end_room))
 	{
+		free_world(&world);
 		ft_putstr_fd("Error\n", 2);
 		return (-1);
 	}
