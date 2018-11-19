@@ -55,16 +55,6 @@ int		add_room(t_world *world, t_room *room)
 	return (1);
 }
 
-void	free_room(t_room **room)
-{
-	if (!room || !(*room))
-		return ;
-	if ((*room)->name)
-		ft_strdel((char **)&((*room)->name));
-	free(*room);
-	room = NULL;
-}
-
 int		init_ants(t_world *world)
 {
 	int		i;

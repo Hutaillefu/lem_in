@@ -10,6 +10,7 @@ TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/bit_tools.c \
 	      ./srcs/parser.c \
 	      ./srcs/pathfinding.c \
+		  ./srcs/free_tools.c
 
 PROG_FILE = ./srcs/lem_in.c
 

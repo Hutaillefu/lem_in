@@ -65,6 +65,11 @@ int		init_links(t_world *world);
 int		init_ants(t_world *world);
 
 /*
+  ** Free func
+*/
+void	free_world(t_world **world);
+
+/*
   ** Parser func
 */
 

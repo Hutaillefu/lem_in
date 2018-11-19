@@ -190,5 +190,7 @@ int		main(int argc, char **argv)
 	printf("is_free : %d\n", is_link_free(data));
 */
 
+	free_world(&world);
+
 	return (0);
 }
