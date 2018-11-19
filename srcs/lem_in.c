@@ -14,7 +14,6 @@
 #include "lem_in.h"
 #include <stdio.h>
 
-
 void display_transi(t_world *world)
 {
 	int i;
@@ -166,12 +165,6 @@ int		main(int argc, char **argv)
 	if (!(world = create_world()))
 		return (0);
 	
-	//if (!parse_num_ants(world) || !parse_map(world))
-	//{
-		// free world
-	//	return (0);
-	//}
-
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
 	///printf("Nb ants : %d\n", world->nb_ants);
@@ -187,24 +180,6 @@ int		main(int argc, char **argv)
 	display_transi(world);
 
 	//pathfinding(world);
-
-
-	/*t_list *moves = NULL;
-	get_all_moves_rec(world, world->start_room, &moves, 0, -1);
-*/
-/*	unsigned char data = 255;
-	unsigned char is_exist = 1;
-	unsigned char is_free = 0;
-
-	printf("PRE PROCESS : is_exist : %d\n", is_link_exist(data));
-	printf("PRE PROCESS : is_free : %d\n", is_link_free(data));
-
-	set_link_exist(&data, is_exist);
-	set_link_free(&data, is_free);
-
-	printf("is_exist : %d\n", is_link_exist(data));
-	printf("is_free : %d\n", is_link_free(data));
-*/
 
 	exit_lemin(&world, 0);
 

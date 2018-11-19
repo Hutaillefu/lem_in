@@ -14,14 +14,14 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-#include "../libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct	s_room{
 	const char	*name;
 	int			x;
 	int			y;
-	int			num_ant; // contains num_ant and link_free
-}               t_room;
+	int			num_ant;
+}				t_room;
 
 typedef struct	s_world
 {
@@ -38,75 +38,79 @@ typedef	struct	s_move
 {
 	int	target_index;
 	int	cost;
-}		t_move;
+}				t_move;
 
 typedef struct	s_ant
 {
 	int	num;
 	int	is_reach;
-}		t_ant;
+}				t_ant;
 
 /*
-  ** Selector func
+	** Selector func
 */
-int		is_commentary(const char *line);
-int		is_active_commentary(const char *line);
-int		is_room(const char *line);
-int		is_link(const char *line);
+int				is_commentary(const char *line);
+int				is_active_commentary(const char *line);
+int				is_room(const char *line);
+int				is_link(const char *line);
 
 /*
-  ** Memory func
+	** Memory func
 */
-t_room		*create_room(const char *name, int x, int y);
-void		free_room(t_room **room);
-t_world		*create_world();
-int		add_room(t_world *world, t_room *room);
-int		init_links(t_world *world);
-int		init_ants(t_world *world);
+t_room			*create_room(const char *name, int x, int y);
+void			free_room(t_room **room);
+void			free_ant(t_ant **ant);
+t_world			*create_world();
+int				add_room(t_world *world, t_room *room);
+int				init_links(t_world *world);
+int				init_ants(t_world *world);
 
 /*
-  ** Free func
+	** Free func
 */
-void	free_world(t_world **world);
+void			free_world(t_world **world);
+void			free_room_maillon(void *content, int content_size);
+void			free_ant_maillon(void *content, int content_size);
 
 /*
-  ** Parser func
+	** Parser func
 */
 
-int		parse_num_ants(t_world *world);
-t_room		*parse_room(const char *line);
-int		parse_active_commentary(t_world *world, const char *pre_line);
-int		parse_link(const char *line, t_world *world);
-void		parse_map(t_world *world);
+int				parse_num_ants(t_world *world);
+t_room			*parse_room(const char *line);
+int				parse_active_commentary(t_world *world, const char *pre_line);
+int				parse_link(const char *line, t_world *world);
+void			parse_map(t_world *world);
 
-int		get_room_index(t_world *world, const char *name);
-t_room		*get_room_by_index(t_world *world, int index);
+int				get_room_index(t_world *world, const char *name);
+t_room			*get_room_by_index(t_world *world, int index);
 
-void		display_world(t_world *world);
+void			display_world(t_world *world);
 
-int		add_link(t_world *world, int start_index, int end_index);
+int				add_link(t_world *world, int start_index, int end_index);
 
-int		is_room_name_exist(t_world *world, const char *name);
-const char	*room_name(t_list *maillon);
+int				is_room_name_exist(t_world *world, const char *name);
+const char		*room_name(t_list *maillon);
 
-int		process_room(const char *line, t_world *world);
+int				process_room(const char *line, t_world *world);
 
 /*
-  ** Pathfinding func
+	** Pathfinding func
 */
-void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index);
-void	pathfinding(t_world *world);
+void			get_all_moves_rec(t_world *world, t_room *room,
+t_list **all_moves, int cost, int target_index);
+void			pathfinding(t_world *world);
 
-void	display_room(t_room *room);
-void	display_transi(t_world *world);
+void			display_room(t_room *room);
+void			display_transi(t_world *world);
 
 /*
-  ** Bit func
+	** Bit func
 */
 
-int	is_link_exist(unsigned char data);
-int	is_link_free(unsigned char data);
-void	set_link_exist(unsigned char *data, unsigned char is_exist);
-void	set_link_free(unsigned char *data, unsigned char is_free);
+int				is_link_exist(unsigned char data);
+int				is_link_free(unsigned char data);
+void			set_link_exist(unsigned char *data, unsigned char is_exist);
+void			set_link_free(unsigned char *data, unsigned char is_free);
 
 #endif
