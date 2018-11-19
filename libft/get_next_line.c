@@ -13,6 +13,8 @@
 
 #include "libft.h"
 
+#include <stdio.h>
+
 int			index_of(const char *s, int c)
 {
 	int i;
@@ -35,13 +37,16 @@ char		*process(char **stock)
 
 	if ((pos = index_of(*stock, '\n')) >= 0)
 	{
-		stock_ret = *stock;
-		if (!(res = ft_strsub(*stock, 0, pos)) ||
-				!(*stock = ft_strsub(*stock, pos + 1,
-						ft_strlen(*stock) - pos + 1)))
+		if (!(res = ft_strsub(*stock, 0, pos)))
 			return (NULL);
-		free(stock_ret);
-		stock_ret = NULL;
+		stock_ret = *stock;
+		if (pos != (int)ft_strlen(*stock) && !(*stock = ft_strsub(*stock,
+		pos + 1, ft_strlen(*stock) - pos + 1)))
+		{
+			ft_strdel(&res);
+			return (NULL);
+		}
+		ft_strdel(&stock_ret);
 		return (res);
 	}
 	return (NULL);

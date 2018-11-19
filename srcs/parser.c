@@ -19,20 +19,19 @@
 
 int	parse_num_ants(t_world *world)
 {
-	char	*line;
-	int		num;
+	 char	*line;
 
-	line = NULL;
 	if (!world)
 		return (0);
 	line = NULL;
-	if (get_next_line(0, &line) == -1 || !line)
-		return (0);
-	num = ft_atoi(line);
-	world->nb_ants = num;
-	free(line);
-	line = NULL;
-	return (1);
+	if (get_next_line(0, &line) && ft_strisdigit(line))
+	{
+		world->nb_ants = ft_atoi(line);
+		free(line);
+		line = NULL;
+		return (1);
+	}
+	return (0);
 }
 
 /*
@@ -145,21 +144,24 @@ int		parse_link(const char *line, t_world *world)
 void	parse_map(t_world *world)
 {
 	char	*line;
+	int		res;
 
 	if (!world)
 		return ;
 	line = NULL;
 	while (get_next_line(0, &line))
 	{
-		if (is_active_commentary(line))
-			parse_active_commentary(world, line);
-		//else if (is_commentary(line))
-			//parse_commentary(line);
-		else if (is_room(line))
-			process_room(line, world);
-		else if (is_link(line))
-			parse_link(line, world);
+		res = 0;
+		if (is_active_commentary(line) && !parse_active_commentary(world, line))
+			res = 1;
+		//else if (is_commentary(line) && !parse_commentary(line))
+		else if (is_room(line) && !process_room(line, world))
+			res = 1;
+		else if (is_link(line) && !parse_link(line, world))
+			res = 1;
 		free(line);
 		line = NULL;
+		if (res)
+			return ;
 	}
 }

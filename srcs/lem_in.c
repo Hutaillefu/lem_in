@@ -163,14 +163,20 @@ int		main(int argc, char **argv)
 	//}
 
 	parse_num_ants(world);
-	printf("Nb ants : %d\n", world->nb_ants);
+	///printf("Nb ants : %d\n", world->nb_ants);
 
 	parse_map(world);
-
-	display_transi(world);
 	init_ants(world);
+	
+	if (!world || !(world->start_room) || !(world->end_room))
+	{
+		ft_putstr_fd("Error\n", 2);
+		return (-1);
+	}
+	
+	display_transi(world);
 
-	pathfinding(world);
+	//pathfinding(world);
 
 
 	/*t_list *moves = NULL;
