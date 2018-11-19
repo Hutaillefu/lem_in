@@ -146,6 +146,16 @@ int	add_link(t_world *world, int start_index, int end_index)
 	return (1);
 }
 
+void	exit_lemin(t_world **world, int is_error)
+{
+	if (!world || !(*world))
+		return ;
+	free_world(world);
+	if (is_error)
+		ft_putstr_fd("Error\n", 2);
+	exit(0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_world	*world;
@@ -162,7 +172,8 @@ int		main(int argc, char **argv)
 	//	return (0);
 	//}
 
-	parse_num_ants(world);
+	if (!parse_num_ants(world))
+		exit_lemin(&world, 1);
 	///printf("Nb ants : %d\n", world->nb_ants);
 
 	parse_map(world);
@@ -170,9 +181,7 @@ int		main(int argc, char **argv)
 	
 	if (!world || !(world->start_room) || !(world->end_room))
 	{
-		free_world(&world);
-		ft_putstr_fd("Error\n", 2);
-		return (-1);
+		exit_lemin(&world, 1);
 	}
 	
 	display_transi(world);
@@ -197,7 +206,7 @@ int		main(int argc, char **argv)
 	printf("is_free : %d\n", is_link_free(data));
 */
 
-	free_world(&world);
+	exit_lemin(&world, 0);
 
 	return (0);
 }
