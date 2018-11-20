@@ -176,6 +176,8 @@ void	pathfinding(t_world *world)
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
 				}
+
+				free_list(&moves, free_move_maillon);
 			}
 			//else
 			//	printf("no path\n");

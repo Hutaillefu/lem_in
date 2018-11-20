@@ -32,6 +32,8 @@ int	parse_num_ants(t_world *world)
 		line = NULL;
 		return (1);
 	}
+	if (line)
+		ft_strdel(&line);
 	return (0);
 }
 

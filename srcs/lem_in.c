@@ -190,9 +190,9 @@ int		main(int argc, char **argv)
 	
 	init_ants(world);
 
-	display_transi(world);
+	//display_transi(world);
 
-	//pathfinding(world);
+	pathfinding(world);
 
 	exit_lemin(&world, 0);
 
