@@ -71,6 +71,7 @@ int				init_ants(t_world *world);
 void			free_world(t_world **world);
 void			free_room_maillon(void *content, int content_size);
 void			free_ant_maillon(void *content, int content_size);
+void			free_list(t_list **lst, void (*del)(void *, int));
 
 /*
 	** Parser func

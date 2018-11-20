@@ -172,7 +172,7 @@ int		main(int argc, char **argv)
 	parse_map(world);
 	init_ants(world);
 	
-	if (!world || !(world->start_room) || !(world->end_room))
+	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
 	{
 		exit_lemin(&world, 1);
 	}

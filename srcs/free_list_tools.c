@@ -34,3 +34,21 @@ void	free_ant_maillon(void *content, int content_size)
 		return ;
 	free_ant(ant);
 }
+
+void	free_list(t_list **lst, void (*del)(void *, int))
+{
+	t_list	*it;
+	t_list	*next;
+
+	if (!lst || !(*lst) || !del)
+		return ;
+	it = *lst;
+	while (it)
+	{
+		next = it->next;
+		del(&(it->content), it->content_size);
+		free(it);
+		it = next;
+	}
+	lst = NULL;
+}

@@ -23,8 +23,6 @@ void	free_room(t_room **room)
 	room = NULL;
 }
 
-
-
 void	free_ant(t_ant **ant)
 {
 	if (!ant || !(*ant))
@@ -32,7 +30,6 @@ void	free_ant(t_ant **ant)
 	free(*ant);
 	ant = NULL;
 }
-
 
 void	free_links(unsigned char **links, int len)
 {
@@ -49,24 +46,6 @@ void	free_links(unsigned char **links, int len)
 	}
 	free(links);
 	links = NULL;
-}
-
-void	free_list(t_list **lst, void (*del)(void *, int))
-{
-	t_list	*it;
-	t_list	*next;
-
-	if (!lst || !(*lst) || !del)
-		return ;
-	it = *lst;
-	while (it)
-	{
-		next = it->next;
-		del(&(it->content), it->content_size);
-		free(it);
-		it = next;
-	}
-	lst = NULL;
 }
 
 void	free_world(t_world **world)
