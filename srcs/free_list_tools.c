@@ -35,6 +35,17 @@ void	free_ant_maillon(void *content, int content_size)
 	free_ant(ant);
 }
 
+void	free_move_maillon(void *content, int content_size)
+{
+	t_move	**move;
+
+	(void)content_size;
+	move = (t_move **)content;
+	if (!move || !(*move))
+		return ;
+	free_move(move);
+}
+
 void	free_list(t_list **lst, void (*del)(void *, int))
 {
 	t_list	*it;

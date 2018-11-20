@@ -60,6 +60,7 @@ int				is_link(const char *line);
 t_room			*create_room(const char *name, int x, int y);
 void			free_room(t_room **room);
 void			free_ant(t_ant **ant);
+void			free_move(t_move **move);
 t_world			*create_world();
 int				add_room(t_world *world, t_room *room);
 int				init_links(t_world *world);
@@ -71,6 +72,7 @@ int				init_ants(t_world *world);
 void			free_world(t_world **world);
 void			free_room_maillon(void *content, int content_size);
 void			free_ant_maillon(void *content, int content_size);
+void			free_move_maillon(void *content, int content_size);
 void			free_list(t_list **lst, void (*del)(void *, int));
 
 /*

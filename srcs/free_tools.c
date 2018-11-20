@@ -48,6 +48,14 @@ void	free_links(unsigned char **links, int len)
 	links = NULL;
 }
 
+void	free_move(t_move **move)
+{
+	if (!move || !(*move))
+		return ;
+	free(*move);
+	move = NULL;
+}
+
 void	free_world(t_world **world)
 {
 	if (!world || !(*world))

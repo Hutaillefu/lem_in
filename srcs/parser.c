@@ -25,7 +25,7 @@ int	parse_num_ants(t_world *world)
 	if (!world)
 		return (0);
 	line = NULL;
-	if (get_next_line(0, &line) && ft_strisdigit(line))
+	if (get_next_line(0, &line) && ft_strisdigit(line) && ft_atoi(line) >= 0)
 	{
 		world->nb_ants = ft_atoi(line);
 		free(line);
