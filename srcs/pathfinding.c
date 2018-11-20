@@ -25,7 +25,7 @@ int is_joinable(t_world *world, t_room *from, t_room *to)
 	if (is_link_exist(world->links[from_index][to_index]) && ft_strcmp(to->name, world->end_room->name) == 0)
 		return (1);
 
-	return (is_link_exist(world->links[from_index][to_index]) && to->num_ant == 0); // check if link already used  // && to->num_ant == 0);
+	return ((is_link_exist(world->links[from_index][to_index]) || is_link_exist(world->links[to_index][from_index])) && to->num_ant == 0); // check if link already used  // && to->num_ant == 0);
 }
 
 int can_join(t_world *world, t_room *from, t_room *to)
@@ -43,7 +43,7 @@ int can_join(t_world *world, t_room *from, t_room *to)
 		return (0);
 
 	//printf("%s -> %s : %d\n", from->name, to->name, is_link_free(world->links[from_index][to_index]));
-	return (is_link_free(world->links[from_index][to_index]));
+	return (is_link_free(world->links[from_index][to_index]) || is_link_free(world->links[to_index][from_index]));
 }
 
 t_list *create_move(int cost, int target_index)
@@ -106,29 +106,28 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			continue;
 		}
 
-		printf("Current index : %d\n", index);
-		if (indexes_contains(*indexes, index))
-		{
-			printf("Cell index %d already visited\n", index);
-			index++;
-			continue;
-		}
+		// if (indexes_contains(*indexes, index))
+		// {
+		// 	printf("Cell index %d already visited\n", index);
+		// 	index++;
+		// 	continue;
+		// }
 
-		//printf("%s can go to %s\n", room->name, it->name);
+		printf("%s can go to %s\n", room->name, it->name);
 		if (cost == 0)
 			target_index = index;
 		if (index == 1) // end_room
 		{
 			//ft_lstadd(indexes, ft_lstnew(&index, sizeof(&index)));
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
+			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
 		}
 		else
 		{
 			if (it->num_ant > 0) // ant on target cell need up cost
 				cost++;
 			ft_lstadd(indexes, ft_lstnew(&index, sizeof(&index)));
-			printf("Add index %d\n", *((int *)((*indexes)->content)));
+			//printf("Add index %d\n", *((int *)((*indexes)->content)));
 			get_all_moves_rec(world, it, all_moves, cost + 1, target_index, indexes);
 			// cost-- ?
 		}
@@ -167,8 +166,11 @@ void reinit_links(t_world *world)
 		y = 0;
 		while (y < world->nb_rooms)
 		{
-			if (is_link_exist(world->links[i][y]))
+			if (is_link_exist(world->links[i][y]) || is_link_exist(world->links[y][i]))
+			{
 				set_link_free(&(world->links[i][y]), 1);
+				set_link_free(&(world->links[y][i]), 1);
+			}
 			y++;
 		}
 		i++;
@@ -233,12 +235,14 @@ void pathfinding(t_world *world)
 					world->end_room->num_ant++;
 					ant->is_reach = 1;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
+					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
 					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
 				}
 				else
 				{
 					get_room_by_index(world, move->target_index)->num_ant = ant->num;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
+					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
 					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
 				}
 				free_list(&moves, free_move_maillon);
