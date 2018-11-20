@@ -158,11 +158,14 @@ void	exit_lemin(t_world **world, int is_error)
 int		can_run(t_world *world)
 {
 	t_list	*moves;
+	t_list	*indexes;
 
 	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
 		return (0);
 	moves = NULL;
-	get_all_moves_rec(world, world->start_room, &moves, 0, -1);
+	indexes = NULL;
+	get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
+	free_indexes(&indexes);
 	if (!moves)
 		return (0);
 	free_list(&moves, free_move_maillon);
@@ -181,6 +184,7 @@ int		main(int argc, char **argv)
 	
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
+
 	printf("Nb ants : %d\n", world->nb_ants);
 
 	parse_map(world);
@@ -188,11 +192,13 @@ int		main(int argc, char **argv)
 	if (!can_run(world))
 		exit_lemin(&world, 1);
 	
+	printf("Can run\n");
+
 	init_ants(world);
 
 	//display_transi(world);
 
-	pathfinding(world);
+	//pathfinding(world);
 
 	exit_lemin(&world, 0);
 

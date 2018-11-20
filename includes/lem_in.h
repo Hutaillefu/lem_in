@@ -74,6 +74,7 @@ void			free_room_maillon(void *content, int content_size);
 void			free_ant_maillon(void *content, int content_size);
 void			free_move_maillon(void *content, int content_size);
 void			free_list(t_list **lst, void (*del)(void *, int));
+void			free_indexes(t_list **indexes);
 
 /*
 	** Parser func
@@ -101,7 +102,7 @@ int				process_room(const char *line, t_world *world);
 	** Pathfinding func
 */
 void			get_all_moves_rec(t_world *world, t_room *room,
-t_list **all_moves, int cost, int target_index);
+t_list **all_moves, int cost, int target_index, t_list **indexes);
 void			pathfinding(t_world *world);
 
 void			display_room(t_room *room);
