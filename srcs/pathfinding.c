@@ -39,9 +39,10 @@ int	can_join(t_world *world, t_room *from, t_room *to)
 	from_index = get_room_index(world, from->name);
 	to_index = get_room_index(world, to->name);
 
-	if (from_index <0 || to_index < 0)
+	if (from_index < 0 || to_index < 0)
 		return (0);
 
+	//printf("%s -> %s : %d\n", from->name, to->name, is_link_free(world->links[from_index][to_index]));
 	return (is_link_free(world->links[from_index][to_index]));
 }
 
@@ -69,8 +70,14 @@ void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 	{
 		it = get_room_by_index(world, index);
 
-		if (ft_strcmp(it->name, room->name) != 0 && is_joinable(world, room, it) &&
-		    can_join(world, room, it))
+		if (cost == 0 && !can_join(world, room, it)) // cant join first voisins
+		{
+				index++;
+				continue;
+		}
+
+		if (ft_strcmp(it->name, room->name) != 0 && is_joinable(world, room, it)) //&&
+		   // can_join(world, room, it))
 		{
 			//printf("%s can go to %s\n", room->name, it->name);
 			if (cost == 0)
@@ -87,6 +94,10 @@ void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
 				// cost-- ?
 			}
+		}
+		else
+		{
+			//printf("cant join %s to %s : %d\n", room->name, it->name, can_join(world, room, it));
 		}
 		index++;
 	}
@@ -131,6 +142,24 @@ void	reinit_links(t_world *world)
 	}
 }
 
+t_move	*get_best_move(t_list *moves)
+{
+	t_list	*it;
+	t_move	*best;
+
+	if (!moves)
+		return (NULL);
+	best = (t_move *)moves->content;
+	it = moves->next;
+	while (it)
+	{
+		if (((t_move *)it->content)->cost < best->cost)
+			best = (t_move *)it->content;
+		it = it->next;
+	}
+	return best;
+}
+
 void	pathfinding(t_world *world)
 {
 	t_list	*moves;
@@ -160,7 +189,7 @@ void	pathfinding(t_world *world)
 			if (moves)
 			{
 				room->num_ant = 0;
-				move = (t_move *)moves->content;
+				move = get_best_move(moves);
 				//printf("selected move, cost=%d, target_index=%d\n", move->cost, move->target_index);
 
 				if (move->target_index == 1)
@@ -176,11 +205,10 @@ void	pathfinding(t_world *world)
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
 				}
-
 				free_list(&moves, free_move_maillon);
 			}
 			//else
-			//	printf("no path\n");
+			//	printf("\nno path for ant num :%d\n", ant->num);
 			it = it->next;
 		}
 		printf("\n");
