@@ -1,12 +1,18 @@
 #include "lem_in.h"
 #include <stdio.h>
 
-void display_room(t_room *room)
+void	display_room(t_room *room)
 {
 	if (!room)
 		return;
 	printf("room name:%s, x:%d, y:%d, num_ant:%d\n", room->name, room->x, room->y, room->num_ant);
 }
+
+/*
+  ** Return true if :
+  ** - a link exist between 'from' and 'to'
+  ** - the target room 'to' has no ant
+*/
 
 int is_joinable(t_world *world, t_room *from, t_room *to)
 {
@@ -25,8 +31,13 @@ int is_joinable(t_world *world, t_room *from, t_room *to)
 	if (is_link_exist(world->links[from_index][to_index]) && ft_strcmp(to->name, world->end_room->name) == 0)
 		return (1);
 
-	return ((is_link_exist(world->links[from_index][to_index]) || is_link_exist(world->links[to_index][from_index])) && to->num_ant == 0); // check if link already used  // && to->num_ant == 0);
+	return ((is_link_exist(world->links[from_index][to_index]) || is_link_exist(world->links[to_index][from_index])) && to->num_ant == 0);
 }
+
+/*
+  ** Return true if a link is free between 'from' and 'to' or
+  ** between 'to' and 'from'
+*/
 
 int can_join(t_world *world, t_room *from, t_room *to)
 {
@@ -202,6 +213,10 @@ void reinit_links(t_world *world)
 		i++;
 	}
 }
+
+/*
+  ** Return the best move of 'moves'
+*/
 
 t_move *get_best_move(t_list *moves)
 {
