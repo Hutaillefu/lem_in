@@ -110,24 +110,6 @@ int indexes_contains(t_list **indexes, int index)
 	return (0);
 }
 
-void free_indexes(t_list **indexes)
-{
-	t_list *it;
-	t_list *next;
-
-	if (!indexes)
-		return;
-	it = *indexes;
-	while (it)
-	{
-		next = it->next;
-		free(it->content);
-		free(it);
-		it = next;
-	}
-	indexes = NULL;
-}
-
 void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index, t_list **indexes)
 {
 	int index;
@@ -267,7 +249,7 @@ void pathfinding(t_world *world)
 			moves = NULL;
 			indexes = NULL;
 			get_all_moves_rec(world, room, &moves, 0, -1, &indexes);
-			free_indexes(&indexes);
+			free_list(&indexes, free_index_maillon);
 			if (moves)
 			{
 				room->num_ant = 0;

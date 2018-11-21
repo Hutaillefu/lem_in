@@ -165,7 +165,7 @@ int		can_run(t_world *world)
 	moves = NULL;
 	indexes = NULL;
 	get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
-	free_indexes(&indexes);
+	free_list(&indexes, free_index_maillon);
 	if (!moves)
 		return (0);
 	free_list(&moves, free_move_maillon);
@@ -192,8 +192,6 @@ int		main(int argc, char **argv)
 	if (!can_run(world))
 		exit_lemin(&world, 1);
 	
-	printf("Can run\n");
-
 	init_ants(world);
 
 	display_transi(world);
