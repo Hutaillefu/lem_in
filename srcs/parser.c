@@ -66,19 +66,6 @@ t_room	*parse_room(const char *line)
 	return (room);
 }
 
-int		setup_room(t_world *world, char *line, t_room **room)
-{
-	t_room	*new_room;
-
-	if (!world || !room || (*room))
-		return (0);
-	if (!(new_room = parse_room(line)))
-		return (0);
-	*room = new_room;
-	(world->nb_rooms)++;
-	return (1);
-}
-
 /*
   ** Active commentary read the next line and process it.
 */

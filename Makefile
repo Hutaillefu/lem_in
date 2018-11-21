@@ -9,6 +9,7 @@ TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/mem_tools.c \
 	      ./srcs/bit_tools.c \
 	      ./srcs/parser.c \
+	      ./srcs/parser_tools.c \
 	      ./srcs/pathfinding.c \
 	      ./srcs/pathfinding_tools.c \
 		  ./srcs/free_tools.c \

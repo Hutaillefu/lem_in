@@ -53,26 +53,6 @@ void display_transi(t_world *world)
 	}
 }	
 
-/*
-  ** Parse a room from line and add it to the world's room list.
-*/
-
-int	process_room(const char *line, t_world *world)
-{
-	t_room	*room;
-	
-	if (!line || !world)
-		return (0);
-	if (!(room = parse_room(line)))
-		return (0);
-	if (!(add_room(world, room)))
-	{
-		free_room(&room);
-		return (0);
-	}
-	return (1);
-}
-
 void	exit_lemin(t_world **world, int is_error)
 {
 	if (!world || !(*world))

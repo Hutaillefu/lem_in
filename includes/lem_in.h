@@ -84,6 +84,8 @@ t_room			*parse_room(const char *line);
 int				parse_active_commentary(t_world *world, const char *pre_line);
 int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
+int				setup_room(t_world *world, char *line, t_room **room);
+int				process_room(const char *line, t_world *world);
 
 /*
    ** Getter func
@@ -91,12 +93,9 @@ void			parse_map(t_world *world);
 int				get_room_index(t_world *world, const char *name);
 t_room			*get_room_by_index(t_world *world, int index);
 t_room			*get_room_where_ant(t_world *world, t_ant *ant);
-
-void			display_world(t_world *world);
-
 const char		*room_name(t_list *maillon);
 
-int				process_room(const char *line, t_world *world);
+void			display_world(t_world *world);
 
 /*
 	** Pathfinding func
