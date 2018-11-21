@@ -15,7 +15,7 @@
 
 /*
   ** Return start_room for 'index' 0, end_room for 'index' 1
-  ** other room for 'index' > 1
+  ** other room for 'index' > 1.
 */
 
 t_room		*get_room_by_index(t_world *world, int index)
@@ -68,4 +68,27 @@ int			get_room_index(t_world *world, const char *name)
 	ft_strcmp(name, world->end_room->name) == 0)
 		return (1);
 	return (get_room_index_in_list(world->rooms, name) + 2);
+}
+
+/*
+  ** Return the room where the 'ant' is.
+*/
+
+t_room		*get_room_where_ant(t_world *world, t_ant *ant)
+{
+	int		i;
+	t_room	*room;
+
+	if (!world || !ant)
+		return (NULL);
+	i = 2;
+	room = NULL;
+	while (i < world->nb_rooms)
+	{
+		room = get_room_by_index(world, i);
+		if (room->num_ant == ant->num)
+			return (room);
+		i++;
+	}
+	return (world->start_room);
 }

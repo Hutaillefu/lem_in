@@ -12,7 +12,6 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
 
 /*
   ** Read one line as int and set the number of ants

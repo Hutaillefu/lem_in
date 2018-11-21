@@ -85,8 +85,12 @@ int				parse_active_commentary(t_world *world, const char *pre_line);
 int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
 
+/*
+   ** Getter func
+*/
 int				get_room_index(t_world *world, const char *name);
 t_room			*get_room_by_index(t_world *world, int index);
+t_room			*get_room_where_ant(t_world *world, t_ant *ant);
 
 void			display_world(t_world *world);
 
@@ -102,6 +106,9 @@ int				process_room(const char *line, t_world *world);
 void			get_all_moves_rec(t_world *world, t_room *room,
 t_list **all_moves, int cost, int target_index, t_list **indexes);
 void			pathfinding(t_world *world);
+int				is_joinable(t_world *world, t_room *from, t_room *to);
+int				can_join(t_world *world, t_room *from, t_room *to);
+
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);

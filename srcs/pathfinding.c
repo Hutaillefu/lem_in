@@ -8,54 +8,6 @@ void	display_room(t_room *room)
 	printf("room name:%s, x:%d, y:%d, num_ant:%d\n", room->name, room->x, room->y, room->num_ant);
 }
 
-/*
-  ** Return true if :
-  ** - a link exist between 'from' and 'to'
-  ** - the target room 'to' has no ant
-*/
-
-int is_joinable(t_world *world, t_room *from, t_room *to)
-{
-	int from_index;
-	int to_index;
-
-	if (!world || !(world->links) || !from || !to)
-		return (0);
-
-	from_index = get_room_index(world, from->name);
-	to_index = get_room_index(world, to->name);
-
-	if (from_index < 0 || to_index < 0)
-		return (0);
-
-	if (is_link_exist(world->links[from_index][to_index]) && ft_strcmp(to->name, world->end_room->name) == 0)
-		return (1);
-
-	return ((is_link_exist(world->links[from_index][to_index]) || is_link_exist(world->links[to_index][from_index])) && to->num_ant == 0);
-}
-
-/*
-  ** Return true if a link is free between 'from' and 'to' or
-  ** between 'to' and 'from'
-*/
-
-int can_join(t_world *world, t_room *from, t_room *to)
-{
-	int from_index;
-	int to_index;
-
-	if (!world || !(world->links) || !from || !to)
-		return (0);
-
-	from_index = get_room_index(world, from->name);
-	to_index = get_room_index(world, to->name);
-
-	if (from_index < 0 || to_index < 0)
-		return (0);
-
-	return (is_link_free(world->links[from_index][to_index]) || is_link_free(world->links[to_index][from_index]));
-}
-
 t_list *create_move(int cost, int target_index)
 {
 	t_move *move = (t_move *)malloc(sizeof(t_move));
@@ -164,26 +116,6 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		}
 		index++;
 	}
-}
-
-t_room *get_room_where_ant(t_world *world, t_ant *ant)
-{
-	int i;
-	t_room *room;
-
-	if (!world || !ant)
-		return (NULL);
-	i = 2;
-	room = NULL;
-	while (i < world->nb_rooms)
-	{
-		room = get_room_by_index(world, i);
-		if (room->num_ant == ant->num)
-			return (room);
-		i++;
-	}
-
-	return world->start_room;
 }
 
 /*
