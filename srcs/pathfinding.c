@@ -139,24 +139,17 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			index++;
 			continue;
 		}
-
-		//printf("Check %s -> %s\n", room->name, it->name);
-
 		if (indexes_contains(indexes, index))
 		{
-			//printf("Cell index %d already visited\n", index);
 			index++;
 			continue;
 		}
 
-	// TODO : links 2 way loop pb & map loop pb
-
-		//printf("%s can go to %s\n", room->name, it->name);
 		if (cost == 0)
 			target_index = index;
-		if (index == 1) // end_room
+
+		if (index == 1) 
 		{
-			//ft_lstadd(indexes, ft_lstnew(&index, sizeof(&index)));
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
 			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
 		}
@@ -192,6 +185,10 @@ t_room *get_room_where_ant(t_world *world, t_ant *ant)
 
 	return world->start_room;
 }
+
+/*
+  ** Set each existing links as free.
+*/
 
 void reinit_links(t_world *world)
 {
@@ -256,7 +253,6 @@ void pathfinding(t_world *world)
 			ant = (t_ant *)it->content;
 			if (ant->is_reach)
 			{
-				//printf("ant %d already reached\n", ant->num);
 				it = it->next;
 				continue;
 			}
@@ -288,8 +284,6 @@ void pathfinding(t_world *world)
 				}
 				free_list(&moves, free_move_maillon);
 			}
-			//else
-			//printf("\nno path for ant num :%d\n", ant->num);
 			it = it->next;
 		}
 		printf("\n");
