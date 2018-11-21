@@ -140,14 +140,8 @@ int	add_link(t_world *world, int start_index, int end_index)
 {
 	if (!world || !world->links || start_index < 0 || end_index < 0)
 		return (0);
-
-	// Setup start -> end link
 	set_link_exist(&(world->links[start_index][end_index]), 1);
 	set_link_free(&(world->links[start_index][end_index]), 1);
-
-	// Setup end --> start link
-	set_link_exist(&(world->links[end_index][start_index]), 1);
-	set_link_free(&(world->links[end_index][start_index]), 1);
 	return (1);
 }
 
@@ -202,9 +196,9 @@ int		main(int argc, char **argv)
 
 	init_ants(world);
 
-	//display_transi(world);
+	display_transi(world);
 
-	//pathfinding(world);
+	pathfinding(world);
 
 	exit_lemin(&world, 0);
 
