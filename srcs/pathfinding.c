@@ -75,6 +75,7 @@ void	rm_index(t_list **indexes, int index)
 	{
 		it = *indexes;
 		*indexes = it->next;
+		free(it->content);
 		free(it);
 		return ;
 	}
