@@ -16,63 +16,6 @@ t_list *create_move(int cost, int target_index)
 	return (ft_lstnew(move, sizeof(move)));
 }
 
-void	add_index(t_list **indexes, int index)
-{
-	int	*value;
-
-	if (!indexes)
-		return ;
-	value = (int *)malloc(sizeof(int));
-	*value = index;
-	ft_lstadd(indexes, ft_lstnew(value, sizeof(value)));
-}
-
-void	rm_index(t_list **indexes, int index)
-{
-	t_list	*it;
-	t_list	*prev;
-
-	if (!indexes)
-		return ;
-	if (*(int *)(*indexes)->content == index)
-	{
-		it = *indexes;
-		*indexes = it->next;
-		free(it->content);
-		free(it);
-		return ;
-	}
-	prev = *indexes;
-	it = prev->next;
-	while (it)
-	{
-		if (*(int *)it->content == index)
-		{
-			prev->next = it->next;
-			free(it->content);
-			free(it);
-			return ;
-		}
-		prev = it;
-		it = it->next;
-	}
-}
-
-int indexes_contains(t_list **indexes, int index)
-{
-	t_list *it;
-	if (!indexes)
-		return (0);
-	it = *indexes;
-	while (it)
-	{
-		if ((*(int *)it->content) == index)
-			return (1);
-		it = it->next;
-	}
-	return (0);
-}
-
 void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index, t_list **indexes)
 {
 	int index;

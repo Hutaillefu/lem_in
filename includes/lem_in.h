@@ -125,4 +125,10 @@ void			set_link_free(unsigned char *data, unsigned char is_free);
 int				add_link(t_world *world, int start_index, int end_index);
 void			reinit_links(t_world *world);
 
+/*
+   ** Index tools func
+*/
+void			add_index(t_list **indexes, int index);
+void			rm_index(t_list **indexes, int index);
+int				indexes_contains(t_list **indexes, int index);
 #endif

@@ -86,25 +86,16 @@ int		main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-
 	if (!(world = create_world()))
 		return (0);
-	
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
-
 	parse_map(world);
-	
 	if (!can_run(world))
 		exit_lemin(&world, 1);
-	
 	init_ants(world);
-
 	display_transi(world);
-
 	pathfinding(world);
-
 	exit_lemin(&world, 0);
-
 	return (0);
 }
