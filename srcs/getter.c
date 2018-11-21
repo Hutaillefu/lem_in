@@ -92,3 +92,18 @@ t_room		*get_room_where_ant(t_world *world, t_ant *ant)
 	}
 	return (world->start_room);
 }
+
+/*
+  ** Return the name of the room in 'maillon'.
+*/
+
+const char	*room_name(t_list *maillon)
+{
+	t_room	*room;
+
+	if (!maillon || !(maillon->content))
+		return (NULL);
+	if (!(room = (t_room *)maillon->content))
+		return (NULL);
+	return (room->name);
+}

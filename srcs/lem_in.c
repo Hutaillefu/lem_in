@@ -53,18 +53,6 @@ void display_transi(t_world *world)
 	}
 }	
 
-const char *room_name(t_list *maillon)
-{
-	t_room	*room;
-
-	if (!maillon || !(maillon->content))
-		return (NULL);
-	if (!(room = (t_room *)maillon->content))
-		return (NULL);
-	return room->name;	
-}
-
-
 /*
   ** Parse a room from line and add it to the world's room list.
 */
@@ -82,15 +70,6 @@ int	process_room(const char *line, t_world *world)
 		free_room(&room);
 		return (0);
 	}
-	return (1);
-}
-
-int	add_link(t_world *world, int start_index, int end_index)
-{
-	if (!world || !world->links || start_index < 0 || end_index < 0)
-		return (0);
-	set_link_exist(&(world->links[start_index][end_index]), 1);
-	set_link_free(&(world->links[start_index][end_index]), 1);
 	return (1);
 }
 

@@ -37,7 +37,7 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 
 /*
   ** Return true if a link is free between 'from' and 'to' or
-  ** between 'to' and 'from'
+  ** between 'to' and 'from'.
 */
 
 int		can_join(t_world *world, t_room *from, t_room *to)
@@ -52,4 +52,26 @@ int		can_join(t_world *world, t_room *from, t_room *to)
 		return (0);
 	return (is_link_free(world->links[from_index][to_index]) ||
 	is_link_free(world->links[to_index][from_index]));
+}
+
+/*
+  ** Return the best move of 'moves'.
+*/
+
+t_move	*get_best_move(t_list *moves)
+{
+	t_list *it;
+	t_move *best;
+
+	if (!moves)
+		return (NULL);
+	best = (t_move *)moves->content;
+	it = moves->next;
+	while (it)
+	{
+		if (((t_move *)it->content)->cost < best->cost)
+			best = (t_move *)it->content;
+		it = it->next;
+	}
+	return (best);
 }

@@ -94,8 +94,6 @@ t_room			*get_room_where_ant(t_world *world, t_ant *ant);
 
 void			display_world(t_world *world);
 
-int				add_link(t_world *world, int start_index, int end_index);
-
 const char		*room_name(t_list *maillon);
 
 int				process_room(const char *line, t_world *world);
@@ -108,7 +106,7 @@ t_list **all_moves, int cost, int target_index, t_list **indexes);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
-
+t_move			*get_best_move(t_list *moves);
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);
@@ -121,5 +119,11 @@ int				is_link_exist(unsigned char data);
 int				is_link_free(unsigned char data);
 void			set_link_exist(unsigned char *data, unsigned char is_exist);
 void			set_link_free(unsigned char *data, unsigned char is_free);
+
+/*
+   ** Links tools func
+*/
+int				add_link(t_world *world, int start_index, int end_index);
+void			reinit_links(t_world *world);
 
 #endif

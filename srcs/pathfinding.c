@@ -118,53 +118,6 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 	}
 }
 
-/*
-  ** Set each existing links as free.
-*/
-
-void reinit_links(t_world *world)
-{
-	int i;
-	int y;
-
-	i = 0;
-	while (i < world->nb_rooms)
-	{
-		y = 0;
-		while (y < world->nb_rooms)
-		{
-			if (is_link_exist(world->links[i][y]))
-				set_link_free(&(world->links[i][y]), 1);
-			else if (is_link_exist(world->links[y][i]))
-				set_link_free(&(world->links[y][i]), 1);
-			y++;
-		}
-		i++;
-	}
-}
-
-/*
-  ** Return the best move of 'moves'
-*/
-
-t_move *get_best_move(t_list *moves)
-{
-	t_list *it;
-	t_move *best;
-
-	if (!moves)
-		return (NULL);
-	best = (t_move *)moves->content;
-	it = moves->next;
-	while (it)
-	{
-		if (((t_move *)it->content)->cost < best->cost)
-			best = (t_move *)it->content;
-		it = it->next;
-	}
-	return best;
-}
-
 void pathfinding(t_world *world)
 {
 	t_list *moves;
