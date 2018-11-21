@@ -123,8 +123,6 @@ int		parse_link(const char *line, t_world *world)
 	}
 	if ((start_index = get_room_index(world, values[0])) < 0 ||
 	(end_index = get_room_index(world, values[1])) < 0 ||
-	!is_room_name_exist(world, values[0]) ||
-	!is_room_name_exist(world, values[1]) ||
 	!add_link(world, start_index, end_index))
 	{
 		ft_free_tab(values);

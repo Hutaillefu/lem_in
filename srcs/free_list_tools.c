@@ -66,7 +66,7 @@ void	free_index_maillon(void *content, int content_size)
 }
 
 /*
-   ** Free each link and it's content using 'del'.
+   ** Free each link and its content using 'del'.
 */
 
 void	free_list(t_list **lst, void (*del)(void *, int))

@@ -79,7 +79,6 @@ void			free_list(t_list **lst, void (*del)(void *, int));
 /*
 	** Parser func
 */
-
 int				parse_num_ants(t_world *world);
 t_room			*parse_room(const char *line);
 int				parse_active_commentary(t_world *world, const char *pre_line);
@@ -93,7 +92,6 @@ void			display_world(t_world *world);
 
 int				add_link(t_world *world, int start_index, int end_index);
 
-int				is_room_name_exist(t_world *world, const char *name);
 const char		*room_name(t_list *maillon);
 
 int				process_room(const char *line, t_world *world);

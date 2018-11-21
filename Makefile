@@ -11,7 +11,8 @@ TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/parser.c \
 	      ./srcs/pathfinding.c \
 		  ./srcs/free_tools.c \
-		  ./srcs/free_list_tools.c
+		  ./srcs/free_list_tools.c \
+		  ./srcs/getter.c
 
 PROG_FILE = ./srcs/lem_in.c
 
