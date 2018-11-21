@@ -18,9 +18,9 @@
   ** Read one line as int and set the number of ants
 */
 
-int	parse_num_ants(t_world *world)
+int		parse_num_ants(t_world *world)
 {
-	 char	*line;
+	char	*line;
 
 	if (!world)
 		return (0);
@@ -75,8 +75,8 @@ int		setup_room(t_world *world, char *line, t_room **room)
 		return (0);
 	if (!(new_room = parse_room(line)))
 		return (0);
-		*room = new_room;
-		(world->nb_rooms)++;
+	*room = new_room;
+	(world->nb_rooms)++;
 	return (1);
 }
 
@@ -91,9 +91,10 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 
 	line = NULL;
 	room = NULL;
-	if (!world )
+	if (!world)
 		return (-1);
-	if (ft_strcmp("start", &(pre_line[2])) != 0 && ft_strcmp("end", &(pre_line[2])) != 0)
+	if (ft_strcmp("start", &(pre_line[2])) != 0 &&
+	ft_strcmp("end", &(pre_line[2])) != 0)
 		return (1);
 	if (!get_next_line(0, &line))
 		return (-1);
@@ -112,23 +113,19 @@ int		parse_link(const char *line, t_world *world)
 	int		start_index;
 	int		end_index;
 
-	if (!line || !world)
-		return (0);
-	if (!(world->links) && !init_links(world))
-		return (0);
-	if (!(values = ft_strsplit(line, '-')))
+	if (!line || !world || (!(world->links) && !init_links(world)) ||
+	!(values = ft_strsplit(line, '-')))
 		return (0);
 	if (ft_tablen(values) != 2)
 	{
 		ft_free_tab(values);
 		return (0);
 	}
-	start_index = get_room_index(world, values[0]);
-	end_index = get_room_index(world, values[1]);
-	if (start_index < 0 || end_index < 0 ||
-		!is_room_name_exist(world, values[0]) ||
-		!is_room_name_exist(world, values[1]) ||
-		!add_link(world, start_index, end_index))
+	if ((start_index = get_room_index(world, values[0])) < 0 ||
+	(end_index = get_room_index(world, values[1])) < 0 ||
+	!is_room_name_exist(world, values[0]) ||
+	!is_room_name_exist(world, values[1]) ||
+	!add_link(world, start_index, end_index))
 	{
 		ft_free_tab(values);
 		return (0);
@@ -152,7 +149,8 @@ void	parse_map(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		res = 0;
-		if (is_active_commentary(line) && parse_active_commentary(world, line) >= 0)
+		if (is_active_commentary(line) &&
+		parse_active_commentary(world, line) >= 0)
 			res = 1;
 		//else if (is_commentary(line) && !parse_commentary(line))
 		else if (is_room(line) && process_room(line, world))

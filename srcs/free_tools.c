@@ -16,7 +16,7 @@
 void	free_room(t_room **room)
 {
 	if (!room || !(*room))
-		return ;	
+		return ;
 	if ((*room)->name)
 		ft_strdel((char **)&((*room)->name));
 	free(*room);
@@ -26,7 +26,7 @@ void	free_room(t_room **room)
 void	free_ant(t_ant **ant)
 {
 	if (!ant || !(*ant))
-		return ;	
+		return ;
 	free(*ant);
 	ant = NULL;
 }
