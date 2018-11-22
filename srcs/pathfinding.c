@@ -64,6 +64,8 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			//printf("%s->%s\n", room->name, it->name);
 			get_all_moves_rec(world, it, all_moves, cost + 1, target_index, indexes);
 			rm_index(indexes, index);
+			if (it->num_ant > 0)
+				cost--;
 			//cost--;
 		}
 		index++;

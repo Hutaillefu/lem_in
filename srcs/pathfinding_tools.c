@@ -58,8 +58,8 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 {
 	t_list *it;
 	t_move *best;
-	// int		is_ant_best;
-	// int		is_ant_it;
+	int		is_ant_best;
+	int		is_ant_it;
 (void)world;
 	if (!moves)
 		return (NULL);
@@ -74,10 +74,10 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 		}
 		else if (((t_move *)it->content)->cost == best->cost)
 		{
-			// is_ant_best = get_room_by_index(world, best->target_index)->num_ant != 0;
-			// is_ant_it = get_room_by_index(world, ((t_move *)it->content)->target_index)->num_ant != 0;
-			// printf("best ant :%d, it ant :%d\n", is_ant_best, is_ant_it);
-			// if (is_ant_best && !is_ant_it)
+			is_ant_best = get_room_by_index(world, best->target_index)->num_ant != 0;
+			is_ant_it = get_room_by_index(world, ((t_move *)it->content)->target_index)->num_ant != 0;
+			//printf("best ant :%d, it ant :%d\n", is_ant_best, is_ant_it);
+			if (is_ant_best && !is_ant_it)
 				best = (t_move *)it->content;
 		}
 		it = it->next;
