@@ -43,6 +43,8 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			continue;
 		}
 
+		//printf("%s -> %s\n", room->name, it->name);
+
 		if (cost == 0)
 			target_index = index;
 
@@ -52,7 +54,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		if (index == 1) 
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
+			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
 		}
 		else
 		{
@@ -62,7 +64,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			//printf("%s->%s\n", room->name, it->name);
 			get_all_moves_rec(world, it, all_moves, cost + 1, target_index, indexes);
 			rm_index(indexes, index);
-			// cost-- ?
+			//cost--;
 		}
 		index++;
 	}
@@ -92,7 +94,7 @@ void pathfinding(t_world *world)
 				continue;
 			}
 			room = get_room_where_ant(world, ant);
-			display_room(room);
+			//display_room(room);
 			moves = NULL;
 			indexes = NULL;
 			get_all_moves_rec(world, room, &moves, 0, -1, &indexes);
