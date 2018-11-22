@@ -12,10 +12,10 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#include <stdio.h>
 
 /*
-  ** Return true if 'from'->'to' or 'to'->'from' exist
-  ** and the target room 'to' has no ant (except for end_room).
+  ** Return true if 'from'->'to' or 'to'->'from' exist.
 */
 
 int		is_joinable(t_world *world, t_room *from, t_room *to)
@@ -28,12 +28,8 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 	if ((from_index = get_room_index(world, from->name)) < 0 ||
 	(to_index = get_room_index(world, to->name)) < 0)
 		return (0);
-	if ((is_link_exist(world->links[from_index][to_index]) ||
-	is_link_exist(world->links[to_index][from_index])) &&
-	ft_strcmp(to->name, world->end_room->name) == 0)
-		return (1);
-	return ((is_link_exist(world->links[from_index][to_index]) ||
-	is_link_exist(world->links[to_index][from_index])) && to->num_ant == 0);
+	return (is_link_exist(world->links[from_index][to_index]) ||
+	is_link_exist(world->links[to_index][from_index]));
 }
 
 /*
@@ -58,11 +54,13 @@ int		can_join(t_world *world, t_room *from, t_room *to)
   ** Return the best move of 'moves'.
 */
 
-t_move	*get_best_move(t_list *moves)
+t_move	*get_best_move(t_world *world, t_list *moves)
 {
 	t_list *it;
 	t_move *best;
-
+	// int		is_ant_best;
+	// int		is_ant_it;
+(void)world;
 	if (!moves)
 		return (NULL);
 	best = (t_move *)moves->content;
@@ -70,7 +68,18 @@ t_move	*get_best_move(t_list *moves)
 	while (it)
 	{
 		if (((t_move *)it->content)->cost < best->cost)
+		{
+			//printf("Best move tools\n");
 			best = (t_move *)it->content;
+		}
+		else if (((t_move *)it->content)->cost == best->cost)
+		{
+			// is_ant_best = get_room_by_index(world, best->target_index)->num_ant != 0;
+			// is_ant_it = get_room_by_index(world, ((t_move *)it->content)->target_index)->num_ant != 0;
+			// printf("best ant :%d, it ant :%d\n", is_ant_best, is_ant_it);
+			// if (is_ant_best && !is_ant_it)
+				best = (t_move *)it->content;
+		}
 		it = it->next;
 	}
 	return (best);

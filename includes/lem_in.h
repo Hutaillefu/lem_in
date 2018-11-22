@@ -105,7 +105,7 @@ t_list **all_moves, int cost, int target_index, t_list **indexes);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
-t_move			*get_best_move(t_list *moves);
+t_move			*get_best_move(t_world *world, t_list *moves);
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);

@@ -1,4 +1,4 @@
-6
+5
 ##start
 start 10 10
 ##end
@@ -7,10 +7,10 @@ m1 1 1
 m2 2 2
 m3 3 3
 m4 4 4
-m1-start
+start-m1
 start-m2
 start-m3
 m1-end
-m4-m2
+m2-m4
 m3-m4
-end-m4
+m4-end
