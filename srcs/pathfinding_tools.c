@@ -14,7 +14,7 @@
 #include "lem_in.h"
 
 /*
-  ** Return true if a link exist between 'from' and 'to'
+  ** Return true if 'from'->'to' or 'to'->'from' exist
   ** and the target room 'to' has no ant (except for end_room).
 */
 
@@ -37,8 +37,7 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 }
 
 /*
-  ** Return true if a link is free between 'from' and 'to' or
-  ** between 'to' and 'from'.
+  ** Return true if 'from'->'to' or 'to'->'from' is free.
 */
 
 int		can_join(t_world *world, t_room *from, t_room *to)
