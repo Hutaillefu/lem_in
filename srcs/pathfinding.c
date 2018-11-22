@@ -39,10 +39,8 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			index++;
 			continue;
 		}
-
 		if (cost == 0)
 			target_index = index;
-
 		if (index == 1) 
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));

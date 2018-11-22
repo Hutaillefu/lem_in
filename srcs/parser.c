@@ -48,7 +48,7 @@ t_room	*parse_room(const char *line)
 
 	values = NULL;
 	room = NULL;
-	if (!(values = ft_strsplit(line, ' ')))
+	if (*line == 'L' ||	*line == '#' || !(values = ft_strsplit(line, ' ')))
 		return (NULL);
 	if (ft_tablen(values) != 3 || !ft_strisdigit(values[1]) ||
 	!ft_strisdigit(values[2]))

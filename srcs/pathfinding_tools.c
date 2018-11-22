@@ -28,7 +28,8 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 	if ((from_index = get_room_index(world, from->name)) < 0 ||
 	(to_index = get_room_index(world, to->name)) < 0)
 		return (0);
-	if (is_link_exist(world->links[from_index][to_index]) &&
+	if ((is_link_exist(world->links[from_index][to_index]) ||
+	is_link_exist(world->links[to_index][from_index])) &&
 	ft_strcmp(to->name, world->end_room->name) == 0)
 		return (1);
 	return ((is_link_exist(world->links[from_index][to_index]) ||
