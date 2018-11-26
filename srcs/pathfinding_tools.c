@@ -60,7 +60,7 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 	t_move *best;
 	int		is_ant_best;
 	int		is_ant_it;
-(void)world;
+
 	if (!moves)
 		return (NULL);
 	best = (t_move *)moves->content;
