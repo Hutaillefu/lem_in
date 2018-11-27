@@ -36,32 +36,6 @@ int		nb_voisins(t_world *world, t_room *room)
 	return (res);
 }
 
-void	parcours(t_world *world, t_room *room, t_list **indexes)
-{
-	int	i;
-	t_room	*target;
-
-	printf("%s -> ", room->name);
-
-	i = 1;
-	while (i < world->nb_rooms)
-	{
-		target = get_room_by_index(world, i);
-		if (!indexes_contains(indexes, i) && is_joinable(world, room, target))
-		{
-			if (i == 1)
-			{
-				printf("END\n");
-				return ;
-			}
-			//printf("%s\n", target->name);
-			add_index(indexes, i);
-			parcours(world, target, indexes);
-		}
-		i++;
-	}
-}
-
 int		check_moves(t_list **all_moves, int target_index, int cost)
 {
 	t_list	*it;
@@ -128,30 +102,57 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 	}
 }
 
+int		is_ant_reach(t_world *world, int ant_num)
+{
+	int	int_index; // index in world->ants
+	int	index; // index of bit in int of 32 bits
+	
+	if (!world)
+		return (0);
+	ant_num--;
+	int_index = ant_num / 32;
+	index = ant_num % 32;
+	return ((world->ants[int_index] >> (31 - index)) & 1);
+}
+
+void	set_ant_reach(t_world *world, int ant_num)
+{
+	int	int_index; // index in world->ants
+	int	index; // index of bit in int of 32 bits
+
+	if (!world)
+		return ;
+	ant_num--;
+	int_index = ant_num / 32;
+	index = ant_num % 32;
+	world->ants[int_index] |= (1 << (31 - index));
+}
+
 void pathfinding(t_world *world)
 {
 	t_list *moves;
 	t_room *room;
 	t_move *move;
-	t_list *it;
-	t_ant *ant;
 	t_list *indexes;
+	int		i;
+	int		start;
 
 	if (!world)
 		return;
 
+	start = 1;
 	while (world->end_room->num_ant != world->nb_ants)
 	{
-		it = world->ants;
-		while (it)
+		i = start;
+		while (i <= world->nb_ants)
 		{
-			ant = (t_ant *)it->content;
-			if (ant->is_reach)
+			if (is_ant_reach(world, i))
 			{
-				it = it->next;
+				i++;
 				continue;
 			}
-			room = get_room_where_ant(world, ant);
+			printf("%d\n", start);
+			room = get_room_where_ant(world, i);
 			//display_room(room);
 			moves = NULL;
 			indexes = NULL;
@@ -167,7 +168,7 @@ void pathfinding(t_world *world)
 				{
 					//printf("room %s is already used with ant num %d\n", get_room_by_index(world, move->target_index)->name, get_room_by_index(world, move->target_index)->num_ant);
 					free_list(&moves, free_move_maillon);
-					it = it->next;
+					i++;
 					continue;
 				}
 
@@ -175,7 +176,7 @@ void pathfinding(t_world *world)
 				{
 					//printf("Cant join target\n");
 					free_list(&moves, free_move_maillon);
-					it = it->next;
+					i++;
 					continue;
 				}
 
@@ -185,29 +186,32 @@ void pathfinding(t_world *world)
 
 				if (move->target_index == 1)
 				{
-					world->end_room->num_ant++;
-					ant->is_reach = 1;
+					(world->end_room->num_ant)++;
+					set_ant_reach(world, i);
+					if (i == start + 1)
+						start++;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					//printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
-					add_move_print(&(world->print), ant->num, (char *)get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				else
 				{
 					//printf("ant num %d in room %s\n", ant->num, get_room_by_index(world, move->target_index)->name);
-					get_room_by_index(world, move->target_index)->num_ant = ant->num;
+					get_room_by_index(world, move->target_index)->num_ant = i;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					//printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
-					add_move_print(&(world->print), ant->num, (char *)get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				free_list(&moves, free_move_maillon);
 			}
 			else
 				printf("No path\n");
-			it = it->next;
+			i++;
 		}
 		add_print(&(world->print), "\n", 0);
+		//printf("\n");
 		reinit_links(world);
 	}
 }

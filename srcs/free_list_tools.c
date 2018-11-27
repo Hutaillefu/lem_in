@@ -26,19 +26,6 @@ void	free_room_maillon(void *content, int content_size)
 	free_room(room);
 }
 
-void	free_ant_maillon(void *content, int content_size)
-{
-	t_ant	**ant;
-
-	(void)content_size;
-	if (!content)
-		return ;
-	ant = (t_ant **)content;
-	if (!ant || !(*ant))
-		return ;
-	free_ant(ant);
-}
-
 void	free_move_maillon(void *content, int content_size)
 {
 	t_move	**move;

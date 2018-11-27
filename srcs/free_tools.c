@@ -23,14 +23,6 @@ void	free_room(t_room **room)
 	room = NULL;
 }
 
-void	free_ant(t_ant **ant)
-{
-	if (!ant || !(*ant))
-		return ;
-	free(*ant);
-	ant = NULL;
-}
-
 void	free_links(unsigned char **links, int len)
 {
 	int i;
@@ -63,7 +55,7 @@ void	free_world(t_world **world)
 	free_room(&((*world)->start_room));
 	free_room(&((*world)->end_room));
 	free_list(&((*world)->rooms), free_room_maillon);
-	free_list(&((*world)->ants), free_ant_maillon);
+	free((*world)->ants);
 	free_links((*world)->links, (*world)->nb_rooms);
 	free((*world)->print);
 	free(*world);

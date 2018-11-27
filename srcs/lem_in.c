@@ -96,6 +96,12 @@ int		main(int argc, char **argv)
 		exit_lemin(&world, 1);
 	init_ants(world);
 
+	// set_ant_reach(world, 34);
+	// printf("Is ant num %d is reached : %d\n", 2, is_ant_reach(world, 34));
+	// set_ant_reach(world, 2);
+	// set_ant_reach(world, 3);
+	// set_ant_reach(world, 4);
+
 	//t_list *indexes = NULL;
 	//parcours(world, world->start_room, &indexes);
 

@@ -30,8 +30,8 @@ typedef struct	s_world
 	t_room			*start_room;
 	t_room			*end_room;
 	t_list			*rooms;
-	t_list			*ants;
 	unsigned char	**links;
+	int				*ants;
 	char			*print;
 }				t_world;
 
@@ -40,12 +40,6 @@ typedef	struct	s_move
 	int	target_index;
 	int	cost;
 }				t_move;
-
-typedef struct	s_ant
-{
-	int	num;
-	int	is_reach;
-}				t_ant;
 
 /*
 	** Selector func
@@ -60,7 +54,6 @@ int				is_link(const char *line);
 */
 t_room			*create_room(const char *name, int x, int y);
 void			free_room(t_room **room);
-void			free_ant(t_ant **ant);
 void			free_move(t_move **move);
 t_world			*create_world();
 int				add_room(t_world *world, t_room *room);
@@ -72,7 +65,6 @@ int				init_ants(t_world *world);
 */
 void			free_world(t_world **world);
 void			free_room_maillon(void *content, int content_size);
-void			free_ant_maillon(void *content, int content_size);
 void			free_move_maillon(void *content, int content_size);
 void			free_index_maillon(void *content, int content_size);
 void			free_list(t_list **lst, void (*del)(void *, int));
@@ -93,7 +85,7 @@ int				process_room(const char *line, t_world *world);
 */
 int				get_room_index(t_world *world, const char *name);
 t_room			*get_room_by_index(t_world *world, int index);
-t_room			*get_room_where_ant(t_world *world, t_ant *ant);
+t_room			*get_room_where_ant(t_world *world, int ant_num);
 const char		*room_name(t_list *maillon);
 
 void			display_world(t_world *world);
@@ -119,7 +111,8 @@ int				is_link_exist(unsigned char data);
 int				is_link_free(unsigned char data);
 void			set_link_exist(unsigned char *data, unsigned char is_exist);
 void			set_link_free(unsigned char *data, unsigned char is_free);
-
+int				is_ant_reach(t_world *world, int ant_num);
+void			set_ant_reach(t_world *world, int ant_num);
 /*
    ** Links tools func
 */

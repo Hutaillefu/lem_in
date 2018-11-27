@@ -74,19 +74,19 @@ int			get_room_index(t_world *world, const char *name)
   ** Return the room where the 'ant' is.
 */
 
-t_room		*get_room_where_ant(t_world *world, t_ant *ant)
+t_room		*get_room_where_ant(t_world *world, int ant_num)
 {
 	int		i;
 	t_room	*room;
 
-	if (!world || !ant)
+	if (!world)
 		return (NULL);
 	i = 2;
 	room = NULL;
 	while (i < world->nb_rooms)
 	{
 		room = get_room_by_index(world, i);
-		if (room->num_ant == ant->num)
+		if (room->num_ant == ant_num)
 			return (room);
 		i++;
 	}
