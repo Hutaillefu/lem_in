@@ -93,7 +93,7 @@ void			display_world(t_world *world);
 /*
 	** Pathfinding func
 */
-void			get_all_moves_rec(t_world *world, t_room *room,
+int			get_all_moves_rec(t_world *world, t_room *room,
 t_list **all_moves, int cost, int target_index, t_list **indexes);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
@@ -128,4 +128,7 @@ int				indexes_contains(t_list **indexes, int index);
 
 void			add_print(char **str, char *add, int back);
 void			add_move_print(char **str, int ant_num, char *room_name);
+
+void			bfs(t_world *world, t_room *start, int nb_paths);
+int				nb_voisins(t_world *world, t_room *room);
 #endif

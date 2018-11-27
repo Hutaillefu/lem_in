@@ -52,14 +52,82 @@ int		check_moves(t_list **all_moves, int target_index, int cost)
 	return (0);
 }
 
-void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index, t_list **indexes)
+void	avoid_path(t_world *world, t_room *room)
+{
+	int i;
+	int	index;
+
+	if (!world || !room)
+		return ;
+
+	i = 0;
+	index = get_room_index(world, room->name);
+	while (i < world->nb_rooms)
+	{
+		set_link_exist(&(world->links[index][i]), 0);
+		i++;
+	}
+}
+
+void	bfs(t_world *world, t_room *start, int nb_paths)
+{
+	t_list	*rooms;
+	t_room	*room;
+	t_room	*target;
+	int		i;
+	int		y;
+	int		paths = nb_paths;
+
+	if (!world)
+		return ;
+	rooms = NULL;
+	world->start_room->num_ant = 1;
+	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
+	 while (ft_lstlen(&rooms) > 0)
+	 {
+	 	room = (t_room *)(ft_lstpop(&rooms)->content);
+	 //	printf("%s -> \n", room->name);
+		i = 0;
+		y = 0;
+		while (i < world->nb_rooms)
+		{
+			target = get_room_by_index(world, i);
+			if (is_joinable(world, room, target) && target->num_ant != 1)
+			{
+	 			//printf("%s\n", target->name);
+				y++;
+				if (i != 1)
+					target->num_ant = 1;
+				else
+				{
+					nb_paths--;
+				//	printf("1 full path\n");
+				}
+				if (nb_paths == 0)
+				{
+				//	printf("%d paths detected\n", paths - nb_paths);	
+					return ; 
+				}
+				set_link_exist(&(world->links[i][get_room_index(world, room->name)]), 0);
+				ft_lstpush(&rooms, ft_lstnew(target, sizeof(target)));
+			}
+			i++;
+		}
+		//if (y == 0)
+				//printf("%s no voisins\n", room->name);
+	 }
+	 printf("%d paths detected\n", paths - nb_paths);
+}
+
+int get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index, t_list **indexes)
 {
 	int index;
 	t_room *it;
 
 	if (!world || !room)
-		return;
+		return (0);
 	index = 1;
+
 	while (index < world->nb_rooms)
 	{
 		it = get_room_by_index(world, index);
@@ -76,7 +144,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
 			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
-			return ;
+			return (1);
 		}
 		else
 		{
@@ -91,7 +159,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			else
 			{
 				set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
-				return ;
+				return (0);
 			}
 			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
 
@@ -100,6 +168,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		}
 		index++;
 	}
+	return (0);
 }
 
 int		is_ant_reach(t_world *world, int ant_num)
@@ -151,13 +220,10 @@ void pathfinding(t_world *world)
 				i++;
 				continue;
 			}
-			printf("%d\n", start);
 			room = get_room_where_ant(world, i);
-			//display_room(room);
 			moves = NULL;
 			indexes = NULL;
 			get_all_moves_rec(world, room, &moves, 0, -1, &indexes);
-			//free_list(&indexes, free_index_maillon);
 			if (moves)
 			{
 				move = get_best_move(world, moves);

@@ -102,6 +102,12 @@ int		main(int argc, char **argv)
 	// set_ant_reach(world, 3);
 	// set_ant_reach(world, 4);
 
+	// int start_voisins = nb_voisins(world, world->start_room);
+	// int end_voisins = nb_voisins(world, world->end_room);
+	// printf("Start has %d voisins\n", start_voisins);
+	// printf("End has %d voisins\n", end_voisins);;
+	// bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins);
+
 	//t_list *indexes = NULL;
 	//parcours(world, world->start_room, &indexes);
 
