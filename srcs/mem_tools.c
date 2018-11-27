@@ -39,7 +39,55 @@ t_world	*create_world(void)
 	world->rooms = NULL;
 	world->ants = NULL;
 	world->links = NULL;
+	world->print = ft_strdup("");
 	return (world);
+}
+
+/*
+   ** Add in print, the readed line of the map.
+*/
+
+void	add_print(char **str, char *add, int back)
+{
+	char *ret;
+
+	if (!str || !add)
+		return ;
+	ret = *str;
+	*str = ft_strjoin(*str, add);
+	free(ret);
+	if (back)
+	{
+		ret = *str;
+		*str = ft_strjoin(*str, "\n");
+		free(ret);
+	}
+}
+
+void	add_move_print(char **str, int ant_num, char *room_name)
+{
+	char *line;
+	char *ret;
+	char *num;
+
+	if (!str || !room_name)
+		return ;
+	num = ft_itoa(ant_num);
+	line = ft_strjoin("L", num);
+	free(num);
+	ret = *str;
+	*str = ft_strjoin(*str, line);
+	free(line);
+	free(ret);
+	ret = *str;
+	*str = ft_strjoin(*str, "-");
+	free(ret);
+	ret = *str;
+	*str = ft_strjoin(*str, room_name);
+	free(ret);
+	ret = *str;
+	*str = ft_strjoin(*str, " ");
+	free(ret);
 }
 
 int		add_room(t_world *world, t_room *room)

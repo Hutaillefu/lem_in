@@ -27,6 +27,7 @@ int		parse_num_ants(t_world *world)
 	if (get_next_line(0, &line) && ft_strisdigit(line) && ft_atoi(line) >= 0)
 	{
 		world->nb_ants = ft_atoi(line);
+		add_print(&(world->print), line, 1);
 		free(line);
 		line = NULL;
 		return (1);
@@ -41,7 +42,7 @@ int		parse_num_ants(t_world *world)
   ** x & y must be int.
 */
 
-t_room	*parse_room(const char *line)
+t_room	*parse_room(t_world *world, const char *line)
 {
 	char	**values;
 	t_room	*room;
@@ -62,6 +63,7 @@ t_room	*parse_room(const char *line)
 		ft_free_tab(values);
 		return (NULL);
 	}
+	add_print(&(world->print), (char *)line, 1);	
 	ft_free_tab(values);
 	return (room);
 }
@@ -84,6 +86,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 		return (1);
 	if (!get_next_line(0, &line))
 		return (-1);
+	add_print(&(world->print), (char *)pre_line, 1);	
 	if (ft_strcmp("start", &(pre_line[2])) == 0)
 		setup_room(world, line, &(world->start_room));
 	else if (ft_strcmp("end", &(pre_line[2])) == 0)
@@ -114,6 +117,7 @@ int		parse_link(const char *line, t_world *world)
 		ft_free_tab(values);
 		return (0);
 	}
+	add_print(&(world->print), (char *)line, 1);
 	ft_free_tab(values);
 	return (1);
 }
@@ -144,6 +148,10 @@ void	parse_map(t_world *world)
 		free(line);
 		line = NULL;
 		if (!res)
+		{
+			add_print(&(world->print), "\n", 0);		
 			return ;
+		}
 	}
+	add_print(&(world->print), "\n", 0);		
 }

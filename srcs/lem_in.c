@@ -91,7 +91,7 @@ int		main(int argc, char **argv)
 		return (0);
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
-	parse_map(world);
+	 parse_map(world);
 	if (!can_run(world))
 		exit_lemin(&world, 1);
 	init_ants(world);
@@ -100,7 +100,8 @@ int		main(int argc, char **argv)
 	//parcours(world, world->start_room, &indexes);
 
 	//display_transi(world);
-	//pathfinding(world);
+	pathfinding(world);
+	printf("%s", world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }

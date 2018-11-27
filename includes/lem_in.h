@@ -32,6 +32,7 @@ typedef struct	s_world
 	t_list			*rooms;
 	t_list			*ants;
 	unsigned char	**links;
+	char			*print;
 }				t_world;
 
 typedef	struct	s_move
@@ -80,7 +81,7 @@ void			free_list(t_list **lst, void (*del)(void *, int));
 	** Parser func
 */
 int				parse_num_ants(t_world *world);
-t_room			*parse_room(const char *line);
+t_room			*parse_room(t_world *world, const char *line);
 int				parse_active_commentary(t_world *world, const char *pre_line);
 int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
@@ -131,4 +132,7 @@ void			reinit_links(t_world *world);
 void			add_index(t_list **indexes, int index);
 void			rm_index(t_list **indexes, int index);
 int				indexes_contains(t_list **indexes, int index);
+
+void			add_print(char **str, char *add, int back);
+void			add_move_print(char **str, int ant_num, char *room_name);
 #endif

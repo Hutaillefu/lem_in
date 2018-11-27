@@ -19,7 +19,7 @@ int		setup_room(t_world *world, char *line, t_room **room)
 
 	if (!world || !room || (*room))
 		return (0);
-	if (!(new_room = parse_room(line)))
+	if (!(new_room = parse_room(world, line)))
 		return (0);
 	*room = new_room;
 	(world->nb_rooms)++;
@@ -36,7 +36,7 @@ int		process_room(const char *line, t_world *world)
 
 	if (!line || !world)
 		return (0);
-	if (!(room = parse_room(line)))
+	if (!(room = parse_room(world, line)))
 		return (0);
 	if (!(add_room(world, room)))
 	{

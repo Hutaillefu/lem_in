@@ -101,7 +101,7 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		if (index == 1) 
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
+			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
 			return ;
 		}
 		else
@@ -189,7 +189,8 @@ void pathfinding(t_world *world)
 					ant->is_reach = 1;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), ant->num, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				else
 				{
@@ -197,7 +198,8 @@ void pathfinding(t_world *world)
 					get_room_by_index(world, move->target_index)->num_ant = ant->num;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", ant->num, get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), ant->num, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				free_list(&moves, free_move_maillon);
 			}
@@ -205,7 +207,7 @@ void pathfinding(t_world *world)
 				printf("No path\n");
 			it = it->next;
 		}
-		printf("\n");
+		add_print(&(world->print), "\n", 0);
 		reinit_links(world);
 	}
 }
