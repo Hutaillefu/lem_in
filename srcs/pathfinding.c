@@ -16,6 +16,68 @@ t_list *create_move(int cost, int target_index)
 	return (ft_lstnew(move, sizeof(move)));
 }
 
+int		nb_voisins(t_world *world, t_room *room)
+{
+	int		i;
+	t_room	*voisin;
+	int		res;
+
+	if (!world || !room)
+		return (0);
+	i = 0;
+	res = 0;
+	while (i < world->nb_rooms)
+	{
+		voisin = get_room_by_index(world, i);
+		if (is_joinable(world, room, voisin))
+			res++;
+		i++;
+	}
+	return (res);
+}
+
+void	parcours(t_world *world, t_room *room, t_list **indexes)
+{
+	int	i;
+	t_room	*target;
+
+	printf("%s -> ", room->name);
+
+	i = 1;
+	while (i < world->nb_rooms)
+	{
+		target = get_room_by_index(world, i);
+		if (!indexes_contains(indexes, i) && is_joinable(world, room, target))
+		{
+			if (i == 1)
+			{
+				printf("END\n");
+				return ;
+			}
+			//printf("%s\n", target->name);
+			add_index(indexes, i);
+			parcours(world, target, indexes);
+		}
+		i++;
+	}
+}
+
+int		check_moves(t_list **all_moves, int target_index, int cost)
+{
+	t_list	*it;
+
+	if (!all_moves)
+		return (0);
+	it = *all_moves;
+	while (it)
+	{
+		if (((t_move *)(it)->content)->target_index == target_index && cost >= ((t_move *)(it)->content)->cost)
+			return (1);
+		it = it->next;
+	}
+	return (0);
+}
+
 void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index, t_list **indexes)
 {
 	int index;
@@ -24,52 +86,41 @@ void get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 	if (!world || !room)
 		return;
 	index = 1;
-	// if (cost == 0)
-	// 	display_room(room);
 	while (index < world->nb_rooms)
 	{
 		it = get_room_by_index(world, index);
-		if (ft_strcmp(it->name, room->name) == 0 ||	// can't join same room
-			!is_joinable(world, room, it))			// link does not exist												
+		if (!is_joinable(world, room, it))											
 		{
-			//printf("Cant %s -> %s\n", room->name, it->name);
 			index++;
 			continue;
 		}
-
-		if (indexes_contains(indexes, index))
-		{
-			//printf("Already visited\n");
-			index++;
-			continue;
-		}
-
-		//printf("%s -> %s\n", room->name, it->name);
 
 		if (cost == 0)
-		{
-			//printf("Target index = %d\n", index);
 			target_index = index;
-		}
 
-	//	if (cost == 0 && (can_join(world, room, it) && it->num_ant != 0)) // Ant on first voisin
-		//	cost++;
-			
 		if (index == 1) 
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
+			printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
+			return ;
 		}
 		else
 		{
 			if (it->num_ant > 0) // ant on target cell need up cost
 				cost++;
-			add_index(indexes, index);
-			add_index(indexes, get_room_index(world, room->name));
-			//printf("%s->%s\n", room->name, it->name);
-			get_all_moves_rec(world, it, all_moves, cost + 1, target_index, indexes);
-			rm_index(indexes, index);
-			rm_index(indexes, get_room_index(world, room->name));
+
+			set_link_exist(&(world->links[index][get_room_index(world, room->name)]), 0);
+			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 0);
+
+			if (!check_moves(all_moves, target_index, cost + 1))
+				get_all_moves_rec(world, it, all_moves, cost + 1, target_index, indexes);
+			else
+			{
+				set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
+				return ;
+			}
+			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
+
 			if (cost > 0 && it->num_ant > 0)
 				cost--;
 		}
@@ -105,7 +156,7 @@ void pathfinding(t_world *world)
 			moves = NULL;
 			indexes = NULL;
 			get_all_moves_rec(world, room, &moves, 0, -1, &indexes);
-			free_list(&indexes, free_index_maillon);
+			//free_list(&indexes, free_index_maillon);
 			if (moves)
 			{
 				move = get_best_move(world, moves);
@@ -122,7 +173,7 @@ void pathfinding(t_world *world)
 
 				if (!can_join(world, room, get_room_by_index(world, move->target_index)))
 				{
-					printf("Cant join target\n");
+					//printf("Cant join target\n");
 					free_list(&moves, free_move_maillon);
 					it = it->next;
 					continue;

@@ -74,7 +74,7 @@ int		can_run(t_world *world)
 	indexes = NULL;
 	get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
 	//printf("Can rune : %d paths\n", ft_lstlen(&moves));
-	free_list(&indexes, free_index_maillon);
+	//free_list(&indexes, free_index_maillon);
 	if (!moves)
 		return (0);
 	free_list(&moves, free_move_maillon);
@@ -95,8 +95,12 @@ int		main(int argc, char **argv)
 	if (!can_run(world))
 		exit_lemin(&world, 1);
 	init_ants(world);
-	display_transi(world);
-	pathfinding(world);
+
+	//t_list *indexes = NULL;
+	//parcours(world, world->start_room, &indexes);
+
+	//display_transi(world);
+	//pathfinding(world);
 	exit_lemin(&world, 0);
 	return (0);
 }
