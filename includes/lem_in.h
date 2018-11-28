@@ -129,6 +129,6 @@ int				indexes_contains(t_list **indexes, int index);
 void			add_print(char **str, char *add, int back);
 void			add_move_print(char **str, int ant_num, char *room_name);
 
-void			bfs(t_world *world, t_room *start, int nb_paths);
+int			bfs(t_world *world, t_room *start, int nb_paths);
 int				nb_voisins(t_world *world, t_room *room);
 #endif

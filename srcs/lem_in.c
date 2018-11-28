@@ -65,20 +65,19 @@ void	exit_lemin(t_world **world, int is_error)
 
 int		can_run(t_world *world)
 {
-	t_list	*moves;
-	t_list	*indexes;
+	//t_list	*moves;
+
 
 	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
 		return (0);
-	moves = NULL;
-	indexes = NULL;
-	get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
+	//moves = NULL;
+	//get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
 	//printf("Can rune : %d paths\n", ft_lstlen(&moves));
-	//free_list(&indexes, free_index_maillon);
-	if (!moves)
-		return (0);
-	free_list(&moves, free_move_maillon);
-	return (1);
+	//if (!moves)
+	//	return (0);
+	//free_list(&moves, free_move_maillon);
+	return (bfs(world, world->start_room, world->nb_rooms));
+//	return (1);
 }
 
 int		main(int argc, char **argv)
@@ -94,6 +93,8 @@ int		main(int argc, char **argv)
 	 parse_map(world);
 	if (!can_run(world))
 		exit_lemin(&world, 1);
+	//printf("%s", world->print);
+	//free(world->print);
 	init_ants(world);
 
 	// set_ant_reach(world, 34);
@@ -105,7 +106,7 @@ int		main(int argc, char **argv)
 	// int start_voisins = nb_voisins(world, world->start_room);
 	// int end_voisins = nb_voisins(world, world->end_room);
 	// printf("Start has %d voisins\n", start_voisins);
-	// printf("End has %d voisins\n", end_voisins);;
+	// printf("End has %d voisins\n", end_voisins);
 	// bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins);
 
 	//t_list *indexes = NULL;
@@ -113,7 +114,7 @@ int		main(int argc, char **argv)
 
 	//display_transi(world);
 	pathfinding(world);
-	printf("%s", world->print);
+	//printf("%s", world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }

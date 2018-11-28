@@ -79,7 +79,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 
 	line = NULL;
 	room = NULL;
-	if (!world)
+	if (!world || !pre_line)
 		return (-1);
 	if (ft_strcmp("start", &(pre_line[2])) != 0 &&
 	ft_strcmp("end", &(pre_line[2])) != 0)

@@ -57,7 +57,8 @@ void	free_world(t_world **world)
 	free_list(&((*world)->rooms), free_room_maillon);
 	free((*world)->ants);
 	free_links((*world)->links, (*world)->nb_rooms);
-	free((*world)->print);
+	if ((*world)->print)
+		free((*world)->print);
 	free(*world);
 	world = NULL;
 }
