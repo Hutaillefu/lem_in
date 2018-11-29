@@ -81,6 +81,6 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 		// 		best = (t_move *)it->content;
 		// }
 		it = it->next;
-	}
+	} // PROBLEM DANS CETTE FCT, RENVOI LE MOVAI MOVE PArFOIS (OK POUR M1 MAIS PAS M7)
 	return (best);
 }

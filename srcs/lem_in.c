@@ -65,19 +65,32 @@ void	exit_lemin(t_world **world, int is_error)
 
 int		can_run(t_world *world)
 {
-	//t_list	*moves;
-
+	int start_voisins;
+	int end_voisins;
 
 	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
 		return (0);
-	//moves = NULL;
-	//get_all_moves_rec(world, world->start_room, &moves, 0, -1, &indexes);
-	//printf("Can rune : %d paths\n", ft_lstlen(&moves));
-	//if (!moves)
-	//	return (0);
-	//free_list(&moves, free_move_maillon);
-	return (bfs(world, world->start_room, world->nb_rooms));
-//	return (1);
+	start_voisins = nb_voisins(world, world->start_room);
+	end_voisins = nb_voisins(world, world->end_room);
+	return (bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins));
+}
+
+t_list	*get_start_voisins(t_world *world)
+{
+	int		i;
+	t_list	*voisins;
+	t_room	*room;
+
+	voisins = NULL;
+	i = 1;
+	while (i < world->nb_rooms)
+	{
+		room = get_room_by_index(world, i);
+		if (is_joinable(world, world->start_room, room))
+			ft_lstpush(&voisins, ft_lstnew(room, sizeof(room)));
+		i++;
+	}
+	return voisins;
 }
 
 int		main(int argc, char **argv)
@@ -97,6 +110,12 @@ int		main(int argc, char **argv)
 	//free(world->print);
 	init_ants(world);
 
+	// while (visited)
+	// {
+	// 	display_room((t_room *)visited->content);
+	// 	visited = visited->next;
+	// }
+
 	// set_ant_reach(world, 34);
 	// printf("Is ant num %d is reached : %d\n", 2, is_ant_reach(world, 34));
 	// set_ant_reach(world, 2);
@@ -109,8 +128,13 @@ int		main(int argc, char **argv)
 	// printf("End has %d voisins\n", end_voisins);
 	// bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins);
 
-	//t_list *indexes = NULL;
-	//parcours(world, world->start_room, &indexes);
+	// t_list *start_voisins = NULL;
+	// start_voisins = get_start_voisins(world);
+	// printf("Start has %d voisins\n", ft_lstlen(&start_voisins));
+
+	// t_list *moves = NULL;
+	// get_all_moves_rec(world, (t_room *)start_voisins->content, &moves, 0, -1, NULL);
+	// printf("%d possible paths\n", ft_lstlen(&moves));
 
 	//display_transi(world);
 	pathfinding(world);
