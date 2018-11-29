@@ -133,12 +133,13 @@ int		main(int argc, char **argv)
 	// printf("Start has %d voisins\n", ft_lstlen(&start_voisins));
 
 	// t_list *moves = NULL;
-	// get_all_moves_rec(world, (t_room *)start_voisins->content, &moves, 0, -1, NULL);
+	// get_all_moves_rec(world, world->start_room, &moves, 0, -1);
 	// printf("%d possible paths\n", ft_lstlen(&moves));
+	// printf("best move cost : %d\n", get_best_move(world, moves)->cost);
 
 	//display_transi(world);
 	pathfinding(world);
-	//printf("%s", world->print);
+	printf("%s", world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }

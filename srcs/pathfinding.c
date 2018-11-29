@@ -174,7 +174,13 @@ int get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost
 			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 0);
 
 			if (!check_moves(all_moves, target_index, cost + 1))
-				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
+			{
+				if (get_all_moves_rec(world, it, all_moves, cost + 1, target_index))
+				{
+					//printf("%s\n", it->name);
+					//return (1);
+				}
+			}
 			else
 			{
 				set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
@@ -278,7 +284,7 @@ void pathfinding(t_world *world)
 						start++;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
 					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				else
@@ -286,7 +292,7 @@ void pathfinding(t_world *world)
 					get_room_by_index(world, move->target_index)->num_ant = i;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
+					//printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
 					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				free_list(&moves, free_move_maillon);
@@ -297,8 +303,8 @@ void pathfinding(t_world *world)
 			}
 			i++;
 		}
-		//add_print(&(world->print), "\n", 0);
-		printf("\n");
+		add_print(&(world->print), "\n", 0);
+		//printf("\n");
 		reinit_links(world);
 	}
 }
