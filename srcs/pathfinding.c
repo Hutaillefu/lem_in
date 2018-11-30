@@ -40,7 +40,8 @@ int		check_moves(t_list **all_moves, int target_index, int cost)
 	it = *all_moves;
 	while (it)
 	{
-		if (((t_move *)(it)->content)->target_index == target_index && cost >= ((t_move *)(it)->content)->cost)
+		if (((t_move *)(it)->content)->target_index == target_index &&
+		cost >= ((t_move *)(it)->content)->cost)
 			return (1);
 		it = it->next;
 	}
@@ -93,9 +94,9 @@ int		bfs(t_world *world, t_room *start)
 	while (ft_lstlen(&rooms) > 0)
 	{
 		room = pop_room(&rooms);
-		i = 1;
+		i = 0;
 		y = 0;
-		while (i < world->nb_rooms)
+		while (++i < world->nb_rooms)
 		{
 			target = get_room_by_index(world, i);
 			if (is_joinable(world, room, target) && target->num_ant != 1)
@@ -110,7 +111,6 @@ int		bfs(t_world *world, t_room *start)
 				}
 				ft_lstadd(&rooms, ft_lstnew(target, sizeof(target)));
 			}
-			i++;
 		}
 		if (y == 0)
 			avoid_path(world, room);
@@ -210,17 +210,12 @@ void	pathfinding(t_world *world)
 					set_ant_reach(world, i);
 					if (i == start + 1)
 						start++;
-					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
-					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				else
-				{
 					get_room_by_index(world, move->target_index)->num_ant = i;
-					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
-					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
-				}
+				set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
+				set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
+				add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				free_list(&moves, free_move_maillon);
 			}
 			i++;
