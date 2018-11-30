@@ -99,6 +99,7 @@ void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
 t_move			*get_best_move(t_world *world, t_list *moves);
+void 			avoid_path(t_world *world, t_room *room);
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);
@@ -123,5 +124,4 @@ void			add_print(char **str, char *add, int back);
 void			add_move_print(char **str, int ant_num, char *room_name);
 
 int				bfs(t_world *world, t_room *start);
-int				nb_voisins(t_world *world, t_room *room);
 #endif

@@ -16,26 +16,6 @@ t_list *create_move(int cost, int target_index)
 	return (ft_lstnew(move, sizeof(move)));
 }
 
-int nb_voisins(t_world *world, t_room *room)
-{
-	int i;
-	t_room *voisin;
-	int res;
-
-	if (!world || !room)
-		return (0);
-	i = 0;
-	res = 0;
-	while (i < world->nb_rooms)
-	{
-		voisin = get_room_by_index(world, i);
-		if (is_joinable(world, room, voisin))
-			res++;
-		i++;
-	}
-	return (res);
-}
-
 int check_moves(t_list **all_moves, int target_index, int cost)
 {
 	t_list *it;
@@ -50,25 +30,6 @@ int check_moves(t_list **all_moves, int target_index, int cost)
 		it = it->next;
 	}
 	return (0);
-}
-
-void avoid_path(t_world *world, t_room *room)
-{
-	int i;
-	int index;
-
-	if (!world || !room)
-		return;
-	i = 0;
-	index = get_room_index(world, room->name);
-	if (index == 1)
-		return;
-	while (i < world->nb_rooms)
-	{
-		set_link_exist(&(world->links[i][index]), 0);
-		set_link_exist(&(world->links[index][i]), 0);
-		i++;
-	}
 }
 
 void	reset_num_ant(t_world *world)
@@ -180,32 +141,6 @@ int get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost
 		index++;
 	}
 	return (0);
-}
-
-int is_ant_reach(t_world *world, int ant_num)
-{
-	int int_index; // index in world->ants
-	int index;	 // index of bit in int of 32 bits
-
-	if (!world)
-		return (0);
-	ant_num--;
-	int_index = ant_num / 32;
-	index = ant_num % 32;
-	return ((world->ants[int_index] >> (31 - index)) & 1);
-}
-
-void set_ant_reach(t_world *world, int ant_num)
-{
-	int int_index; // index in world->ants
-	int index;	 // index of bit in int of 32 bits
-
-	if (!world)
-		return;
-	ant_num--;
-	int_index = ant_num / 32;
-	index = ant_num % 32;
-	world->ants[int_index] |= (1 << (31 - index));
 }
 
 void pathfinding(t_world *world)

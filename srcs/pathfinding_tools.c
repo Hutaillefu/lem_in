@@ -84,3 +84,26 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 	} // PROBLEM DANS CETTE FCT, RENVOI LE MOVAI MOVE PArFOIS (OK POUR M1 MAIS PAS M7)
 	return (best);
 }
+
+/*
+  ** Desactivate all links from and to 'room'.
+*/
+
+void	avoid_path(t_world *world, t_room *room)
+{
+	int i;
+	int index;
+
+	if (!world || !room)
+		return;
+	i = 0;
+	index = get_room_index(world, room->name);
+	if (index == 1)
+		return;
+	while (i < world->nb_rooms)
+	{
+		set_link_exist(&(world->links[i][index]), 0);
+		set_link_exist(&(world->links[index][i]), 0);
+		i++;
+	}
+}

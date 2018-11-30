@@ -7,7 +7,8 @@ FLAGS = -Wall -Werror -Wextra
 
 TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/mem_tools.c \
-	      ./srcs/bit_tools.c \
+	      ./srcs/link_bit_tools.c \
+	      ./srcs/ant_bit_tools.c \
 	      ./srcs/parser.c \
 	      ./srcs/parser_tools.c \
 	      ./srcs/pathfinding.c \
