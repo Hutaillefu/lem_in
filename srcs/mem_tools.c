@@ -47,7 +47,6 @@ int		init_ants(t_world *world)
 {
 	int nb_int;
 	int i;
-
 	if (!world)
 		return (0);
 	nb_int = world->nb_ants / 32;

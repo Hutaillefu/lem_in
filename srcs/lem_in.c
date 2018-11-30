@@ -65,14 +65,9 @@ void	exit_lemin(t_world **world, int is_error)
 
 int		can_run(t_world *world)
 {
-	int start_voisins;
-	int end_voisins;
-
 	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
 		return (0);
-	start_voisins = nb_voisins(world, world->start_room);
-	end_voisins = nb_voisins(world, world->end_room);
-	return (bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins));
+	return (bfs(world, world->start_room));
 }
 
 t_list	*get_start_voisins(t_world *world)
@@ -104,11 +99,15 @@ int		main(int argc, char **argv)
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
 	 parse_map(world);
+
 	if (!can_run(world))
 		exit_lemin(&world, 1);
-	//printf("%s", world->print);
-	//free(world->print);
+	// printf("%s", world->print);
+	// free(world->print);
+	// world->print = ft_strdup("");
+	// //free(world->print);
 	init_ants(world);
+	//display_transi(world);
 
 	// while (visited)
 	// {
@@ -139,7 +138,7 @@ int		main(int argc, char **argv)
 
 	//display_transi(world);
 	pathfinding(world);
-	printf("%s", world->print);
+	//printf("%s", world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }
