@@ -102,43 +102,12 @@ int		main(int argc, char **argv)
 
 	if (!can_run(world))
 		exit_lemin(&world, 1);
-	// printf("%s", world->print);
-	// free(world->print);
-	// world->print = ft_strdup("");
-	// //free(world->print);
+	printf("%s", world->print);
+	free(world->print);
+	world->print = ft_strdup("");
 	init_ants(world);
-	//display_transi(world);
-
-	// while (visited)
-	// {
-	// 	display_room((t_room *)visited->content);
-	// 	visited = visited->next;
-	// }
-
-	// set_ant_reach(world, 34);
-	// printf("Is ant num %d is reached : %d\n", 2, is_ant_reach(world, 34));
-	// set_ant_reach(world, 2);
-	// set_ant_reach(world, 3);
-	// set_ant_reach(world, 4);
-
-	// int start_voisins = nb_voisins(world, world->start_room);
-	// int end_voisins = nb_voisins(world, world->end_room);
-	// printf("Start has %d voisins\n", start_voisins);
-	// printf("End has %d voisins\n", end_voisins);
-	// bfs(world, world->start_room, start_voisins < end_voisins ? start_voisins : end_voisins);
-
-	// t_list *start_voisins = NULL;
-	// start_voisins = get_start_voisins(world);
-	// printf("Start has %d voisins\n", ft_lstlen(&start_voisins));
-
-	// t_list *moves = NULL;
-	// get_all_moves_rec(world, world->start_room, &moves, 0, -1);
-	// printf("%d possible paths\n", ft_lstlen(&moves));
-	// printf("best move cost : %d\n", get_best_move(world, moves)->cost);
-
-	//display_transi(world);
 	pathfinding(world);
-	//printf("%s", world->print);
+	printf("%s", world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }

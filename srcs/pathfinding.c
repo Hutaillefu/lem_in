@@ -63,7 +63,6 @@ void avoid_path(t_world *world, t_room *room)
 	index = get_room_index(world, room->name);
 	if (index == 1)
 		return;
-	//printf("avoiding path to %s\n", room->name);
 	while (i < world->nb_rooms)
 	{
 		set_link_exist(&(world->links[i][index]), 0);
@@ -91,6 +90,7 @@ int bfs(t_world *world, t_room *start)
 	t_list *rooms;
 	t_room *room;
 	t_room *target;
+	t_list	*lst;
 	int i;
 	int y;
 	int nb_paths = 0;
@@ -102,7 +102,9 @@ int bfs(t_world *world, t_room *start)
 	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
 	while (ft_lstlen(&rooms) > 0)
 	{
-		room = (t_room *)(ft_lstpop(&rooms)->content);
+		lst = ft_lstpop(&rooms);
+		room = (t_room *)lst->content;
+		free(lst);
 		i = 1;
 		y = 0;
 		while (i < world->nb_rooms)
@@ -149,17 +151,11 @@ int get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost
 			index++;
 			continue;
 		}
-
-		//printf("%s -> %s\n", room->name, it->name);
-
 		if (cost == 0)
 			target_index = index;
-
 		if (index == 1)
 		{
-			//set_link_exist(&(world->links[index][get_room_index(world, room->name)]), 0);
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			//printf("Path of cost %d added with target index %d\n", cost + 1, target_index);
 			return (1);
 		}
 		else
@@ -170,13 +166,7 @@ int get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost
 			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 0);
 
 			if (!check_moves(all_moves, target_index, cost + 1))
-			{
-				if (get_all_moves_rec(world, it, all_moves, cost + 1, target_index))
-				{
-					//printf("%s\n", it->name);
-					//return (1);
-				}
-			}
+				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
 			else
 			{
 				set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
@@ -217,12 +207,6 @@ void set_ant_reach(t_world *world, int ant_num)
 	index = ant_num % 32;
 	world->ants[int_index] |= (1 << (31 - index));
 }
-
-
-
-// Calculate each path from each start voisin.
-// Keep the nb best where nb is U KNOW
-
 
 void pathfinding(t_world *world)
 {
@@ -268,8 +252,6 @@ void pathfinding(t_world *world)
 					continue;
 				}
 
-			//	printf(" | Get %d moves from %s ", ft_lstlen(&moves), room->name);
-
 				room->num_ant = 0;
 
 				if (move->target_index == 1)
@@ -280,27 +262,20 @@ void pathfinding(t_world *world)
 						start++;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
-					//add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				else
 				{
 					get_room_by_index(world, move->target_index)->num_ant = i;
 					set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 					set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-					printf("L%d-%s ", i, get_room_by_index(world, move->target_index)->name);
-					//add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
+					add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
 				}
 				free_list(&moves, free_move_maillon);
 			}
-			else
-			{
-				printf("No path from %s\n", room->name);
-			}
 			i++;
 		}
-		//add_print(&(world->print), "\n", 0);
-		printf("\n");
+		add_print(&(world->print), "\n", 0);
 		reinit_links(world);
 	}
 }
