@@ -76,13 +76,38 @@ t_room	*pop_room(t_list **lst)
 	return (room);
 }
 
+void	bfs_2(t_world *world, t_list **rooms, int *nb_paths)
+{
+	t_room	*room;
+	t_room	*target;
+	int		val[2];
+
+	room = pop_room(rooms);
+	val[0] = 0;
+	val[1] = 0;
+	while (++val[0] < world->nb_rooms)
+	{
+		target = get_room_by_index(world, val[0]);
+		if (is_joinable(world, room, target) && target->num_ant != 1)
+		{
+			val[1]++;
+			if (val[0] != 1)
+				target->num_ant = 1;
+			else
+			{
+				(*nb_paths)++;
+				break ;
+			}
+			ft_lstadd(rooms, ft_lstnew(target, sizeof(target)));
+		}
+	}
+	if (val[1] == 0)
+		avoid_path(world, room);
+}
+
 int		bfs(t_world *world, t_room *start)
 {
 	t_list	*rooms;
-	t_room	*room;
-	t_room	*target;
-	int		i;
-	int		y;
 	int		nb_paths;
 
 	if (!world)
@@ -93,27 +118,7 @@ int		bfs(t_world *world, t_room *start)
 	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
 	while (ft_lstlen(&rooms) > 0)
 	{
-		room = pop_room(&rooms);
-		i = 0;
-		y = 0;
-		while (++i < world->nb_rooms)
-		{
-			target = get_room_by_index(world, i);
-			if (is_joinable(world, room, target) && target->num_ant != 1)
-			{
-				y++;
-				if (i != 1)
-					target->num_ant = 1;
-				else
-				{
-					nb_paths++;
-					break ;
-				}
-				ft_lstadd(&rooms, ft_lstnew(target, sizeof(target)));
-			}
-		}
-		if (y == 0)
-			avoid_path(world, room);
+		bfs_2(world, &rooms, &nb_paths);
 	}
 	reset_num_ant(world);
 	return (nb_paths);
