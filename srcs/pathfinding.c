@@ -85,23 +85,22 @@ void	bfs_2(t_world *world, t_list **rooms, int *nb_paths)
 	room = pop_room(rooms);
 	val[0] = 0;
 	val[1] = 0;
-	while (++val[0] < world->nb_rooms)
+	while (++(val[0]) < world->nb_rooms)
 	{
 		target = get_room_by_index(world, val[0]);
-		if (is_joinable(world, room, target) && target->num_ant != 1)
-		{
-			set_link_exist(&(world->links[get_room_index(world, room->name)][val[0]]), 1);
-			set_link_exist(&(world->links[val[0]][get_room_index(world, room->name)]), 0);
-			val[1]++;
-			if (val[0] != 1)
+		if (!(is_joinable(world, room, target) && target->num_ant != 1))
+			continue ;
+		set_link_exist(&(world->links[get_room_index(world, room->name)][val[0]]), 1);
+		set_link_exist(&(world->links[val[0]][get_room_index(world, room->name)]), 0);
+		(val[1])++;
+		if (val[0] != 1)
 				target->num_ant = 1;
-			else
-			{
-				(*nb_paths)++;
-				break ;
-			}
-			ft_lstadd(rooms, ft_lstnew(target, sizeof(target)));
+		else
+		{
+			(*nb_paths)++;
+			break ;
 		}
+		ft_lstadd(rooms, ft_lstnew(target, sizeof(target)));
 	}
 	if (val[1] == 0)
 		avoid_path(world, room);
@@ -119,9 +118,7 @@ int		bfs(t_world *world, t_room *start)
 	world->start_room->num_ant = 1;
 	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
 	while (ft_lstlen(&rooms) > 0)
-	{
 		bfs_2(world, &rooms, &nb_paths);
-	}
 	reset_num_ant(world);
 	return (nb_paths);
 }
@@ -146,7 +143,6 @@ int		get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			target_index = index;
 		if (index == 1)
 		{
-			printf("path cost %d, target_index %d\n", cost + 1, target_index);
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
 			return (1);
 		}
@@ -154,15 +150,11 @@ int		get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 		{
 			if (it->num_ant > 0 && cost == 0)
 				cost++;
-			set_link_exist(&(world->links[index][get_room_index(world, room->name)]), 0);
 			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 0);
 			if (!check_moves(all_moves, target_index, cost + 1))
 				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
 			else
-			{
-				set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
 				return (0);
-			}
 			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
 			if (cost > 0 && it->num_ant > 0)
 				cost--;
@@ -199,13 +191,8 @@ void	pathfinding(t_world *world)
 			if (moves)
 			{
 				move = get_best_move(world, moves);
-				if (get_room_by_index(world, move->target_index)->num_ant != 0 && move->target_index != 1)
-				{
-					free_list(&moves, free_move_maillon);
-					i++;
-					continue;
-				}
-				if (!can_join(world, room, get_room_by_index(world, move->target_index)))
+				if ((get_room_by_index(world, move->target_index)->num_ant != 0 && move->target_index != 1) || 
+					!can_join(world, room, get_room_by_index(world, move->target_index)))
 				{
 					free_list(&moves, free_move_maillon);
 					i++;
