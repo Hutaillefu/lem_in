@@ -94,7 +94,7 @@ void			display_world(t_world *world);
 	** Pathfinding func
 */
 void			get_all_moves_rec(t_world *world, t_room *room,
-t_list **all_moves, int cost, int target_index);
+t_list **all_moves, int val[2]);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);

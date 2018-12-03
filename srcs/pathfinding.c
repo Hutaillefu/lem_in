@@ -123,37 +123,62 @@ int		bfs(t_world *world, t_room *start)
 	return (nb_paths);
 }
 
-void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index)
-{
-	int		index;
-	t_room	*it;
-	int		room_index;
+// int		ffff(t_world *world, t_room *room, t_list **all_moves, int *val[2])
+// {
 
-	if (!world || !room)
-		return ;
-	index = 0;
-	room_index = get_room_index(world, room->name);
-	while (++index < world->nb_rooms && (it = get_room_by_index(world, index)))
+// }
+
+// Add ant's index attribute ?
+
+void	get_all_moves(t_world *world, t_room *room, t_list **all_moves)
+{
+	int val[2];
+
+	val[0] = 0;
+	val[1] = -1;
+	get_all_moves_rec(world, room, all_moves, val);
+}
+
+int		get_all_utils(t_world *world, t_room *it, t_list **all_moves,
+int *val[2])
+{
+	(*val[0]) += (it->num_ant > 0 && (*val)[0] == 0) ? 1 : 0;
+	if (!check_moves(all_moves, (*val)[1], (*val)[0] + 1))
 	{
-		if (!is_link_exist(world->links[room_index][index]))
+		(*val)[0]++;
+		get_all_moves_rec(world, it, all_moves, *val);
+		(*val)[0]--;
+	}
+	else
+		return (0);
+	(*val)[0] -= ((*val)[0] > 0 && it->num_ant > 0) ? 1 : 0;
+	return (1);
+}
+
+void	get_all_moves_rec(t_world *w, t_room *room, t_list **all_moves,
+int val[2])
+{
+	t_room	*it;
+	int		ids[2];
+
+	if (!w || !room)
+		return ;
+	ids[1] = 0;
+	ids[0] = get_room_index(w, room->name);
+	while (++(ids[1]) < w->nb_rooms && (it = get_room_by_index(w, ids[1])))
+	{
+		if (!is_link_exist(w->links[ids[0]][ids[1]]))
 			continue;
-		target_index = cost == 0 ? index : target_index;
-		if (index == 1)
+		val[1] = val[0] == 0 ? ids[1] : val[1];
+		if (ids[1] == 1)
 		{
-			ft_lstadd(all_moves, create_move(cost + 1, target_index));
+			ft_lstadd(all_moves, create_move(val[0] + 1, val[1]));
 			return ;
 		}
-		else
-		{
-			cost += (it->num_ant > 0 && cost == 0) ? 1 : 0;
-			set_link_exist(&(world->links[room_index][index]), 0);
-			if (!check_moves(all_moves, target_index, cost + 1))
-				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
-			else
-				return ;
-			set_link_exist(&(world->links[room_index][index]), 1);
-			cost -= (cost > 0 && it->num_ant > 0) ? 1 : 0;
-		}
+		set_link_exist(&(w->links[ids[0]][ids[1]]), 0);
+		if (!get_all_utils(w, it, all_moves, &val))
+			return ;
+		set_link_exist(&(w->links[ids[0]][ids[1]]), 1);
 	}
 }
 
@@ -181,7 +206,7 @@ void	pathfinding(t_world *world)
 			}
 			room = get_room_where_ant(world, i);
 			moves = NULL;
-			get_all_moves_rec(world, room, &moves, 0, -1);
+			get_all_moves(world, room, &moves);
 			if (moves)
 			{
 				move = get_best_move(world, moves);
