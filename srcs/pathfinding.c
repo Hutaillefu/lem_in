@@ -12,14 +12,6 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
-
-void	display_room(t_room *room)
-{
-	if (!room)
-		return ;
-	printf("room name:%s, x:%d, y:%d, num_ant:%d\n", room->name, room->x, room->y, room->num_ant);
-}
 
 t_list	*create_move(int cost, int target_index)
 {
@@ -119,16 +111,8 @@ int		bfs(t_world *world, t_room *start)
 	while (ft_lstlen(&rooms) > 0)
 		bfs_2(world, &rooms, pop_room(&rooms), &nb_paths);
 	reset_num_ant(world);
-	//printf("%d paths detected\n", nb_paths);
 	return (nb_paths);
 }
-
-// int		ffff(t_world *world, t_room *room, t_list **all_moves, int *val[2])
-// {
-
-// }
-
-// Add ant's index attribute ?
 
 void	get_all_moves(t_world *world, t_room *room, t_list **all_moves)
 {
@@ -182,58 +166,58 @@ int val[2])
 	}
 }
 
+int		process_moves(t_world *w, t_room *r, t_list *moves,
+int (*cpt)[2])
+{
+	t_room	*target;
+	t_move	*m;
+
+	if (!moves || !(m = get_best_move(w, moves)))
+		return (0);
+	target = get_room_by_index(w, m->target_index);
+	if ((target->num_ant != 0 && m->target_index != 1) ||
+		!can_join(w, r, target))
+	{
+		free_list(&moves, free_move_maillon);
+		return (1);
+	}
+	r->num_ant = 0;
+	if (m->target_index == 1)
+	{
+		(w->end_room->num_ant)++;
+		set_ant_reach(w, (*cpt)[0]);
+		(*cpt)[0] += (*cpt)[0] == (*cpt)[1] + 1 ? 1 : 0;
+	}
+	else
+		target->num_ant = (*cpt)[0];
+	set_link_free(&(w->links[get_room_index(w, r->name)][m->target_index]), 0);
+	set_link_free(&(w->links[m->target_index][get_room_index(w, r->name)]), 0);
+	add_move_print(&(w->print), (*cpt)[0], (char *)target->name);
+	return (0);
+}
+
 void	pathfinding(t_world *world)
 {
 	t_list	*moves;
 	t_room	*room;
-	t_move	*move;
-	int		i;
-	int		start;
-	t_room *target;
+	int		cpt[2];
 
 	if (!world)
 		return ;
-	start = 1;
+	cpt[1] = 0;
 	while (world->end_room->num_ant != world->nb_ants)
 	{
-		i = start;
-		while (i <= world->nb_ants)
+		cpt[0] = cpt[1];
+		while (++(cpt[0]) <= world->nb_ants)
 		{
-			if (is_ant_reach(world, i))
-			{
-				i++;
+			if (is_ant_reach(world, cpt[0]))
 				continue;
-			}
-			room = get_room_where_ant(world, i);
+			room = get_room_where_ant(world, cpt[0]);
 			moves = NULL;
 			get_all_moves(world, room, &moves);
-			if (moves)
-			{
-				move = get_best_move(world, moves);
-				target = get_room_by_index(world, move->target_index);
-				if ((target->num_ant != 0 && move->target_index != 1) ||
-					!can_join(world, room, target))
-				{
-					free_list(&moves, free_move_maillon);
-					i++;
-					continue;
-				}
-				room->num_ant = 0;
-				if (move->target_index == 1)
-				{
-					(world->end_room->num_ant)++;
-					set_ant_reach(world, i);
-					if (i == start + 1)
-						start++;
-				}
-				else
-					target->num_ant = i;
-				set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
-				set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-				add_move_print(&(world->print), i, (char *)target->name);
-				free_list(&moves, free_move_maillon);
-			}
-			i++;
+			if (process_moves(world, room, moves, &cpt))
+				continue;
+			free_list(&moves, free_move_maillon);
 		}
 		add_print(&(world->print), "\n", 0);
 		reinit_links(world);
