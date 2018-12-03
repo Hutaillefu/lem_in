@@ -93,13 +93,13 @@ void			display_world(t_world *world);
 /*
 	** Pathfinding func
 */
-int				get_all_moves_rec(t_world *world, t_room *room,
+void			get_all_moves_rec(t_world *world, t_room *room,
 t_list **all_moves, int cost, int target_index);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
 t_move			*get_best_move(t_world *world, t_list *moves);
-void 			avoid_path(t_world *world, t_room *room);
+void 			avoid_path(t_world *world, int room_index);
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);

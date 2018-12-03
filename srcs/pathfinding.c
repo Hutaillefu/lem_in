@@ -76,25 +76,24 @@ t_room	*pop_room(t_list **lst)
 	return (room);
 }
 
-void	bfs_2(t_world *world, t_list **rooms, int *nb_paths)
+void	bfs_2(t_world *world, t_list **rooms, t_room *room, int *nb_paths)
 {
-	t_room	*room;
 	t_room	*target;
-	int		val[2];
+	int		val[3];
 
-	room = pop_room(rooms);
 	val[0] = 0;
 	val[1] = 0;
+	val[2] = get_room_index(world, room->name);
 	while (++(val[0]) < world->nb_rooms)
 	{
 		target = get_room_by_index(world, val[0]);
 		if (!(is_joinable(world, room, target) && target->num_ant != 1))
 			continue ;
-		set_link_exist(&(world->links[get_room_index(world, room->name)][val[0]]), 1);
-		set_link_exist(&(world->links[val[0]][get_room_index(world, room->name)]), 0);
+		set_link_exist(&(world->links[val[2]][val[0]]), 1);
+		set_link_exist(&(world->links[val[0]][val[2]]), 0);
 		(val[1])++;
 		if (val[0] != 1)
-				target->num_ant = 1;
+			target->num_ant = 1;
 		else
 		{
 			(*nb_paths)++;
@@ -103,7 +102,7 @@ void	bfs_2(t_world *world, t_list **rooms, int *nb_paths)
 		ft_lstadd(rooms, ft_lstnew(target, sizeof(target)));
 	}
 	if (val[1] == 0)
-		avoid_path(world, room);
+		avoid_path(world, val[2]);
 }
 
 int		bfs(t_world *world, t_room *start)
@@ -118,50 +117,44 @@ int		bfs(t_world *world, t_room *start)
 	world->start_room->num_ant = 1;
 	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
 	while (ft_lstlen(&rooms) > 0)
-		bfs_2(world, &rooms, &nb_paths);
+		bfs_2(world, &rooms, pop_room(&rooms), &nb_paths);
 	reset_num_ant(world);
+	//printf("%d paths detected\n", nb_paths);
 	return (nb_paths);
 }
 
-int		get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index)
+void	get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cost, int target_index)
 {
 	int		index;
 	t_room	*it;
+	int		room_index;
 
 	if (!world || !room)
-		return (0);
-	index = 1;
-	while (index < world->nb_rooms)
+		return ;
+	index = 0;
+	room_index = get_room_index(world, room->name);
+	while (++index < world->nb_rooms && (it = get_room_by_index(world, index)))
 	{
-		it = get_room_by_index(world, index);
-		if (!is_link_exist(world->links[get_room_index(world, room->name)][index]))
-		{
-			index++;
+		if (!is_link_exist(world->links[room_index][index]))
 			continue;
-		}
-		if (cost == 0)
-			target_index = index;
+		target_index = cost == 0 ? index : target_index;
 		if (index == 1)
 		{
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
-			return (1);
+			return ;
 		}
 		else
 		{
-			if (it->num_ant > 0 && cost == 0)
-				cost++;
-			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 0);
+			cost += (it->num_ant > 0 && cost == 0) ? 1 : 0;
+			set_link_exist(&(world->links[room_index][index]), 0);
 			if (!check_moves(all_moves, target_index, cost + 1))
 				get_all_moves_rec(world, it, all_moves, cost + 1, target_index);
 			else
-				return (0);
-			set_link_exist(&(world->links[get_room_index(world, room->name)][index]), 1);
-			if (cost > 0 && it->num_ant > 0)
-				cost--;
+				return ;
+			set_link_exist(&(world->links[room_index][index]), 1);
+			cost -= (cost > 0 && it->num_ant > 0) ? 1 : 0;
 		}
-		index++;
 	}
-	return (0);
 }
 
 void	pathfinding(t_world *world)
@@ -171,6 +164,7 @@ void	pathfinding(t_world *world)
 	t_move	*move;
 	int		i;
 	int		start;
+	t_room *target;
 
 	if (!world)
 		return ;
@@ -191,8 +185,9 @@ void	pathfinding(t_world *world)
 			if (moves)
 			{
 				move = get_best_move(world, moves);
-				if ((get_room_by_index(world, move->target_index)->num_ant != 0 && move->target_index != 1) || 
-					!can_join(world, room, get_room_by_index(world, move->target_index)))
+				target = get_room_by_index(world, move->target_index);
+				if ((target->num_ant != 0 && move->target_index != 1) ||
+					!can_join(world, room, target))
 				{
 					free_list(&moves, free_move_maillon);
 					i++;
@@ -207,10 +202,10 @@ void	pathfinding(t_world *world)
 						start++;
 				}
 				else
-					get_room_by_index(world, move->target_index)->num_ant = i;
+					target->num_ant = i;
 				set_link_free(&(world->links[get_room_index(world, room->name)][move->target_index]), 0);
 				set_link_free(&(world->links[move->target_index][get_room_index(world, room->name)]), 0);
-				add_move_print(&(world->print), i, (char *)get_room_by_index(world, move->target_index)->name);
+				add_move_print(&(world->print), i, (char *)target->name);
 				free_list(&moves, free_move_maillon);
 			}
 			i++;

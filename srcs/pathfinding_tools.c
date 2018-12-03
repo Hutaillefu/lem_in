@@ -89,21 +89,19 @@ t_move	*get_best_move(t_world *world, t_list *moves)
   ** Desactivate all links from and to 'room'.
 */
 
-void	avoid_path(t_world *world, t_room *room)
+void	avoid_path(t_world *world, int room_index)
 {
 	int i;
-	int index;
 
-	if (!world || !room)
+	if (!world)
 		return;
 	i = 0;
-	index = get_room_index(world, room->name);
-	if (index == 1)
+	if (room_index == 1)
 		return;
 	while (i < world->nb_rooms)
 	{
-		set_link_exist(&(world->links[i][index]), 0);
-		set_link_exist(&(world->links[index][i]), 0);
+		set_link_exist(&(world->links[i][room_index]), 0);
+		set_link_exist(&(world->links[room_index][i]), 0);
 		i++;
 	}
 }

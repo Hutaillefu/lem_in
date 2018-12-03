@@ -70,24 +70,6 @@ int		can_run(t_world *world)
 	return (bfs(world, world->start_room));
 }
 
-t_list	*get_start_voisins(t_world *world)
-{
-	int		i;
-	t_list	*voisins;
-	t_room	*room;
-
-	voisins = NULL;
-	i = 1;
-	while (i < world->nb_rooms)
-	{
-		room = get_room_by_index(world, i);
-		if (is_joinable(world, world->start_room, room))
-			ft_lstpush(&voisins, ft_lstnew(room, sizeof(room)));
-		i++;
-	}
-	return voisins;
-}
-
 int		main(int argc, char **argv)
 {
 	t_world	*world;
@@ -102,12 +84,12 @@ int		main(int argc, char **argv)
 
 	if (!can_run(world))
 		exit_lemin(&world, 1);
-	printf("%s", world->print);
+	ft_putstr(world->print);
 	free(world->print);
 	world->print = ft_strdup("");
 	init_ants(world);
 	pathfinding(world);
-	printf("%s", world->print);
+	ft_putstr(world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }
