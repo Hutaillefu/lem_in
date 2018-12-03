@@ -90,6 +90,8 @@ void	bfs_2(t_world *world, t_list **rooms, int *nb_paths)
 		target = get_room_by_index(world, val[0]);
 		if (is_joinable(world, room, target) && target->num_ant != 1)
 		{
+			set_link_exist(&(world->links[get_room_index(world, room->name)][val[0]]), 1);
+			set_link_exist(&(world->links[val[0]][get_room_index(world, room->name)]), 0);
 			val[1]++;
 			if (val[0] != 1)
 				target->num_ant = 1;
@@ -135,7 +137,7 @@ int		get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 	while (index < world->nb_rooms)
 	{
 		it = get_room_by_index(world, index);
-		if (!is_joinable(world, room, it))
+		if (!is_link_exist(world->links[get_room_index(world, room->name)][index]))
 		{
 			index++;
 			continue;
@@ -144,6 +146,7 @@ int		get_all_moves_rec(t_world *world, t_room *room, t_list **all_moves, int cos
 			target_index = index;
 		if (index == 1)
 		{
+			printf("path cost %d, target_index %d\n", cost + 1, target_index);
 			ft_lstadd(all_moves, create_move(cost + 1, target_index));
 			return (1);
 		}
