@@ -76,6 +76,7 @@ void			free_list(t_list **lst, void (*del)(void *, int));
 int				parse_num_ants(t_world *world);
 t_room			*parse_room(t_world *world, const char *line);
 int				parse_active_commentary(t_world *world, const char *pre_line);
+int				parse_commentary(t_world *world, const char *line);
 int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
 int				setup_room(t_world *world, char *line, t_room **room);

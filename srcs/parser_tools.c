@@ -45,3 +45,11 @@ int		process_room(const char *line, t_world *world)
 	}
 	return (1);
 }
+
+int		parse_commentary(t_world *world, const char *line)
+{
+	if (!world || !line)
+		return (0);
+	add_print(&(world->print), (char *)line, 1);
+	return (1);
+}

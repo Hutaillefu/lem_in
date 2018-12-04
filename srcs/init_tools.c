@@ -16,6 +16,7 @@
 /*
   ** Init ant's tab. One bit per ant.
 */
+
 int		init_ants(t_world *world)
 {
 	int nb_int;

@@ -102,4 +102,3 @@ int		add_room(t_world *world, t_room *room)
 	(world->nb_rooms)++;
 	return (1);
 }
-

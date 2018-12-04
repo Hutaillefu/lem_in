@@ -63,7 +63,7 @@ t_room	*parse_room(t_world *world, const char *line)
 		ft_free_tab(values);
 		return (NULL);
 	}
-	add_print(&(world->print), (char *)line, 1);	
+	add_print(&(world->print), (char *)line, 1);
 	ft_free_tab(values);
 	return (room);
 }
@@ -137,17 +137,14 @@ void	parse_map(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		res = 0;
-		if (is_active_commentary(line) &&
-		parse_active_commentary(world, line) >= 0)
-			res = 1;
-		//else if (is_commentary(line) && !parse_commentary(line))
-		else if (is_room(line) && process_room(line, world))
-			res = 1;
-		else if (is_link(line) && parse_link(line, world))
+		if ((is_active_commentary(line) && parse_active_commentary(world, line) >= 0) ||
+			(is_commentary(line) && parse_commentary(world, line)) ||
+			(is_room(line) && process_room(line, world)) ||
+			(is_link(line) && parse_link(line, world)))
 			res = 1;
 		free(line);
 		line = NULL;
-		if (!res)
+		if (res != 1)
 		{
 			add_print(&(world->print), "\n", 0);		
 			return ;
