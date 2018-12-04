@@ -85,7 +85,7 @@ int (*cpt)[2])
 	{
 		(w->end_room->num_ant)++;
 		set_ant_reach(w, (*cpt)[0]);
-		(*cpt)[0] += (*cpt)[0] == (*cpt)[1] + 1 ? 1 : 0;
+		//(*cpt)[0] += (*cpt)[0] == (*cpt)[1] + 1 ? 1 : 0;
 	}
 	else
 		target->num_ant = (*cpt)[0];
