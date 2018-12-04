@@ -12,6 +12,7 @@ TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/parser.c \
 	      ./srcs/parser_tools.c \
 	      ./srcs/pathfinding.c \
+	      ./srcs/pathfinding2.c \
 	      ./srcs/pathfinding_tools.c \
 		  ./srcs/free_tools.c \
 		  ./srcs/free_list_tools.c \

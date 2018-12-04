@@ -59,6 +59,7 @@ t_world			*create_world();
 int				add_room(t_world *world, t_room *room);
 int				init_links(t_world *world);
 int				init_ants(t_world *world);
+t_list			*create_move(int cost, int target_index);
 
 /*
 	** Free func
@@ -100,6 +101,8 @@ int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
 t_move			*get_best_move(t_world *world, t_list *moves);
 void 			avoid_path(t_world *world, int room_index);
+int				check_moves(t_list **all_moves, int target_index, int cost);
+int				bfs(t_world *world, t_room *start);
 
 void			display_room(t_room *room);
 void			display_transi(t_world *world);
@@ -123,5 +126,4 @@ void			reinit_links(t_world *world);
 void			add_print(char **str, char *add, int back);
 void			add_move_print(char **str, int ant_num, char *room_name);
 
-int				bfs(t_world *world, t_room *start);
 #endif
