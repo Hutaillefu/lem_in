@@ -12,7 +12,6 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <stdio.h>
 
 /*
   ** Return true if 'from'->'to' or 'to'->'from' exist.

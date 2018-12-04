@@ -49,7 +49,7 @@ t_room	*parse_room(t_world *world, const char *line)
 
 	values = NULL;
 	room = NULL;
-	if (*line == 'L' ||	*line == '#' || !(values = ft_strsplit(line, ' ')))
+	if (*line == 'L' || *line == '#' || !(values = ft_strsplit(line, ' ')))
 		return (NULL);
 	if (ft_tablen(values) != 3 || !ft_strisdigit(values[1]) ||
 	!ft_strisdigit(values[2]))
@@ -86,7 +86,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 		return (1);
 	if (!get_next_line(0, &line))
 		return (-1);
-	add_print(&(world->print), (char *)pre_line, 1);	
+	add_print(&(world->print), (char *)pre_line, 1);
 	if (ft_strcmp("start", &(pre_line[2])) == 0)
 		setup_room(world, line, &(world->start_room));
 	else if (ft_strcmp("end", &(pre_line[2])) == 0)
@@ -137,7 +137,8 @@ void	parse_map(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		res = 0;
-		if ((is_active_commentary(line) && parse_active_commentary(world, line) >= 0) ||
+		if ((is_active_commentary(line) &&
+		parse_active_commentary(world, line) >= 0) ||
 			(is_commentary(line) && parse_commentary(world, line)) ||
 			(is_room(line) && process_room(line, world)) ||
 			(is_link(line) && parse_link(line, world)))
@@ -146,9 +147,9 @@ void	parse_map(t_world *world)
 		line = NULL;
 		if (res != 1)
 		{
-			add_print(&(world->print), "\n", 0);		
+			add_print(&(world->print), "\n", 0);
 			return ;
 		}
 	}
-	add_print(&(world->print), "\n", 0);		
+	add_print(&(world->print), "\n", 0);
 }
