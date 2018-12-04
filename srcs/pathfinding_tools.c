@@ -49,6 +49,8 @@ int		can_join(t_world *world, t_room *from, t_room *to)
 	is_link_free(world->links[to_index][from_index]));
 }
 
+#include <stdio.h>
+
 /*
   ** Return the best move of 'moves'.
 */
@@ -57,30 +59,29 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 {
 	t_list *it;
 	t_move *best;
-	// int		is_ant_best;
-	// int		is_ant_it;
-	(void)world;
+	int		is_ant_best;
+	int		is_ant_it;
+
 	if (!moves)
 		return (NULL);
 	best = (t_move *)moves->content;
+	printf("move costs %d to %d, ", best->cost,  best->target_index);
 	it = moves->next;
 	while (it)
 	{
+		printf("move costs %d to %d, ", ((t_move *)it->content)->cost,  ((t_move *)it->content)->target_index);
 		if (((t_move *)it->content)->cost < best->cost)
-		{
-			//printf("Best move tools\n");
 			best = (t_move *)it->content;
+		else if (((t_move *)it->content)->cost == best->cost)
+		{
+			is_ant_best = get_room_by_index(world, best->target_index)->num_ant != 0;
+			is_ant_it = get_room_by_index(world, ((t_move *)it->content)->target_index)->num_ant != 0;
+			if (is_ant_best && !is_ant_it)
+				best = (t_move *)it->content;
 		}
-		// else if (((t_move *)it->content)->cost == best->cost)
-		// {
-		// 	is_ant_best = get_room_by_index(world, best->target_index)->num_ant != 0;
-		// 	is_ant_it = get_room_by_index(world, ((t_move *)it->content)->target_index)->num_ant != 0;
-		// 	//printf("best ant :%d, it ant :%d\n", is_ant_best, is_ant_it);
-		// 	if (is_ant_best && !is_ant_it)
-		// 		best = (t_move *)it->content;
-		// }
 		it = it->next;
-	} // PROBLEM DANS CETTE FCT, RENVOI LE MOVAI MOVE PArFOIS (OK POUR M1 MAIS PAS M7)
+	}
+	printf("\n");
 	return (best);
 }
 

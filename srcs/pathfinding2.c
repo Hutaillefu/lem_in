@@ -70,10 +70,13 @@ void	bfs_2(t_world *world, t_list **rooms, t_room *room, int *nb_paths)
 	{
 		target = get_room_by_index(world, val[0]);
 		if (!(is_joinable(world, room, target) && target->num_ant != 1))
+		{
+			set_link_exist(&(world->links[val[2]][val[0]]), 0);
 			continue ;
+		}
 		set_link_exist(&(world->links[val[2]][val[0]]), 1);
 		set_link_exist(&(world->links[val[0]][val[2]]), 0);
-		(val[1])++;
+		val[1]++;
 		if (val[0] != 1)
 			target->num_ant = 1;
 		else
@@ -81,7 +84,7 @@ void	bfs_2(t_world *world, t_list **rooms, t_room *room, int *nb_paths)
 			(*nb_paths)++;
 			break ;
 		}
-		ft_lstadd(rooms, ft_lstnew(target, sizeof(target)));
+		ft_lstpush(rooms, ft_lstnew(target, sizeof(target)));
 	}
 	if (val[1] == 0)
 		avoid_path(world, val[2]);

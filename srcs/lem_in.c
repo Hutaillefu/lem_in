@@ -12,6 +12,46 @@
 /* ************************************************************************** */
 
 #include "lem_in.h"
+#include <stdio.h>
+
+void display_transi(t_world *world)
+{
+	int i;
+	int y;
+
+	if (!world || !(world->links))
+		return ;
+	printf("\t");
+	i = 0;
+	while (i < world->nb_rooms)
+	{
+		printf("%s\t", get_room_by_index(world, i)->name);
+		i++;
+	}
+	printf("\n");
+
+	i = 0;
+	while (i < world->nb_rooms)
+	{
+		y = 0;
+		printf("%s\t", get_room_by_index(world, i)->name);
+		while (y < world->nb_rooms)
+		{
+			if (is_link_exist(world->links[y][i]))
+			{
+				if (is_link_free(world->links[y][i]))
+					printf("1\t");
+				else
+					printf("2\t");
+			}
+			else
+				printf("0\t");
+			y++;
+		}
+		printf("\n");
+		i++;
+	}
+}	
 
 void	exit_lemin(t_world **world, int is_error)
 {
@@ -43,7 +83,7 @@ int		main(int argc, char **argv)
 	parse_map(world);
 	if (!can_run(world))
 		exit_lemin(&world, 1);
-	ft_putstr(world->print);
+	//ft_putstr(world->print);
 	free(world->print);
 	world->print = ft_strdup("");
 	init_ants(world);
