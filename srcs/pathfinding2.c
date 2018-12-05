@@ -89,7 +89,6 @@ void	bfs_2(t_world *world, t_list **rooms, t_room *room, int *nb_paths)
 	if (val[1] == 0)
 		avoid_path(world, val[2]);
 }
-
 int		bfs(t_world *world, t_room *start)
 {
 	t_list	*rooms;

@@ -100,7 +100,7 @@ t_list **all_moves, int val[2]);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
-t_move			*get_best_move(t_world *world, t_list *moves);
+t_move			*get_best_move(t_world *world, t_list *moves, t_room *room);
 void 			avoid_path(t_world *world, int room_index);
 int				check_moves(t_list **all_moves, int target_index, int cost);
 int				bfs(t_world *world, t_room *start);

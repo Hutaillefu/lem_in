@@ -81,9 +81,9 @@ int		main(int argc, char **argv)
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
 	parse_map(world);
-	if (!can_run(world))
+	 if (!can_run(world))
 		exit_lemin(&world, 1);
-	//ft_putstr(world->print);
+	ft_putstr(world->print);
 	free(world->print);
 	world->print = ft_strdup("");
 	init_ants(world);

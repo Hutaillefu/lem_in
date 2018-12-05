@@ -28,8 +28,7 @@ int		parse_num_ants(t_world *world)
 	{
 		world->nb_ants = ft_atoi(line);
 		add_print(&(world->print), line, 1);
-		free(line);
-		line = NULL;
+		ft_strdel(&line);
 		return (1);
 	}
 	if (line)
@@ -143,8 +142,7 @@ void	parse_map(t_world *world)
 			(is_room(line) && process_room(line, world)) ||
 			(is_link(line) && parse_link(line, world)))
 			res = 1;
-		free(line);
-		line = NULL;
+		ft_strdel(&line);
 		if (res != 1)
 		{
 			add_print(&(world->print), "\n", 0);

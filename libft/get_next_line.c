@@ -13,8 +13,6 @@
 
 #include "libft.h"
 
-#include <stdio.h>
-
 int			index_of(const char *s, int c)
 {
 	int i;
@@ -37,17 +35,13 @@ char		*process(char **stock)
 
 	if ((pos = index_of(*stock, '\n')) >= 0)
 	{
-		if (!(res = ft_strsub(*stock, 0, pos)))
-			return (NULL);
 		stock_ret = *stock;
-		if (pos != (int)ft_strlen(*stock) && !(*stock = ft_strsub(*stock,
-		pos + 1, ft_strlen(*stock) - pos)))
-		{
-			ft_strdel(&stock_ret);
-			ft_strdel(&res);
+		if (!(res = ft_strsub(*stock, 0, pos)) ||
+				!(*stock = ft_strsub(*stock, pos + 1,
+						ft_strlen(*stock) - pos + 1)))
 			return (NULL);
-		}
-		ft_strdel(&stock_ret);
+		free(stock_ret);
+		stock_ret = NULL;
 		return (res);
 	}
 	return (NULL);
@@ -91,32 +85,40 @@ t_list		*get_lst(t_list **lst, size_t fd)
 	while (iterator)
 	{
 		if (iterator->content_size == fd)
+		{
 			return (iterator);
+		}
 		iterator = iterator->next;
 	}
 	new = ft_lstnew(NULL, 0);
-	if (!new)
-		return (NULL);
 	new->content_size = fd;
 	ft_lstadd(lst, new);
-	return (new);
+	return (*lst);
 }
 
 int			get_next_line(const int fd, char **line)
 {
-	static t_list	list;
+	static t_list	*list = NULL;
 	char			*res;
+	t_list			*current;
 
 	res = NULL;
+	current = NULL;
 	if (fd < 0 || !(line))
 		return (-1);
-	if ((char *)list.content && (res = process((char **)&(list.content))))
-	{
-		*line = res;
-		return (1);
-	}
-	if (!(char *)list.content &&
-	!(char *)(list.content = ft_strdup("")))
+	current = get_lst(&list, (size_t)fd);
+	if (!current)
 		return (-1);
-	return (read_line(fd, (char **)&(list.content), line, &res));
+	if ((char *)current->content)
+	{
+		if ((res = process((char **)&current->content)))
+		{
+			*line = res;
+			return (1);
+		}
+	}
+	if (!(char *)current->content)
+		if (!(char *)(current->content = ft_strdup("")))
+			return (-1);
+	return (read_line(fd, (char **)&current->content, line, &res));
 }

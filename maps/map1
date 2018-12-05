@@ -4,7 +4,6 @@ start 10 10
 ##end
 end 20 20
 m1 1 1
-##adsgh
 m2 2 2
 m3 3 3
 m4 4 4
@@ -12,6 +11,7 @@ start-m1
 start-m2
 start-m3
 m1-end
+##wetweg
 m3-m4
 m2-m4
 m4-end

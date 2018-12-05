@@ -55,22 +55,27 @@ int		can_join(t_world *world, t_room *from, t_room *to)
   ** Return the best move of 'moves'.
 */
 
-t_move	*get_best_move(t_world *world, t_list *moves)
+t_move	*get_best_move(t_world *world, t_list *moves, t_room *room)
 {
 	t_list *it;
 	t_move *best;
 	int		is_ant_best;
 	int		is_ant_it;
-
+(void) room;
 	if (!moves)
 		return (NULL);
 	best = (t_move *)moves->content;
-	printf("move costs %d to %d, ", best->cost,  best->target_index);
+	if (!is_joinable(world, room, get_room_by_index(world, best->target_index)))
+		best = NULL;
 	it = moves->next;
 	while (it)
 	{
-		printf("move costs %d to %d, ", ((t_move *)it->content)->cost,  ((t_move *)it->content)->target_index);
-		if (((t_move *)it->content)->cost < best->cost)
+		if (!is_joinable(world, room, get_room_by_index(world, ((t_move *)it->content)->target_index)))
+		{
+			it = it->next;
+			continue ;
+		}
+		if (!best || ((t_move *)it->content)->cost < best->cost)
 			best = (t_move *)it->content;
 		else if (((t_move *)it->content)->cost == best->cost)
 		{
@@ -81,7 +86,6 @@ t_move	*get_best_move(t_world *world, t_list *moves)
 		}
 		it = it->next;
 	}
-	printf("\n");
 	return (best);
 }
 

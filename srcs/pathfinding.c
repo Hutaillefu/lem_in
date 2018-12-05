@@ -54,6 +54,7 @@ int val[2])
 	{
 		if (!is_link_exist(w->links[ids[0]][ids[1]]))
 			continue;
+		val[0] = val[0] < 0 ? 0 : val[0];
 		if (val[0] == 0)
 			val[1] = ids[1];
 		if (ids[1] == 1)
@@ -72,13 +73,12 @@ int (*cpt)[2])
 	t_room	*target;
 	t_move	*m;
 
-	if (!moves || !(m = get_best_move(w, moves)))
+	if (!moves || !(m = get_best_move(w, moves, r)))
 		return (0);
 	target = get_room_by_index(w, m->target_index);
 	if ((target->num_ant != 0 && m->target_index != 1) ||
 		!can_join(w, r, target))
 	{
-		//printf("Cant %d move from %s to %s\n", can_join(w, r, target),r->name, target->name);
 		free_list(&moves, free_move_maillon);
 		return (1);
 	}
@@ -87,7 +87,7 @@ int (*cpt)[2])
 	{
 		(w->end_room->num_ant)++;
 		set_ant_reach(w, (*cpt)[0]);
-		//(*cpt)[1] += (*cpt)[0] == (*cpt)[1] + 1 ? 1 : 0;
+		(*cpt)[1] += (*cpt)[0] == (*cpt)[1] + 1 ? 1 : 0;
 	}
 	else
 		target->num_ant = (*cpt)[0];
@@ -96,7 +96,6 @@ int (*cpt)[2])
 	add_move_print(&(w->print), (*cpt)[0], (char *)target->name);
 	return (0);
 }
-
 
 void	pathfinding(t_world *world)
 {
@@ -115,15 +114,10 @@ void	pathfinding(t_world *world)
 			if (is_ant_reach(world, cpt[0]))
 				continue;
 			room = get_room_where_ant(world, cpt[0]);
-			printf("Process ant num %d on room %s\n", cpt[0], room->name);
 			moves = NULL;
 			get_all_moves(world, room, &moves);
 			if (process_moves(world, room, moves, &cpt))
-			{
-				printf("Cant move ant on room %s\n", room->name);
 				continue;
-			}
-					printf("\n");
 			free_list(&moves, free_move_maillon);
 		}
 		add_print(&(world->print), "\n", 0);
