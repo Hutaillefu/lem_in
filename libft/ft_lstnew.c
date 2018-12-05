@@ -21,23 +21,6 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	if (!tmp)
 		return (NULL);
 	tmp->next = NULL;
-	/*if (!content)
-	{
-		tmp->content = NULL;
-		tmp->content_size = 0;
-	}
-	else
-	{
-		if (!(tmp->content = ft_memalloc(content_size)))
-		{
-			free(tmp);
-			free((void *)content);
-			tmp = NULL;
-			return (NULL);
-		}
-		ft_memcpy(tmp->content, content, content_size);
-		tmp->content_size = content_size;
-	}*/
 	tmp->content = (void *)content;
 	tmp->content_size = content_size;
 	return (tmp);

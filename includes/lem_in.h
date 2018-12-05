@@ -90,8 +90,6 @@ t_room			*get_room_by_index(t_world *world, int index);
 t_room			*get_room_where_ant(t_world *world, int ant_num);
 const char		*room_name(t_list *maillon);
 
-void			display_world(t_world *world);
-
 /*
 	** Pathfinding func
 */
@@ -101,23 +99,20 @@ void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
 t_move			*get_best_move(t_world *world, t_list *moves, t_room *room);
-void 			avoid_path(t_world *world, int room_index);
+void			avoid_path(t_world *world, int room_index);
 int				check_moves(t_list **all_moves, int target_index, int cost);
 int				bfs(t_world *world, t_room *start);
-
-void			display_room(t_room *room);
-void			display_transi(t_world *world);
 
 /*
 	** Bit func
 */
-
 int				is_link_exist(unsigned char data);
 int				is_link_free(unsigned char data);
 void			set_link_exist(unsigned char *data, unsigned char is_exist);
 void			set_link_free(unsigned char *data, unsigned char is_free);
 int				is_ant_reach(t_world *world, int ant_num);
 void			set_ant_reach(t_world *world, int ant_num);
+
 /*
    ** Links tools func
 */
