@@ -11,8 +11,6 @@
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
 #include "lem_in.h"
 
 void	get_all_moves(t_world *world, t_room *room, t_list **all_moves)
