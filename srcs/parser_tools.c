@@ -64,7 +64,8 @@ void	parse_links(t_world *world)
 	while (get_next_line(0, &line))
 	{
 		if (!(is_link(line) && parse_link(line, world)) &&
-			!(is_commentary(line) && parse_commentary(world, line)))
+			(!is_active_commentary(line) && !(is_commentary(line) &&
+			parse_commentary(world, line))))
 		{
 			ft_strdel(&line);
 			return ;
