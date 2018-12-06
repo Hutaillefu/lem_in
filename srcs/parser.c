@@ -121,53 +121,6 @@ int		parse_link(const char *line, t_world *world)
 	return (1);
 }
 
-void	parse_links(t_world *world)
-{
-	char	*line;
-
-	if (!world)
-		return ;
-	line = NULL;
-	while (get_next_line(0, &line))
-	{
-		if (!(is_link(line) && parse_link(line, world)) &&
-			!(is_commentary(line) && parse_commentary(world, line)))
-		{
-			ft_strdel(&line);
-			add_print(&(world->print), "\n", 0);
-			return ;
-		}
-		ft_strdel(&line);
-	}
-}
-
-void	parse_rooms(t_world *world)
-{
-	char	*line;
-
-	if (!world)
-		return ;
-	line = NULL;
-	while (get_next_line(0, &line))
-	{
-		if (!(is_active_commentary(line) &&
-		parse_active_commentary(world, line) >= 0) &&
-			!(is_commentary(line) && parse_commentary(world, line)) &&
-			!(is_room(line) && process_room(line, world)))
-		{
-			if (is_link(line) && parse_link(line, world))
-			{
-				ft_strdel(&line);
-				return ;
-			}
-			ft_strdel(&line);
-			add_print(&(world->print), "\n", 0);
-			return ;
-		}
-		ft_strdel(&line);
-	}
-}
-
 /*
   ** Parse stdin input into world object.
 */
@@ -178,4 +131,6 @@ void	parse_map(t_world *world)
 		return ;
 	parse_rooms(world);
 	parse_links(world);
+	if (world->print[ft_strlen(world->print)] != '\n')
+		add_print(&(world->print), "\n", 0);
 }
