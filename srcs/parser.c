@@ -110,8 +110,8 @@ int		parse_link(const char *line, t_world *world)
 		return (0);
 	}
 	if ((start_index = get_room_index(world, values[0])) < 0 ||
-	(end_index = get_room_index(world, values[1])) < 0 ||
-	!add_link(world, start_index, end_index))
+		(end_index = get_room_index(world, values[1])) < 0 ||
+		!add_link(world, start_index, end_index))
 	{
 		ft_free_tab(values);
 		return (0);

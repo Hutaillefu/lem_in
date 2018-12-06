@@ -59,6 +59,8 @@ static int	get_room_index_in_list(t_list *rooms, const char *name)
 
 int			get_room_index(t_world *world, const char *name)
 {
+	int index;
+
 	if (!world || !name)
 		return (-1);
 	if (world->start_room && world->start_room->name &&
@@ -67,7 +69,10 @@ int			get_room_index(t_world *world, const char *name)
 	else if (world->end_room && world->end_room->name &&
 	ft_strcmp(name, world->end_room->name) == 0)
 		return (1);
-	return (get_room_index_in_list(world->rooms, name) + 2);
+	index = get_room_index_in_list(world->rooms, name);
+	if (index != -1)
+		return index +2;
+	return (-1);
 }
 
 /*
@@ -91,19 +96,4 @@ t_room		*get_room_where_ant(t_world *world, int ant_num)
 		i++;
 	}
 	return (world->start_room);
-}
-
-/*
-  ** Return the name of the room in 'maillon'.
-*/
-
-const char	*room_name(t_list *maillon)
-{
-	t_room	*room;
-
-	if (!maillon || !(maillon->content))
-		return (NULL);
-	if (!(room = (t_room *)maillon->content))
-		return (NULL);
-	return (room->name);
 }

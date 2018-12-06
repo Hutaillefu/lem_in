@@ -92,7 +92,6 @@ void			parse_rooms(t_world *world);
 int				get_room_index(t_world *world, const char *name);
 t_room			*get_room_by_index(t_world *world, int index);
 t_room			*get_room_where_ant(t_world *world, int ant_num);
-const char		*room_name(t_list *maillon);
 
 /*
 	** Pathfinding func
