@@ -104,12 +104,8 @@ int		parse_link(const char *line, t_world *world)
 	if (!line || !world || (!(world->links) && !init_links(world)) ||
 	!(values = ft_strsplit(line, '-')))
 		return (0);
-	if (ft_tablen(values) != 2)
-	{
-		ft_free_tab(values);
-		return (0);
-	}
-	if ((start_index = get_room_index(world, values[0])) < 0 ||
+	if (ft_tablen(values) != 2 ||
+		(start_index = get_room_index(world, values[0])) < 0 ||
 		(end_index = get_room_index(world, values[1])) < 0 ||
 		!add_link(world, start_index, end_index))
 	{
