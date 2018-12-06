@@ -16,6 +16,8 @@
 
 # include "../libft/libft.h"
 
+#include <stdio.h>
+
 typedef struct	s_room{
 	const char	*name;
 	int			x;

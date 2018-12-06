@@ -44,7 +44,7 @@ static int	get_room_index_in_list(t_list *rooms, const char *name)
 	i = 0;
 	while (it)
 	{
-		if (room_name(it) && ft_strcmp(name, room_name(it)) == 0)
+		if (ft_strcmp(name, ((t_room *)it->content)->name) == 0)
 			return (i);
 		it = it->next;
 		i++;

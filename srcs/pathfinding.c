@@ -90,7 +90,7 @@ int (*cpt)[2])
 	else
 		target->num_ant = (*cpt)[0];
 	set_link_free(&(w->links[get_room_index(w, r->name)][m->target_index]), 0);
-	set_link_free(&(w->links[m->target_index][get_room_index(w, r->name)]), 0);
+	//set_link_free(&(w->links[m->target_index][get_room_index(w, r->name)]), 0);
 	add_move_print(&(w->print), (*cpt)[0], (char *)target->name);
 	return (0);
 }
