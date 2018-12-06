@@ -71,7 +71,7 @@ int			get_room_index(t_world *world, const char *name)
 		return (1);
 	index = get_room_index_in_list(world->rooms, name);
 	if (index != -1)
-		return index +2;
+		return (index + 2);
 	return (-1);
 }
 
