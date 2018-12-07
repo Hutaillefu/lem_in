@@ -30,5 +30,8 @@ int		is_commentary(const char *line)
 
 int		is_active_commentary(const char *line)
 {
-	return (is_commentary(line) && ft_strlen(line) >= 2 && line[1] == '#');
+	return (is_commentary(line) &&
+			ft_strlen(line) >= 2 && line[1] == '#' &&
+			(ft_strcmp("start", &(line[2])) == 0 ||
+			ft_strcmp("end", &(line[2])) == 0));
 }

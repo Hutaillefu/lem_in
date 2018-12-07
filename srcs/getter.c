@@ -60,7 +60,6 @@ static int	get_room_index_in_list(t_list *rooms, const char *name)
 int			get_room_index(t_world *world, const char *name)
 {
 	int index;
-
 	if (!world || !name)
 		return (-1);
 	if (world->start_room && world->start_room->name &&
@@ -69,8 +68,7 @@ int			get_room_index(t_world *world, const char *name)
 	else if (world->end_room && world->end_room->name &&
 	ft_strcmp(name, world->end_room->name) == 0)
 		return (1);
-	index = get_room_index_in_list(world->rooms, name);
-	if (index != -1)
+	if ((index = get_room_index_in_list(world->rooms, name)) != -1)
 		return (index + 2);
 	return (-1);
 }
