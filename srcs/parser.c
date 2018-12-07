@@ -131,9 +131,17 @@ void	parse_map(t_world *world)
 	if (!world)
 		return ;
 	if (!parse_rooms(world))
+	{
+		if (world->print[ft_strlen(world->print)] != '\n')
+			add_print(&(world->print), "\n", 0);
 		return ;
+	}
 	if (!parse_links(world))
+	{
+		if (world->print[ft_strlen(world->print)] != '\n')
+			add_print(&(world->print), "\n", 0);
 		return ;
+	}
 	if (world->print[ft_strlen(world->print)] != '\n')
 		add_print(&(world->print), "\n", 0);
 }
