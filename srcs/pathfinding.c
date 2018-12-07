@@ -29,7 +29,9 @@ int *val[2])
 	if (!check_moves(all_moves, (*val)[1], (*val)[0] + 1))
 	{
 		(*val)[0]++;
+		printf("Add %s\n",  it->name);
 		get_all_moves_rec(world, it, all_moves, *val);
+		printf("Rm %s\n",  it->name);
 		(*val)[0]--;
 	}
 	else
@@ -37,6 +39,8 @@ int *val[2])
 	(*val)[0] -= ((*val)[0] > 0 && it->num_ant > 0) ? 1 : 0;
 	return (1);
 }
+
+// Utiliser le content_size du 1er maillon pour connaitre la liste de rooms actuelle
 
 void	get_all_moves_rec(t_world *w, t_room *room, t_list **all_moves,
 int val[2])
@@ -57,6 +61,7 @@ int val[2])
 			val[1] = ids[1];
 		if (ids[1] == 1)
 		{
+			printf("Final path\n");
 			ft_lstadd(all_moves, create_move(val[0] + 1, val[1]));
 			return ;
 		}
