@@ -54,12 +54,12 @@ int		parse_commentary(t_world *world, const char *line)
 	return (1);
 }
 
-void	parse_links(t_world *world)
+int		parse_links(t_world *world)
 {
 	char	*line;
 
 	if (!world || !(world->start_room) || !(world->end_room))
-		return ;
+		return (0);
 	line = NULL;
 	while (get_next_line(0, &line))
 	{
@@ -68,18 +68,19 @@ void	parse_links(t_world *world)
 			parse_commentary(world, line))))
 		{
 			ft_strdel(&line);
-			return ;
+			return (0);
 		}
 		ft_strdel(&line);
 	}
+	return (1);
 }
 
-void	parse_rooms(t_world *world)
+int		parse_rooms(t_world *world)
 {
 	char	*line;
 
 	if (!world)
-		return ;
+		return (0);
 	line = NULL;
 	while (get_next_line(0, &line))
 	{
@@ -91,12 +92,13 @@ void	parse_rooms(t_world *world)
 			if (is_link(line) && parse_link(line, world))
 			{
 				ft_strdel(&line);
-				return ;
+				return (1);
 			}
 			ft_strdel(&line);
 			add_print(&(world->print), "\n", 0);
-			return ;
+			return (0);
 		}
 		ft_strdel(&line);
 	}
+	return (1);
 }

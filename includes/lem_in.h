@@ -83,8 +83,8 @@ int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
 int				setup_room(t_world *world, char *line, t_room **room);
 int				process_room(const char *line, t_world *world);
-void			parse_links(t_world *world);
-void			parse_rooms(t_world *world);
+int				parse_links(t_world *world);
+int				parse_rooms(t_world *world);
 
 /*
    ** Getter func

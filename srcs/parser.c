@@ -79,17 +79,25 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 	line = NULL;
 	room = NULL;
 	if (!world || !pre_line)
-		return (-1);
+		return (0);
 	if (!get_next_line(0, &line))
-		return (-1);
+		return (0);
 	add_print(&(world->print), (char *)pre_line, 1);
-	if (ft_strcmp("start", &(pre_line[2])) == 0)
-		setup_room(world, line, &(world->start_room));
-	else if (ft_strcmp("end", &(pre_line[2])) == 0)
-		setup_room(world, line, &(world->end_room));
-	free(line);
-	line = NULL;
-	return (1);
+	if ((ft_strcmp("start", &(pre_line[2])) == 0 && world->start_room) ||
+		(ft_strcmp("end", &(pre_line[2])) == 0 && world->end_room))
+	{
+		ft_strdel(&line);
+		return (0);
+	}
+	if ((ft_strcmp("start", &(pre_line[2])) == 0 &&
+		setup_room(world, line, &(world->start_room))) ||
+		(ft_strcmp("end", &(pre_line[2])) == 0 &&
+		setup_room(world, line, &(world->end_room))))
+	{
+		ft_strdel(&line);
+		return (1);
+	}
+	return (0);
 }
 
 int		parse_link(const char *line, t_world *world)
@@ -122,8 +130,10 @@ void	parse_map(t_world *world)
 {
 	if (!world)
 		return ;
-	parse_rooms(world);
-	parse_links(world);
+	if (!parse_rooms(world))
+		return ;
+	if (!parse_links(world))
+		return ;
 	if (world->print[ft_strlen(world->print)] != '\n')
 		add_print(&(world->print), "\n", 0);
 }
