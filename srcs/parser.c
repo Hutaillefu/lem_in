@@ -75,6 +75,7 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 {
 	char	*line;
 	t_room	*room;
+
 	line = NULL;
 	room = NULL;
 	if (!world || !pre_line)

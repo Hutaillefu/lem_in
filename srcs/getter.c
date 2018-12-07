@@ -60,6 +60,7 @@ static int	get_room_index_in_list(t_list *rooms, const char *name)
 int			get_room_index(t_world *world, const char *name)
 {
 	int index;
+
 	if (!world || !name)
 		return (-1);
 	if (world->start_room && world->start_room->name &&
