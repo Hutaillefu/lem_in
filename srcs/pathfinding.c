@@ -47,9 +47,7 @@ int val[2])
 	if (!w || !room)
 		return ;
 	ids[1] = 0;
-	ids[0] = get_room_index(w, room->name);
-
-	//printf("%s\n", room->name);
+	ids[0] = room->index;
 
 	while (++(ids[1]) < w->nb_rooms && (it = get_room_by_index(w, ids[1])))
 	{
@@ -92,7 +90,7 @@ int (*cpt)[2])
 	}
 	else
 		target->num_ant = (*cpt)[0];
-	set_link_free(&(w->links[get_room_index(w, r->name)][m->target_index]), 0);
+	set_link_free(&(w->links[r->index][m->target_index]), 0);
 	add_move_print(&(w->print), (*cpt)[0], (char *)target->name);
 	return (0);
 }
