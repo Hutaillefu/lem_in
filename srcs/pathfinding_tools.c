@@ -19,16 +19,12 @@
 
 int		is_joinable(t_world *world, t_room *from, t_room *to)
 {
-	int from_index;
-	int to_index;
-
 	if (!world || !(world->links) || !from || !to)
 		return (0);
-	if ((from_index = get_room_index(world, from->name)) < 0 ||
-	(to_index = get_room_index(world, to->name)) < 0)
+	if (from->index < 0 ||to->index < 0)
 		return (0);
-	return (is_link_exist(world->links[from_index][to_index]) ||
-	is_link_exist(world->links[to_index][from_index]));
+	return (is_link_exist(world->links[from->index][to->index]) ||
+	is_link_exist(world->links[to->index][from->index]));
 }
 
 /*
@@ -37,16 +33,12 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 
 int		can_join(t_world *world, t_room *from, t_room *to)
 {
-	int from_index;
-	int to_index;
-
 	if (!world || !(world->links) || !from || !to)
 		return (0);
-	if ((from_index = get_room_index(world, from->name)) < 0 ||
-	(to_index = get_room_index(world, to->name)) < 0)
+	if (from->index < 0 || to->index < 0)
 		return (0);
-	return (is_link_free(world->links[from_index][to_index]) ||
-	is_link_free(world->links[to_index][from_index]));
+	return (is_link_free(world->links[from->index][to->index]) ||
+	is_link_free(world->links[to->index][from->index]));
 }
 
 void	get_best_utils(t_world *world, t_room *room, t_move **best, t_list *it)
@@ -104,6 +96,7 @@ void	avoid_path(t_world *world, int room_index)
 	if (!world || room_index == 1)
 		return ;
 	i = 0;
+	//printf("Avoid path from & to %d\n", room_index);
 	while (i < world->nb_rooms)
 	{
 		set_link_exist(&(world->links[i][room_index]), 0);

@@ -62,7 +62,7 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 {
 	t_room	*target;
 
-	(*val)[2] = get_room_index(w, room->name);
+	(*val)[2] = room->index;
 	while (++((*val)[0]) < w->nb_rooms &&
 	(target = get_room_by_index(w, (*val)[0])))
 	{
@@ -84,7 +84,7 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 		ft_lstpush(rooms, ft_lstnew(target, sizeof(target)));
 	}
 	if ((*val)[1] == 0)
-		avoid_path(w, (*val)[2]);
+		avoid_path(w, (*val)[2]); // avoid bad room ?
 }
 
 int		bfs(t_world *world, t_room *start)
@@ -105,5 +105,6 @@ int		bfs(t_world *world, t_room *start)
 		bfs_2(world, &rooms, pop_room(&rooms), &val);
 	}
 	reset_num_ant(world);
+	//printf("%d paths detected\n", val[3]);
 	return (val[3]);
 }

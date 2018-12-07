@@ -90,9 +90,9 @@ int		parse_active_commentary(t_world *world, const char *pre_line)
 		return (0);
 	}
 	if ((ft_strcmp("start", &(pre_line[2])) == 0 &&
-		setup_room(world, line, &(world->start_room))) ||
+		setup_room(&world, line, 0)) ||
 		(ft_strcmp("end", &(pre_line[2])) == 0 &&
-		setup_room(world, line, &(world->end_room))))
+		setup_room(&world, line, 1)))
 	{
 		ft_strdel(&line);
 		return (1);

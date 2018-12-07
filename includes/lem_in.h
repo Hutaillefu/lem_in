@@ -22,6 +22,7 @@ typedef struct	s_room{
 	const char	*name;
 	int			x;
 	int			y;
+	int			index;
 	int			num_ant;
 }				t_room;
 
@@ -81,7 +82,7 @@ int				parse_active_commentary(t_world *world, const char *pre_line);
 int				parse_commentary(t_world *world, const char *line);
 int				parse_link(const char *line, t_world *world);
 void			parse_map(t_world *world);
-int				setup_room(t_world *world, char *line, t_room **room);
+int				setup_room(t_world **world, char *line, int index);
 int				process_room(const char *line, t_world *world);
 int				parse_links(t_world *world);
 int				parse_rooms(t_world *world);
@@ -96,6 +97,7 @@ t_room			*get_room_where_ant(t_world *world, int ant_num);
 /*
 	** Pathfinding func
 */
+void			get_all_moves(t_world *world, t_room *room, t_list **all_moves);
 void			get_all_moves_rec(t_world *world, t_room *room,
 t_list **all_moves, int val[2]);
 void			pathfinding(t_world *world);

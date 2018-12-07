@@ -48,6 +48,9 @@ int val[2])
 		return ;
 	ids[1] = 0;
 	ids[0] = get_room_index(w, room->name);
+
+	//printf("%s\n", room->name);
+
 	while (++(ids[1]) < w->nb_rooms && (it = get_room_by_index(w, ids[1])))
 	{
 		if (!is_link_exist(w->links[ids[0]][ids[1]]))

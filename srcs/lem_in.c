@@ -41,14 +41,25 @@ int		main(int argc, char **argv)
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
 	parse_map(world);
-	if (!can_run(world))
-		exit_lemin(&world, 1);
+	 if (!can_run(world))
+	 	exit_lemin(&world, 1);
 	ft_putstr(world->print);
-	free(world->print);
-	world->print = ft_strdup("");
-	init_ants(world);
-	pathfinding(world);
-	ft_putstr(world->print);
+
+
+	t_list	*moves;
+	get_all_moves(world, world->start_room, &moves);
+	while (moves)
+	{
+		t_move	*move = (t_move *)moves->content;
+		printf("Move : cost=%d, target_index=%d\n", move->cost, move->target_index);
+		moves = moves->next;
+	}
+
+	// free(world->print);
+	// world->print = ft_strdup("");
+	// init_ants(world);
+	// pathfinding(world);
+	// ft_putstr(world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }

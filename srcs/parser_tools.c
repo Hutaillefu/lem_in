@@ -13,16 +13,20 @@
 
 #include "lem_in.h"
 
-int		setup_room(t_world *world, char *line, t_room **room)
+int		setup_room(t_world **world, char *line, int index)
 {
 	t_room	*new_room;
 
-	if (!world || !room || (*room))
+	if (!world)
 		return (0);
-	if (!(new_room = parse_room(world, line)))
+	if (!(new_room = parse_room(*world, line)))
 		return (0);
-	*room = new_room;
-	(world->nb_rooms)++;
+	new_room->index = index;
+	if (index == 0)
+		(*world)->start_room = new_room;
+	else if (index == 1)
+		(*world)->end_room = new_room;
+	((*world)->nb_rooms)++;
 	return (1);
 }
 
