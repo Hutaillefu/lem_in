@@ -29,9 +29,9 @@ int *val[2])
 	if (!check_moves(all_moves, (*val)[1], (*val)[0] + 1))
 	{
 		(*val)[0]++;
-		printf("Add %s\n",  it->name);
+		printf("Add %s\n",  it->name); // add to current liste
 		get_all_moves_rec(world, it, all_moves, *val);
-		printf("Rm %s\n",  it->name);
+		printf("Rm %s\n",  it->name); // rm from curr list si necessaire
 		(*val)[0]--;
 	}
 	else
@@ -57,6 +57,7 @@ int val[2])
 		if (!is_link_exist(w->links[ids[0]][ids[1]]))
 			continue;
 		val[0] = val[0] < 0 ? 0 : val[0];
+		// si cost == 0 cree new liste de rooms
 		if (val[0] == 0)
 			val[1] = ids[1];
 		if (ids[1] == 1)
