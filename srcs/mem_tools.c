@@ -41,6 +41,8 @@ t_world	*create_world(void)
 	world->ants = NULL;
 	world->links = NULL;
 	world->print = ft_strdup("");
+	world->nb_paths = 0;
+	world->paths = NULL;
 	return (world);
 }
 

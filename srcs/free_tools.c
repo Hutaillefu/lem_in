@@ -50,8 +50,14 @@ void	free_move(t_move **move)
 
 void	free_world(t_world **world)
 {
+	int i;
+
 	if (!world || !(*world))
 		return ;
+	i = -1;
+	while (++i < (*world)->nb_paths)
+		free_list(&((*world)->paths[i]), NULL);
+	free((*world)->paths);
 	free_room(&((*world)->start_room));
 	free_room(&((*world)->end_room));
 	free_list(&((*world)->rooms), free_room_maillon);

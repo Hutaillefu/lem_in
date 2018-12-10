@@ -61,13 +61,14 @@ void	free_list(t_list **lst, void (*del)(void *, int))
 	t_list	*it;
 	t_list	*next;
 
-	if (!lst || !(*lst) || !del)
+	if (!lst || !(*lst))
 		return ;
 	it = *lst;
 	while (it)
 	{
 		next = it->next;
-		del(&(it->content), it->content_size);
+		if (del)
+			del(&(it->content), it->content_size);
 		free(it);
 		it = next;
 	}

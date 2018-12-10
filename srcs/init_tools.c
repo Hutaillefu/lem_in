@@ -74,3 +74,17 @@ t_list	*create_move(int cost, int target_index)
 	move->target_index = target_index;
 	return (ft_lstnew(move, sizeof(move)));
 }
+
+int		init_paths(t_world *world)
+{
+	int i;
+
+	if (!world || world->nb_paths < 1)
+		return (0);
+	if (!(world->paths = (t_list **)malloc(sizeof(t_list *) * world->nb_paths)))
+		return (0);
+	i = -1;
+	while (++i < world->nb_paths)
+		world->paths[i] = NULL;
+	return (1);
+}

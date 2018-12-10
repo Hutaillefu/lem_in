@@ -66,21 +66,26 @@ void	get_best_utils(t_world *world, t_room *room, t_move **best, t_list *it)
   ** Return the best move of 'moves'.
 */
 
-t_move	*get_best_move(t_world *world, t_list *moves, t_room *room)
+t_room	*get_best_move(t_world *world)
 {
-	t_list	*it;
-	t_move	*best;
+	int		i;
+	t_room	*best;
+	int		cost;
+	int		tmp;
 
-	if (!moves)
+	if (!world)
 		return (NULL);
-	best = (t_move *)moves->content;
-	if (!is_joinable(world, room, get_room_by_index(world, best->target_index)))
-		best = NULL;
-	it = moves->next;
-	while (it)
+	i = 0;
+	best = (t_room *)world->paths[i]->content;
+	cost = ft_lstlen(&(world->paths[i])) + (best->num_ant > 0 ? 1 : 0);
+	while (++i < world->nb_paths)
 	{
-		get_best_utils(world, room, &best, it);
-		it = it->next;
+		tmp = ((t_room *)world->paths[i]->content)->num_ant  > 0 ? 1 : 0;
+		if (can_join(world, world->start_room, (t_room *)world->paths[i]->content) && ft_lstlen(&(world->paths[i])) + tmp <= cost)
+		{
+			cost = ft_lstlen(&(world->paths[i])) + tmp;
+			best = (t_room *)world->paths[i]->content;
+		}
 	}
 	return (best);
 }
@@ -96,7 +101,7 @@ void	avoid_path(t_world *world, int room_index)
 	if (!world || room_index == 1)
 		return ;
 	i = 0;
-	//printf("Avoid path from & to %d\n", room_index);
+	printf("Avoid path from & to %d\n", room_index);
 	while (i < world->nb_rooms)
 	{
 		set_link_exist(&(world->links[i][room_index]), 0);

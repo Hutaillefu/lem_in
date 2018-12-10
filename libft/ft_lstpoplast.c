@@ -27,6 +27,7 @@ t_list	*ft_lstpoplast(t_list **lst)
 		previous = last;
 		last = last->next;
 	}
-	previous->next = NULL;
+	if (previous)
+		previous->next = NULL;
 	return (last);
 }

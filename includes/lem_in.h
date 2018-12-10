@@ -36,6 +36,8 @@ typedef struct	s_world
 	unsigned char	**links;
 	int				*ants;
 	char			*print;
+	int				nb_paths;
+	t_list			**paths;
 }				t_world;
 
 typedef	struct	s_move
@@ -62,6 +64,7 @@ t_world			*create_world();
 int				add_room(t_world *world, t_room *room);
 int				init_links(t_world *world);
 int				init_ants(t_world *world);
+int				init_paths(t_world *world);
 t_list			*create_move(int cost, int target_index);
 
 /*
@@ -92,18 +95,18 @@ int				parse_rooms(t_world *world);
 */
 int				get_room_index(t_world *world, const char *name);
 t_room			*get_room_by_index(t_world *world, int index);
-t_room			*get_room_where_ant(t_world *world, int ant_num);
+t_list			*get_room_where_ant(t_world *world, int ant_num);
 
 /*
 	** Pathfinding func
 */
-void			get_all_moves(t_world *world, t_room *room, t_list **all_moves);
+void			get_all_moves(t_world *world, t_room *room);
 void			get_all_moves_rec(t_world *world, t_room *room,
-t_list **all_moves, int val[2]);
+int path_index, int val[2]);
 void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
-t_move			*get_best_move(t_world *world, t_list *moves, t_room *room);
+t_room			*get_best_move(t_world *world);
 void			avoid_path(t_world *world, int room_index);
 int				check_moves(t_list **all_moves, int target_index, int cost);
 int				bfs(t_world *world, t_room *start);

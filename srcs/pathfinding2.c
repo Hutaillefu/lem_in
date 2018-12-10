@@ -66,13 +66,15 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 	while (++((*val)[0]) < w->nb_rooms &&
 	(target = get_room_by_index(w, (*val)[0])))
 	{
-		if (!(is_joinable(w, room, target) && target->num_ant != 1))
+		if (!(is_joinable(w, room, target)) || target->num_ant == 1)
 		{
 			set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 0);
 			continue ;
-		}
+		}	
+
 		set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 1);
 		set_link_exist(&(w->links[(*val)[0]][(*val)[2]]), 0);
+
 		(*val)[1]++;
 		if ((*val)[0] != 1)
 			target->num_ant = 1;
@@ -83,8 +85,8 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 		}
 		ft_lstpush(rooms, ft_lstnew(target, sizeof(target)));
 	}
-	if ((*val)[1] == 0)
-		avoid_path(w, (*val)[2]); // avoid bad room ?
+	//if ((*val)[1] == 0)
+	//	avoid_path(w, (*val)[2]); // avoid bad room ?
 }
 
 int		bfs(t_world *world, t_room *start)
@@ -96,7 +98,7 @@ int		bfs(t_world *world, t_room *start)
 		return (0);
 	rooms = NULL;
 	val[3] = 0;
-	world->start_room->num_ant = 1;
+	start->num_ant = 1;
 	ft_lstpush(&rooms, ft_lstnew(start, sizeof(start)));
 	while (ft_lstlen(&rooms) > 0)
 	{
@@ -105,6 +107,6 @@ int		bfs(t_world *world, t_room *start)
 		bfs_2(world, &rooms, pop_room(&rooms), &val);
 	}
 	reset_num_ant(world);
-	//printf("%d paths detected\n", val[3]);
+	printf("%d paths detected\n", val[3]);
 	return (val[3]);
 }

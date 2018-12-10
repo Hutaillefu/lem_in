@@ -75,24 +75,26 @@ int			get_room_index(t_world *world, const char *name)
 }
 
 /*
-  ** Return the room where the 'ant' is.
+  ** Return the maillon of path where the 'ant' is or NULL if ant is on start.
 */
 
-t_room		*get_room_where_ant(t_world *world, int ant_num)
+t_list		*get_room_where_ant(t_world *world, int ant_num)
 {
 	t_list	*it;
-	t_room	*room;
+	int		i;
 
 	if (!world)
 		return (NULL);
-	it = world->rooms;
-	room = NULL;
-	while (it)
+	i = -1;
+	while (++i < world->nb_paths)
 	{
-		room = (t_room *)it->content;
-		if (room->num_ant == ant_num)
-			return (room);
-		it = it->next;
+		it = world->paths[i];
+		while (it)
+		{
+			if (((t_room *)it->content)->num_ant == ant_num)
+				return (it);
+			it = it->next;
+		}
 	}
-	return (world->start_room);
+	return (NULL);
 }
