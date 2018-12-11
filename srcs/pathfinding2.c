@@ -13,24 +13,11 @@
 
 #include "lem_in.h"
 
-int		check_moves(t_list **all_moves, int target_index, int cost)
-{
-	t_list *it;
+/*
+   ** Set each room's num_ant as 0.
+*/
 
-	if (!all_moves)
-		return (0);
-	it = *all_moves;
-	while (it)
-	{
-		if (((t_move *)(it)->content)->target_index == target_index &&
-		cost >= ((t_move *)(it)->content)->cost)
-			return (1);
-		it = it->next;
-	}
-	return (0);
-}
-
-void	reset_num_ant(t_world *world)
+static void		reset_num_ant(t_world *world)
 {
 	int i;
 
@@ -44,7 +31,7 @@ void	reset_num_ant(t_world *world)
 	}
 }
 
-t_room	*pop_room(t_list **lst)
+static t_room	*pop_room(t_list **lst)
 {
 	t_room	*room;
 	t_list	*maillon;
@@ -58,7 +45,7 @@ t_room	*pop_room(t_list **lst)
 	return (room);
 }
 
-void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
+void			bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 {
 	t_room	*target;
 
@@ -85,7 +72,7 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 	}
 }
 
-int		bfs(t_world *world, t_room *start)
+int				bfs(t_world *world, t_room *start)
 {
 	t_list	*rooms;
 	int		val[4];
@@ -103,6 +90,5 @@ int		bfs(t_world *world, t_room *start)
 		bfs_2(world, &rooms, pop_room(&rooms), &val);
 	}
 	reset_num_ant(world);
-	printf("%d paths detected\n", val[3]);
 	return (val[3]);
 }

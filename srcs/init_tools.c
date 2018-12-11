@@ -65,15 +65,9 @@ int		init_links(t_world *world)
 	return (1);
 }
 
-t_list	*create_move(int cost, int target_index)
-{
-	t_move *move;
-
-	move = (t_move *)malloc(sizeof(t_move));
-	move->cost = cost;
-	move->target_index = target_index;
-	return (ft_lstnew(move, sizeof(move)));
-}
+/*
+  ** Init an array of list of nb_paths.
+*/
 
 int		init_paths(t_world *world)
 {

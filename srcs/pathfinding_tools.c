@@ -41,27 +41,6 @@ int		can_join(t_world *world, t_room *from, t_room *to)
 	is_link_free(world->links[to->index][from->index]));
 }
 
-void	get_best_utils(t_world *world, t_room *room, t_move **best, t_list *it)
-{
-	int		is_ant_best;
-	int		is_ant_it;
-
-	if (!is_joinable(world, room, get_room_by_index(world,
-	((t_move *)it->content)->target_index)))
-		return ;
-	if (!(*best) || ((t_move *)it->content)->cost < (*best)->cost)
-		*best = (t_move *)it->content;
-	else if (((t_move *)it->content)->cost == (*best)->cost)
-	{
-		is_ant_best = get_room_by_index(world,
-		(*best)->target_index)->num_ant != 0;
-		is_ant_it = get_room_by_index(world,
-		((t_move *)it->content)->target_index)->num_ant != 0;
-		if (is_ant_best && !is_ant_it)
-			*best = (t_move *)it->content;
-	}
-}
-
 /*
   ** Return the best move of 'moves'.
 */
@@ -93,23 +72,4 @@ t_room	*get_best_move(t_world *w)
 		}
 	}
 	return (best);
-}
-
-/*
-  ** Desactivate all links from and to 'room'.
-*/
-
-void	avoid_path(t_world *world, int room_index)
-{
-	int i;
-
-	if (!world || room_index == 1)
-		return ;
-	i = 0;
-	while (i < world->nb_rooms)
-	{
-		set_link_exist(&(world->links[i][room_index]), 0);
-		set_link_exist(&(world->links[room_index][i]), 0);
-		i++;
-	}
 }

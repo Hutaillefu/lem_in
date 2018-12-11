@@ -15,7 +15,6 @@ TOOLS_FILES = ./srcs/line_checker.c \
 	      ./srcs/pathfinding2.c \
 	      ./srcs/pathfinding_tools.c \
 		  ./srcs/free_tools.c \
-		  ./srcs/free_list_tools.c \
 		  ./srcs/getter.c \
 		  ./srcs/links_tools.c \
 		  ./srcs/init_tools.c \

@@ -13,6 +13,11 @@
 
 #include "lem_in.h"
 
+/*
+   ** Return 1 if the ant number 'ant_num' is on end_room,
+   ** else return 0.
+*/
+
 int		is_ant_reach(t_world *world, int ant_num)
 {
 	int int_index;
@@ -25,6 +30,10 @@ int		is_ant_reach(t_world *world, int ant_num)
 	index = ant_num % 32;
 	return ((world->ants[int_index] >> (31 - index)) & 1);
 }
+
+/*
+   ** Set the ant number 'ant_num' as reached (on end_room).
+*/
 
 void	set_ant_reach(t_world *world, int ant_num)
 {

@@ -40,14 +40,6 @@ void	free_links(unsigned char **links, int len)
 	links = NULL;
 }
 
-void	free_move(t_move **move)
-{
-	if (!move || !(*move))
-		return ;
-	free(*move);
-	move = NULL;
-}
-
 void	free_world(t_world **world)
 {
 	int i;
@@ -67,4 +59,41 @@ void	free_world(t_world **world)
 		free((*world)->print);
 	free(*world);
 	world = NULL;
+}
+
+void	free_room_maillon(void *content, int content_size)
+{
+	t_room	**room;
+
+	(void)content_size;
+	if (!content)
+		return ;
+	room = (t_room **)content;
+	if (!room || !(*room))
+		return ;
+	free_room(room);
+}
+
+/*
+   ** Free each maillon and its content using 'del'.
+   ** If del is null, free only the maillon.
+*/
+
+void	free_list(t_list **lst, void (*del)(void *, int))
+{
+	t_list	*it;
+	t_list	*next;
+
+	if (!lst || !(*lst))
+		return ;
+	it = *lst;
+	while (it)
+	{
+		next = it->next;
+		if (del)
+			del(&(it->content), it->content_size);
+		free(it);
+		it = next;
+	}
+	lst = NULL;
 }

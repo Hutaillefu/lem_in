@@ -16,8 +16,6 @@
 
 # include "../libft/libft.h"
 
-#include <stdio.h>
-
 typedef struct	s_room{
 	const char	*name;
 	int			x;
@@ -40,12 +38,6 @@ typedef struct	s_world
 	t_list			**paths;
 }				t_world;
 
-typedef	struct	s_move
-{
-	int	target_index;
-	int	cost;
-}				t_move;
-
 /*
 	** Selector func
 */
@@ -58,22 +50,19 @@ int				is_link(const char *line);
 	** Memory func
 */
 t_room			*create_room(const char *name, int x, int y);
-void			free_room(t_room **room);
-void			free_move(t_move **move);
 t_world			*create_world();
 int				add_room(t_world *world, t_room *room);
 int				init_links(t_world *world);
 int				init_ants(t_world *world);
 int				init_paths(t_world *world);
-t_list			*create_move(int cost, int target_index);
 
 /*
 	** Free func
 */
 void			free_world(t_world **world);
+void			free_room(t_room **room);
+void			free_links(unsigned char **links, int len);
 void			free_room_maillon(void *content, int content_size);
-void			free_move_maillon(void *content, int content_size);
-void			free_index_maillon(void *content, int content_size);
 void			free_list(t_list **lst, void (*del)(void *, int));
 
 /*
@@ -107,8 +96,6 @@ void			pathfinding(t_world *world);
 int				is_joinable(t_world *world, t_room *from, t_room *to);
 int				can_join(t_world *world, t_room *from, t_room *to);
 t_room			*get_best_move(t_world *world);
-void			avoid_path(t_world *world, int room_index);
-int				check_moves(t_list **all_moves, int target_index, int cost);
 int				bfs(t_world *world, t_room *start);
 
 /*
