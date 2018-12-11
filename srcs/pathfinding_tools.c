@@ -76,15 +76,20 @@ t_room	*get_best_move(t_world *world)
 	if (!world)
 		return (NULL);
 	i = 0;
+	while (!world->paths[i])
+		i++;
 	best = (t_room *)world->paths[i]->content;
 	cost = ft_lstlen(&(world->paths[i])) + (best->num_ant > 0 ? 1 : 0);
 	while (++i < world->nb_paths)
 	{
-		tmp = ((t_room *)world->paths[i]->content)->num_ant  > 0 ? 1 : 0;
-		if (can_join(world, world->start_room, (t_room *)world->paths[i]->content) && ft_lstlen(&(world->paths[i])) + tmp <= cost)
+		if (world->paths[i])
 		{
-			cost = ft_lstlen(&(world->paths[i])) + tmp;
-			best = (t_room *)world->paths[i]->content;
+			tmp = ((t_room *)world->paths[i]->content)->num_ant  > 0 ? 1 : 0;
+			if (can_join(world, world->start_room, (t_room *)world->paths[i]->content) && ft_lstlen(&(world->paths[i])) + tmp <= cost)
+			{
+				cost = ft_lstlen(&(world->paths[i])) + tmp;
+				best = (t_room *)world->paths[i]->content;
+			}
 		}
 	}
 	return (best);
@@ -101,7 +106,6 @@ void	avoid_path(t_world *world, int room_index)
 	if (!world || room_index == 1)
 		return ;
 	i = 0;
-	printf("Avoid path from & to %d\n", room_index);
 	while (i < world->nb_rooms)
 	{
 		set_link_exist(&(world->links[i][room_index]), 0);

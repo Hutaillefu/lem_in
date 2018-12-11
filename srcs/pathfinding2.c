@@ -71,10 +71,8 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 			set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 0);
 			continue ;
 		}	
-
 		set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 1);
 		set_link_exist(&(w->links[(*val)[0]][(*val)[2]]), 0);
-
 		(*val)[1]++;
 		if ((*val)[0] != 1)
 			target->num_ant = 1;

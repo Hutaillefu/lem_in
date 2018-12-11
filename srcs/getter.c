@@ -82,19 +82,24 @@ t_list		*get_room_where_ant(t_world *world, int ant_num)
 {
 	t_list	*it;
 	int		i;
+	t_room	*room;
 
 	if (!world)
 		return (NULL);
-	i = -1;
-	while (++i < world->nb_paths)
+	i = 0;
+	while (i < world->nb_paths)
 	{
 		it = world->paths[i];
 		while (it)
 		{
-			if (((t_room *)it->content)->num_ant == ant_num)
+			room = (t_room *)it->content;
+			if (room && room->num_ant == ant_num)
+			{
 				return (it);
+			}
 			it = it->next;
 		}
+		i++;
 	}
 	return (NULL);
 }
