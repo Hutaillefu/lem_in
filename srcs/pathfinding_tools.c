@@ -21,7 +21,7 @@ int		is_joinable(t_world *world, t_room *from, t_room *to)
 {
 	if (!world || !(world->links) || !from || !to)
 		return (0);
-	if (from->index < 0 ||to->index < 0)
+	if (from->index < 0 || to->index < 0)
 		return (0);
 	return (is_link_exist(world->links[from->index][to->index]) ||
 	is_link_exist(world->links[to->index][from->index]));
@@ -66,30 +66,30 @@ void	get_best_utils(t_world *world, t_room *room, t_move **best, t_list *it)
   ** Return the best move of 'moves'.
 */
 
-t_room	*get_best_move(t_world *world)
+t_room	*get_best_move(t_world *w)
 {
 	int		i;
 	t_room	*best;
 	int		cost;
 	int		tmp;
 
-	if (!world)
+	if (!w)
 		return (NULL);
 	i = 0;
-	while (!world->paths[i])
+	while (!w->paths[i])
 		i++;
-	best = (t_room *)world->paths[i]->content;
-	cost = ft_lstlen(&(world->paths[i])) + (best->num_ant > 0 ? 1 : 0);
-	while (++i < world->nb_paths)
+	best = (t_room *)w->paths[i]->content;
+	cost = ft_lstlen(&(w->paths[i])) + (best->num_ant > 0 ? 1 : 0);
+	while (++i < w->nb_paths)
 	{
-		if (world->paths[i])
+		if (!w->paths[i])
+			continue;
+		tmp = ((t_room *)w->paths[i]->content)->num_ant > 0 ? 1 : 0;
+		if (can_join(w, w->start_room, (t_room *)w->paths[i]->content)
+		&& ft_lstlen(&(w->paths[i])) + tmp <= cost)
 		{
-			tmp = ((t_room *)world->paths[i]->content)->num_ant  > 0 ? 1 : 0;
-			if (can_join(world, world->start_room, (t_room *)world->paths[i]->content) && ft_lstlen(&(world->paths[i])) + tmp <= cost)
-			{
-				cost = ft_lstlen(&(world->paths[i])) + tmp;
-				best = (t_room *)world->paths[i]->content;
-			}
+			cost = ft_lstlen(&(w->paths[i])) + tmp;
+			best = (t_room *)w->paths[i]->content;
 		}
 	}
 	return (best);

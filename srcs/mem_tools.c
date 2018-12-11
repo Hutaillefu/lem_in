@@ -99,7 +99,7 @@ int		add_room(t_world *world, t_room *room)
 
 	if (!world || !room)
 		return (0);
-	room->index = ft_lstlen(&(world->rooms)) + 2;	
+	room->index = ft_lstlen(&(world->rooms)) + 2;
 	if (!(maillon = ft_lstnew(room, sizeof(room))))
 		return (0);
 	ft_lstpush(&(world->rooms), maillon);

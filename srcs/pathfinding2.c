@@ -70,7 +70,7 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 		{
 			set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 0);
 			continue ;
-		}	
+		}
 		set_link_exist(&(w->links[(*val)[2]][(*val)[0]]), 1);
 		set_link_exist(&(w->links[(*val)[0]][(*val)[2]]), 0);
 		(*val)[1]++;
@@ -83,8 +83,6 @@ void	bfs_2(t_world *w, t_list **rooms, t_room *room, int (*val)[4])
 		}
 		ft_lstpush(rooms, ft_lstnew(target, sizeof(target)));
 	}
-	//if ((*val)[1] == 0)
-	//	avoid_path(w, (*val)[2]); // avoid bad room ?
 }
 
 int		bfs(t_world *world, t_room *start)

@@ -27,8 +27,9 @@ int *val[2])
 {
 	t_list *r;
 
-	if (path_index != -1 && (world->paths[path_index] && (int)world->paths[path_index]->content_size == -1 && (*val)[0] != 0))
-		return 0;
+	if (path_index != -1 && (world->paths[path_index] &&
+	(int)world->paths[path_index]->content_size == -1 && (*val)[0] != 0))
+		return (0);
 	(*val)[0]++;
 	ft_lstpush(&(world->paths[path_index]), ft_lstnew(it, sizeof(it)));
 	get_all_moves_rec(world, it, path_index, *val);
@@ -47,8 +48,6 @@ int val[2])
 	t_room	*it;
 	int		i;
 
-	if (!w || !room)
-		return ;
 	i = 0;
 	while (++i < w->nb_rooms && (it = get_room_by_index(w, i)))
 	{
@@ -80,16 +79,8 @@ int		process_moves(t_world *w, t_list *r, int (*cpt)[2])
 
 	if (!w)
 		return (0);
-	if (!r)
-	{
-		target = get_best_move(w);
-		current = w->start_room;
-	}
-	else 
-	{
-		current = (t_room *)r->content;
-		target = (t_room *)r->next->content;
-	}
+	target = !r ? get_best_move(w) : (t_room *)r->next->content;
+	current = !r ? w->start_room : (t_room *)r->content;
 	if ((target->num_ant != 0 && target != w->end_room) ||
 		!can_join(w, current, target))
 		return (1);
@@ -104,7 +95,6 @@ int		process_moves(t_world *w, t_list *r, int (*cpt)[2])
 		target->num_ant = (*cpt)[0];
 	set_link_free(&(w->links[current->index][target->index]), 0);
 	add_move_print(&(w->print), (*cpt)[0], (char *)target->name);
-
 	return (0);
 }
 

@@ -25,10 +25,11 @@ void	exit_lemin(t_world **world, int is_error)
 
 int		can_run(t_world *world)
 {
-	if (!world || !(world->start_room) || !(world->end_room) || !(world->links))
+	if (!world || !(world->start_room) || !(world->end_room) ||
+		!(world->links))
 		return (0);
 	world->nb_paths = bfs(world, world->start_room);
-	return (world->nb_paths && 	init_ants(world) &&	init_paths(world));
+	return (world->nb_paths && init_ants(world) && init_paths(world));
 }
 
 int		main(int argc, char **argv)
@@ -42,40 +43,14 @@ int		main(int argc, char **argv)
 	if (!parse_num_ants(world))
 		exit_lemin(&world, 1);
 	parse_map(world);
-	 if (!can_run(world))
-	 	exit_lemin(&world, 1);
-
-	//ft_putstr(world->print);
+	if (!can_run(world))
+		exit_lemin(&world, 1);
+	ft_putstr(world->print);
 	free(world->print);
 	world->print = ft_strdup("");
-
 	get_all_moves(world, world->start_room);
-
-	// int i = -1;
-	// while (++i < world->nb_paths)
-	// {
-	// 	while (world->paths[i])
-	// 	{
-	// 		printf("%s -> ",((t_room *) world->paths[i]->content)->name);
-	// 		world->paths[i] = world->paths[i]->next;
-	// 	}
-	// 	printf("\n");
-	// }	
-
-
 	pathfinding(world);
 	ft_putstr(world->print);
 	exit_lemin(&world, 0);
 	return (0);
 }
-
-	// int i = -1;
-	// while (++i < world->nb_paths)
-	// {
-	// 	while (world->paths[i])
-	// 	{
-	// 		printf("%s -> ",((t_room *) world->paths[i]->content)->name);
-	// 		world->paths[i] = world->paths[i]->next;
-	// 	}
-	// 	printf("\n");
-	// }	
